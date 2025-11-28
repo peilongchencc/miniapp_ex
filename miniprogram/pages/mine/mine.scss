@@ -1,20 +1,84 @@
 /**mine.scss**/
 page {
-  background-color: #f8f8f8;
+  background: linear-gradient(180deg, 
+    #d4e8e0 0%,      /* 淡青绿 */
+    #e8f4f0 30%,     /* 清透水色 */
+    #f0f8f5 60%,     /* 淡雅绿 */
+    #e5f2f0 100%     /* 雾蓝 */
+  );
   height: 100vh;
 }
 
 .mine-container {
   width: 100%;
   min-height: 100vh;
+  position: relative;
+  overflow: hidden;
 }
 
-/* 用户信息头部 */
+/* 山水装饰元素 - 远山 */
+.mine-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 300rpx;
+  background: linear-gradient(180deg, 
+    rgba(130, 170, 160, 0.15) 0%,
+    rgba(150, 190, 180, 0.1) 50%,
+    transparent 100%
+  );
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* 山水装饰元素 - 近山轮廓 */
+.mine-container::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 400rpx;
+  background: 
+    radial-gradient(ellipse 300rpx 180rpx at 20% 100%, rgba(100, 150, 140, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 400rpx 220rpx at 60% 100%, rgba(120, 170, 160, 0.1) 0%, transparent 60%),
+    radial-gradient(ellipse 250rpx 150rpx at 85% 100%, rgba(110, 160, 150, 0.09) 0%, transparent 60%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* 用户信息头部 - 青绿山水色调 */
 .user-header {
-  background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
+  background: linear-gradient(135deg, 
+    rgba(130, 180, 170, 0.75) 0%,   /* 青绿 */
+    rgba(100, 160, 150, 0.85) 50%,   /* 深青 */
+    rgba(90, 150, 145, 0.9) 100%     /* 墨青 */
+  );
+  backdrop-filter: blur(10rpx);
   padding: 80rpx 20rpx 60rpx 30rpx;
   display: flex;
   align-items: center;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 4rpx 20rpx rgba(100, 150, 140, 0.15);
+}
+
+/* 头部装饰 - 水墨晕染效果 */
+.user-header::before {
+  content: '';
+  position: absolute;
+  top: -50rpx;
+  right: -50rpx;
+  width: 300rpx;
+  height: 300rpx;
+  background: radial-gradient(circle, 
+    rgba(255, 255, 255, 0.15) 0%, 
+    rgba(255, 255, 255, 0.05) 40%, 
+    transparent 70%
+  );
+  pointer-events: none;
 }
 
 .avatar-wrapper {
@@ -28,8 +92,9 @@ page {
   width: 120rpx;
   height: 120rpx;
   border-radius: 50%;
-  border: 4rpx solid rgba(255, 255, 255, 0.5);
+  border: 4rpx solid rgba(255, 255, 255, 0.8);
   margin-right: 20rpx;
+  box-shadow: 0 4rpx 12rpx rgba(90, 130, 120, 0.2);
 }
 
 .user-info-right {
@@ -75,20 +140,45 @@ page {
   font-size: 28rpx;
 }
 
-/* 常用功能区域 */
+/* 常用功能区域 - 宣纸质感 */
 .common-functions {
   margin: 20rpx 30rpx;
-  background-color: #fff;
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(248, 252, 250, 0.95) 100%
+  );
   border-radius: 16rpx;
   padding: 30rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4rpx 20rpx rgba(100, 150, 140, 0.12);
+  border: 1rpx solid rgba(130, 170, 160, 0.15);
+  position: relative;
+  z-index: 1;
+  backdrop-filter: blur(5rpx);
 }
 
 .section-title {
   font-size: 32rpx;
   font-weight: bold;
-  color: #333;
+  color: #5a8a7e;  /* 青绿墨色 */
   margin-bottom: 30rpx;
+  position: relative;
+  padding-left: 20rpx;
+}
+
+/* 标题装饰 - 水墨点缀 */
+.section-title::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8rpx;
+  height: 28rpx;
+  background: linear-gradient(180deg, 
+    rgba(130, 180, 170, 0.8) 0%, 
+    rgba(100, 160, 150, 0.6) 100%
+  );
+  border-radius: 4rpx;
 }
 
 .function-grid {
@@ -118,7 +208,7 @@ page {
 
 .function-text {
   font-size: 28rpx;
-  color: #333;
+  color: #5a8a7e;  /* 青绿墨色 */
   text-align: center;
 }
 
