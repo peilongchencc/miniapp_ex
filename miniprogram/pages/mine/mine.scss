@@ -60,6 +60,8 @@ page {
   padding: 80rpx 20rpx 60rpx 30rpx;
   display: flex;
   align-items: center;
+  justify-content: flex-start;
+  gap: 20rpx;
   position: relative;
   z-index: 1;
   box-shadow: 0 4rpx 20rpx rgba(100, 150, 140, 0.15);
@@ -86,6 +88,11 @@ page {
   margin: 0;
   background: transparent;
   border: none;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex: 0 0 auto;
+  width: auto;
 }
 
 .avatar {
