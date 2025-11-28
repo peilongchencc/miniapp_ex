@@ -3,9 +3,10 @@
   <!-- 用户信息区域 -->
   <view class="user-header">
     <!-- 头像 -->
-    <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+    <view class="avatar-wrapper">
       <image class="avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-    </button>
+      <button class="avatar-overlay" open-type="chooseAvatar" hover-class="none" bind:chooseavatar="onChooseAvatar"></button>
+    </view>
     <!-- 昵称 -->
     <view class="user-info-right">
       <input type="nickname" class="nickname-input-hidden" value="{{userInfo.nickName}}" bind:change="onInputChange" />
