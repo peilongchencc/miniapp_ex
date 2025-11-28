@@ -3,7 +3,12 @@ page {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #f8f8f8;
+  background: linear-gradient(180deg, 
+    #d4e8e0 0%,      /* 淡青绿 */
+    #e8f4f0 30%,     /* 清透水色 */
+    #f0f8f5 60%,     /* 淡雅绿 */
+    #e5f2f0 100%     /* 雾蓝 */
+  );
 }
 
 .scrollarea {
@@ -17,11 +22,48 @@ page {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 山水装饰元素 - 远山 */
+.container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 300rpx;
+  background: linear-gradient(180deg, 
+    rgba(130, 170, 160, 0.65) 0%,
+    rgba(150, 190, 180, 0.5) 50%,
+    transparent 100%
+  );
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* 山水装饰元素 - 近山轮廓 */
+.container::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 400rpx;
+  background: 
+    radial-gradient(ellipse 300rpx 180rpx at 20% 100%, rgba(100, 150, 140, 0.55) 0%, transparent 60%),
+    radial-gradient(ellipse 400rpx 220rpx at 60% 100%, rgba(120, 170, 160, 0.7) 0%, transparent 60%),
+    radial-gradient(ellipse 250rpx 150rpx at 85% 100%, rgba(110, 160, 150, 0.6) 0%, transparent 60%);
+  z-index: 0;
+  pointer-events: none;
 }
 
 .welcome-section {
   padding: 60rpx;
   text-align: center;
+  position: relative;
+  z-index: 1;
 }
 
 .welcome-text {
