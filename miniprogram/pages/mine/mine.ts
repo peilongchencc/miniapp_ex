@@ -1,11 +1,10 @@
-// index.ts
+// mine.ts
 // 获取应用实例
 const app = getApp<IAppOption>()
 const defaultAvatarUrl = 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0'
 
 Component({
   data: {
-    motto: 'Hello World',
     userInfo: {
       avatarUrl: defaultAvatarUrl,
       nickName: '',
@@ -15,12 +14,7 @@ Component({
     canIUseNicknameComp: wx.canIUse('input.type.nickname'),
   },
   methods: {
-    // 事件处理函数
-    bindViewTap() {
-      wx.navigateTo({
-        url: '../logs/logs',
-      })
-    },
+    // 选择头像
     onChooseAvatar(e: any) {
       const { avatarUrl } = e.detail
       const { nickName } = this.data.userInfo
@@ -29,6 +23,7 @@ Component({
         hasUserInfo: nickName && avatarUrl && avatarUrl !== defaultAvatarUrl,
       })
     },
+    // 输入昵称
     onInputChange(e: any) {
       const nickName = e.detail.value
       const { avatarUrl } = this.data.userInfo
@@ -37,10 +32,10 @@ Component({
         hasUserInfo: nickName && avatarUrl && avatarUrl !== defaultAvatarUrl,
       })
     },
+    // 获取用户信息
     getUserProfile() {
-      // 推荐使用wx.getUserProfile获取用户信息，开发者每次通过该接口获取用户个人信息均需用户确认，开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
       wx.getUserProfile({
-        desc: '展示用户信息', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
+        desc: '展示用户信息',
         success: (res) => {
           console.log(res)
           this.setData({
@@ -50,5 +45,22 @@ Component({
         }
       })
     },
+    // 联系店主
+    contactShop() {
+      // TODO: 调用联系店主接口或跳转客服
+      wx.showToast({
+        title: '联系店主功能待开发',
+        icon: 'none'
+      })
+    },
+    // 我的地址
+    goToAddress() {
+      // TODO: 跳转到地址管理页面
+      wx.showToast({
+        title: '地址管理功能待开发',
+        icon: 'none'
+      })
+    }
   },
 })
+

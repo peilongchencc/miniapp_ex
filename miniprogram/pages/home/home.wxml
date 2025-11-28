@@ -1,0 +1,10 @@
+<!--home.wxml-->
+<navigation-bar title="首页" back="{{false}}" color="black" background="#FFF"></navigation-bar>
+<scroll-view class="scrollarea" scroll-y type="list">
+  <view class="container">
+    <view class="welcome-section">
+      <text class="welcome-text">{{welcomeText}}</text>
+    </view>
+  </view>
+</scroll-view>
+
