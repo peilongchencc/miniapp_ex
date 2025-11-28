@@ -1,13 +1,30 @@
 // mine.ts
-// 获取应用实例
-const app = getApp<IAppOption>()
 const defaultAvatarUrl = 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0'
+
+// 随机昵称列表
+const nicknameList = [
+  "福善居士",
+  "怀德雅士",
+  "尚善之客",
+  "敬孝之人",
+  "仁心之友",
+  "积善之士",
+  "崇礼之人",
+  "明德之友",
+  "养正之客"
+]
+
+// 从昵称列表中随机选择一个
+function getRandomNickname() {
+  const randomIndex = Math.floor(Math.random() * nicknameList.length)
+  return nicknameList[randomIndex]
+}
 
 Component({
   data: {
     userInfo: {
       avatarUrl: defaultAvatarUrl,
-      nickName: '',
+      nickName: getRandomNickname(),
     },
     hasUserInfo: false,
     canIUseGetUserProfile: wx.canIUse('getUserProfile'),
@@ -45,11 +62,11 @@ Component({
         }
       })
     },
-    // 联系店主
+    // 联系客服
     contactShop() {
-      // TODO: 调用联系店主接口或跳转客服
+      // TODO: 调用联系客服接口或跳转客服
       wx.showToast({
-        title: '联系店主功能待开发',
+        title: '联系客服功能待开发',
         icon: 'none'
       })
     },

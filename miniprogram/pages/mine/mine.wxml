@@ -2,53 +2,29 @@
 <view class="mine-container">
   <!-- 用户信息区域 -->
   <view class="user-header">
-    <!-- 未获取用户信息时 -->
-    <block wx:if="{{canIUseNicknameComp && !hasUserInfo}}">
-      <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
-        <image class="avatar" src="{{userInfo.avatarUrl}}"></image>
-      </button>
-      <view class="user-info-right">
-        <view class="nickname-wrapper">
-          <text class="nickname-label">昵称:</text>
-          <input type="nickname" class="nickname-input" placeholder="请输入昵称" bind:change="onInputChange" />
-        </view>
-      </view>
-    </block>
-    <!-- 已获取用户信息时 -->
-    <block wx:elif="{{hasUserInfo}}">
+    <!-- 头像 -->
+    <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
       <image class="avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-      <view class="user-info-right">
-        <text class="nickname">{{userInfo.nickName}}</text>
-      </view>
-    </block>
-    <!-- 旧版本获取方式 -->
-    <block wx:else>
-      <button wx:if="{{canIUseGetUserProfile}}" class="get-user-btn" bindtap="getUserProfile">
-        <image class="avatar" src="{{userInfo.avatarUrl}}"></image>
-        <text class="get-user-text">点击获取头像昵称</text>
-      </button>
-      <view wx:else class="version-tip">请使用2.10.4及以上版本基础库</view>
-    </block>
+    </button>
+    <!-- 昵称 -->
+    <view class="user-info-right">
+      <input type="nickname" class="nickname-input-hidden" value="{{userInfo.nickName}}" bind:change="onInputChange" />
+      <text class="nickname">{{userInfo.nickName}}</text>
+    </view>
   </view>
 
-  <!-- 功能按钮区域 -->
-  <view class="menu-list">
-    <view class="menu-item" bindtap="contactShop">
-      <view class="menu-item-left">
-        <!-- TODO: 替换为实际图标 -->
-        <image class="menu-icon" src="/images/contact-icon.png" mode="aspectFit"></image>
-        <text class="menu-text">联系店主</text>
+  <!-- 常用功能区域 -->
+  <view class="common-functions">
+    <view class="section-title">常用功能</view>
+    <view class="function-grid">
+      <view class="function-item" bindtap="contactShop">
+        <image class="function-icon" src="/images/contact-icon.png" mode="aspectFit"></image>
+        <text class="function-text">联系客服</text>
       </view>
-      <text class="arrow">></text>
-    </view>
-    
-    <view class="menu-item" bindtap="goToAddress">
-      <view class="menu-item-left">
-        <!-- TODO: 替换为实际图标 -->
-        <image class="menu-icon" src="/images/address-icon.png" mode="aspectFit"></image>
-        <text class="menu-text">我的地址</text>
+      <view class="function-item" bindtap="goToAddress">
+        <image class="function-icon" src="/images/address-icon.png" mode="aspectFit"></image>
+        <text class="function-text">我的地址</text>
       </view>
-      <text class="arrow">></text>
     </view>
   </view>
 </view>
