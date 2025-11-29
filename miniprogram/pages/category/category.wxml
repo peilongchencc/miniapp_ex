@@ -1,0 +1,37 @@
+<!--category.wxml-->
+<view class="container">
+  <!-- 自定义导航栏 -->
+  <navigation-bar title="分类"></navigation-bar>
+  
+  <view class="content">
+    <!-- 左侧分类列表 -->
+    <scroll-view class="category-list" scroll-y>
+      <view 
+        wx:for="{{categories}}" 
+        wx:key="id"
+        class="category-item {{currentCategoryId === item.id ? 'active' : ''}}"
+        data-id="{{item.id}}"
+        bindtap="onCategoryTap"
+      >
+        {{item.name}}
+      </view>
+    </scroll-view>
+    
+    <!-- 右侧商品列表 -->
+    <scroll-view class="product-list" scroll-y>
+      <view class="product-grid">
+        <view 
+          wx:for="{{currentProducts}}" 
+          wx:key="id"
+          class="product-item"
+          data-name="{{item.name}}"
+          bindtap="onProductTap"
+        >
+          <image class="product-image" src="{{item.image}}" mode="aspectFill"></image>
+          <text class="product-name">{{item.name}}</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+</view>
+
