@@ -9,7 +9,7 @@
         <input 
           class="search-input" 
           type="text" 
-          placeholder="搜索商品" 
+          placeholder="搜索商品名称" 
           value="{{searchKeyword}}"
           bindinput="onSearchInput"
           bindconfirm="onSearchConfirm"
