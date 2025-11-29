@@ -17,6 +17,9 @@ interface Category {
 
 Component({
   data: {
+    // 搜索关键词
+    searchKeyword: '',
+    
     // 左侧分类列表
     categories: [
       { id: '1', name: '骨灰盒' },
@@ -111,11 +114,61 @@ Component({
   },
   
   methods: {
+    // 搜索输入
+    onSearchInput(e: any) {
+      const keyword = e.detail.value
+      this.setData({
+        searchKeyword: keyword
+      })
+      this.performSearch(keyword)
+    },
+    
+    // 搜索确认
+    onSearchConfirm(e: any) {
+      const keyword = e.detail.value
+      this.performSearch(keyword)
+    },
+    
+    // 清除搜索
+    onClearSearch() {
+      this.setData({
+        searchKeyword: ''
+      })
+      this.filterProducts(this.data.currentCategoryId)
+    },
+    
+    // 执行搜索
+    performSearch(keyword: string) {
+      if (!keyword.trim()) {
+        // 如果搜索词为空，显示当前分类的商品
+        this.filterProducts(this.data.currentCategoryId)
+        return
+      }
+      
+      // 搜索所有商品
+      const searchResults = this.data.allProducts.filter((product: Product) => 
+        product.name.toLowerCase().includes(keyword.toLowerCase())
+      )
+      
+      this.setData({
+        currentProducts: searchResults
+      })
+      
+      if (searchResults.length === 0) {
+        wx.showToast({
+          title: '未找到相关商品',
+          icon: 'none',
+          duration: 2000
+        })
+      }
+    },
+    
     // 点击左侧分类
     onCategoryTap(e: any) {
       const categoryId = e.currentTarget.dataset.id
       this.setData({
-        currentCategoryId: categoryId
+        currentCategoryId: categoryId,
+        searchKeyword: '' // 切换分类时清空搜索
       })
       this.filterProducts(categoryId)
     },

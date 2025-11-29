@@ -1,7 +1,20 @@
 <!--category.wxml-->
 <view class="container">
-  <!-- 自定义导航栏 -->
-  <navigation-bar title="分类"></navigation-bar>
+  <!-- 搜索框 -->
+  <view class="search-container">
+    <view class="search-box">
+      <image class="search-icon" src="/images/search-icon.png" mode="aspectFit"></image>
+      <input 
+        class="search-input" 
+        type="text" 
+        placeholder="搜索商品" 
+        value="{{searchKeyword}}"
+        bindinput="onSearchInput"
+        bindconfirm="onSearchConfirm"
+      />
+      <view wx:if="{{searchKeyword}}" class="clear-icon" bindtap="onClearSearch">×</view>
+    </view>
+  </view>
   
   <view class="content">
     <!-- 左侧分类列表 -->
