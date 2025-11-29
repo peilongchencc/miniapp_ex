@@ -86,6 +86,7 @@ page {
   width: 180rpx;
   height: 100%;
   background-color: transparent;
+  padding-top: 20rpx;
 }
 
 .category-item {
@@ -94,16 +95,31 @@ page {
   align-items: center;
   justify-content: center;
   font-size: 28rpx;
-  color: #333;
+  color: #666;
   background-color: transparent;
   position: relative;
-  transition: all 0.3s;
+  transition: all 0.3s ease;
+  margin: 0 0 12rpx 0;
+}
+
+.category-item:last-child {
+  margin-bottom: 0;
 }
 
 .category-item.active {
-  background-color: rgba(255, 255, 255, 0.15);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(255, 255, 255, 0.85) 100%
+  );
   color: #667eea;
   font-weight: bold;
+  font-size: 30rpx;
+  box-shadow: 
+    2rpx 0 12rpx rgba(102, 126, 234, 0.15),
+    0 0 0 1rpx rgba(255, 255, 255, 0.3);
+  border-radius: 0 16rpx 16rpx 0;
+  margin: 0 8rpx 12rpx 0;
 }
 
 .category-item.active::before {
@@ -112,10 +128,15 @@ page {
   left: 0;
   top: 50%;
   transform: translateY(-50%);
-  width: 6rpx;
-  height: 40rpx;
-  background-color: #667eea;
-  border-radius: 0 3rpx 3rpx 0;
+  width: 8rpx;
+  height: 60rpx;
+  background: linear-gradient(
+    180deg,
+    #667eea 0%,
+    #764ba2 100%
+  );
+  border-radius: 0 4rpx 4rpx 0;
+  box-shadow: 2rpx 0 8rpx rgba(102, 126, 234, 0.4);
 }
 
 /* 右侧商品列表 */
