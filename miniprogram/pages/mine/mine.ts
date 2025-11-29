@@ -1,5 +1,6 @@
 // mine.ts
-const defaultAvatarUrl = 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0'
+// 使用本地默认头像,请将default-avatar.png放入images文件夹
+const defaultAvatarUrl = '/images/default-avatar.png'
 
 // 随机昵称列表
 const nicknameList = [
