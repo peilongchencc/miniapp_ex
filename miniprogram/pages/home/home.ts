@@ -7,7 +7,7 @@ Component({
     welcomeText: '贵发祥殡葬用品商城欢迎您'
   },
   methods: {
-    // 页面方法
+    // 预留页面交互方法
   }
 })
 
