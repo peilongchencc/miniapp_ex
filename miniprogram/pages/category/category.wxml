@@ -1,18 +1,21 @@
 <!--category.wxml-->
 <view class="container">
-  <!-- 搜索框 -->
-  <view class="search-container">
-    <view class="search-box">
-      <image class="search-icon" src="/images/search-icon.png" mode="aspectFit"></image>
-      <input 
-        class="search-input" 
-        type="text" 
-        placeholder="搜索商品" 
-        value="{{searchKeyword}}"
-        bindinput="onSearchInput"
-        bindconfirm="onSearchConfirm"
-      />
-      <view wx:if="{{searchKeyword}}" class="clear-icon" bindtap="onClearSearch">×</view>
+  <!-- 自定义导航栏 -->
+  <view class="custom-navbar" style="padding-top: {{statusBarHeight}}px;">
+    <view class="navbar-content" style="height: {{menuButtonHeight}}px; margin-top: {{menuButtonTop - statusBarHeight}}px; padding-right: {{menuButtonRight + menuButtonWidth + 16}}px;">
+      <!-- 搜索框 -->
+      <view class="search-box">
+        <image class="search-icon" src="/images/search-icon.png" mode="aspectFit"></image>
+        <input 
+          class="search-input" 
+          type="text" 
+          placeholder="搜索商品" 
+          value="{{searchKeyword}}"
+          bindinput="onSearchInput"
+          bindconfirm="onSearchConfirm"
+        />
+        <view wx:if="{{searchKeyword}}" class="clear-icon" bindtap="onClearSearch">×</view>
+      </view>
     </view>
   </view>
   

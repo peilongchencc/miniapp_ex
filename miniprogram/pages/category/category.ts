@@ -17,6 +17,13 @@ interface Category {
 
 Component({
   data: {
+    // 胶囊按钮和状态栏信息
+    statusBarHeight: 0,
+    menuButtonHeight: 0,
+    menuButtonTop: 0,
+    menuButtonRight: 0,
+    menuButtonWidth: 0,
+    
     // 搜索关键词
     searchKeyword: '',
     
@@ -108,6 +115,18 @@ Component({
   
   lifetimes: {
     attached() {
+      // 获取系统信息和胶囊按钮信息
+      const systemInfo = wx.getSystemInfoSync()
+      const menuButtonInfo = wx.getMenuButtonBoundingClientRect()
+      
+      this.setData({
+        statusBarHeight: systemInfo.statusBarHeight || 0,
+        menuButtonHeight: menuButtonInfo.height,
+        menuButtonTop: menuButtonInfo.top,
+        menuButtonRight: systemInfo.windowWidth - menuButtonInfo.right,
+        menuButtonWidth: menuButtonInfo.width
+      })
+      
       // 初始化显示第一个分类的商品
       this.filterProducts(this.data.currentCategoryId)
     }
