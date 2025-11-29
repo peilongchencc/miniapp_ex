@@ -26,6 +26,9 @@ Component({
     
     // 搜索关键词
     searchKeyword: '',
+
+    // 自定义导航高度占位
+    navPlaceholderHeight: 0,
     
     // 左侧分类列表
     categories: [
@@ -119,12 +122,15 @@ Component({
       const systemInfo = wx.getSystemInfoSync()
       const menuButtonInfo = wx.getMenuButtonBoundingClientRect()
       
+      const navPlaceholderHeight = menuButtonInfo.bottom
+
       this.setData({
         statusBarHeight: systemInfo.statusBarHeight || 0,
         menuButtonHeight: menuButtonInfo.height,
         menuButtonTop: menuButtonInfo.top,
         menuButtonRight: systemInfo.windowWidth - menuButtonInfo.right,
-        menuButtonWidth: menuButtonInfo.width
+        menuButtonWidth: menuButtonInfo.width,
+        navPlaceholderHeight
       })
       
       // 初始化显示第一个分类的商品

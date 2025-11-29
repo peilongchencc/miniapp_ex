@@ -13,6 +13,10 @@ page {
   display: flex;
   flex-direction: column;
   background-color: transparent;
+  align-items: stretch;
+  justify-content: flex-start;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 /* 自定义导航栏 */

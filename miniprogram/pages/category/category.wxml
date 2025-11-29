@@ -1,5 +1,5 @@
 <!--category.wxml-->
-<view class="container">
+<view class="container" style="padding-top: {{navPlaceholderHeight}}px;">
   <!-- 自定义导航栏 -->
   <view class="custom-navbar" style="padding-top: {{statusBarHeight}}px;">
     <view class="navbar-content" style="height: {{menuButtonHeight}}px; margin-top: {{menuButtonTop - statusBarHeight}}px; padding-right: {{menuButtonRight + menuButtonWidth + 16}}px;">
