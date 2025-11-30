@@ -52,11 +52,15 @@ page {
   width: 260rpx;
   height: 80rpx;
   line-height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 999rpx;
   background: linear-gradient(135deg, #6fb1b5 0%, #4c9092 100%);
   color: #ffffff;
   font-size: 30rpx;
   border: none;
+  text-align: center;
 }
 
 .go-shopping-btn::after {
