@@ -1,0 +1,18 @@
+<!--cart.wxml-->
+<view class="cart-page">
+  <navigation-bar
+    title="购物车"
+    back="{{false}}"
+    color="white"
+    background="linear-gradient(135deg, rgba(130, 180, 170, 0.85) 0%, rgba(100, 160, 150, 0.95) 100%)"
+  ></navigation-bar>
+
+  <view class="cart-body">
+    <view class="empty-state" wx:if="{{!hasItems}}">
+      <image class="empty-image" src="{{emptyImage}}" mode="aspectFit"></image>
+      <text class="empty-text">购物车空空如也</text>
+      <button class="go-shopping-btn" bindtap="goToCategory" hover-class="none">去逛逛</button>
+    </view>
+  </view>
+</view>
+
