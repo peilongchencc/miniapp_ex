@@ -22,6 +22,10 @@
         <image class="function-icon" src="/images/contact-icon.png" mode="aspectFit"></image>
         <text class="function-text">联系客服</text>
       </view>
+      <view class="function-item" bindtap="goToOrders">
+        <image class="function-icon" src="/images/orders-icon.png" mode="aspectFit"></image>
+        <text class="function-text">我的订单</text>
+      </view>
       <view class="function-item" bindtap="goToAddress">
         <image class="function-icon" src="/images/address-icon.png" mode="aspectFit"></image>
         <text class="function-text">我的地址</text>

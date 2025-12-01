@@ -71,6 +71,14 @@ Component({
         icon: 'none'
       })
     },
+    // 我的订单
+    goToOrders() {
+      // TODO: 跳转到订单列表
+      wx.showToast({
+        title: '订单功能待开发',
+        icon: 'none'
+      })
+    },
     // 我的地址
     goToAddress() {
       // TODO: 跳转到地址管理页面
