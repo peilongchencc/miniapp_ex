@@ -1,92 +1,128 @@
 // mine.ts
-// 使用本地默认头像,请将default-avatar.png放入images文件夹
 const defaultAvatarUrl = '/images/default-avatar.png'
 
 // 随机昵称列表
 const nicknameList = [
-  "福善居士",
-  "怀德雅士",
-  "尚善之客",
-  "敬孝之人",
-  "仁心之友",
-  "积善之士",
-  "崇礼之人",
-  "明德之友",
-  "养正之客"
+  "福善居士", "怀德雅士", "尚善之客", "敬孝之人",
+  "仁心之友", "积善之士", "崇礼之人", "明德之友", "养正之客"
 ]
 
-// 从昵称列表中随机选择一个
 function getRandomNickname() {
   const randomIndex = Math.floor(Math.random() * nicknameList.length)
   return nicknameList[randomIndex]
 }
 
+const appInstance = getApp<IAppOption>()
+
 Component({
   data: {
+    isLoggedIn: false,
     userInfo: {
       avatarUrl: defaultAvatarUrl,
-      nickName: getRandomNickname(),
+      nickName: '',
     },
-    hasUserInfo: false,
-    canIUseGetUserProfile: wx.canIUse('getUserProfile'),
-    canIUseNicknameComp: wx.canIUse('input.type.nickname'),
   },
+
+  lifetimes: {
+    attached() {
+      this.checkLoginStatus()
+    }
+  },
+
+  pageLifetimes: {
+    show() {
+      this.checkLoginStatus()
+    }
+  },
+
   methods: {
+    // 检查登录状态
+    checkLoginStatus() {
+      const isLoggedIn = appInstance.globalData.isLoggedIn
+      const userInfo = appInstance.globalData.userInfo
+      if (isLoggedIn && userInfo) {
+        this.setData({ isLoggedIn: true, userInfo })
+      } else {
+        this.setData({
+          isLoggedIn: false,
+          userInfo: { avatarUrl: defaultAvatarUrl, nickName: '' }
+        })
+      }
+    },
+
+    // 点击登录/注册按钮
+    handleLogin() {
+      // 生成随机昵称作为默认昵称
+      const defaultNickName = getRandomNickname()
+      this.setData({
+        isLoggedIn: true,
+        userInfo: {
+          avatarUrl: defaultAvatarUrl,
+          nickName: defaultNickName,
+        }
+      })
+      // 保存到全局和本地存储
+      appInstance.globalData.isLoggedIn = true
+      appInstance.globalData.userInfo = this.data.userInfo
+      wx.setStorageSync('isLoggedIn', true)
+      wx.setStorageSync('userInfo', this.data.userInfo)
+      wx.showToast({ title: '登录成功', icon: 'success' })
+    },
+
     // 选择头像
-    onChooseAvatar(e: any) {
+    onChooseAvatar(e: WechatMiniprogram.CustomEvent) {
       const { avatarUrl } = e.detail
-      const { nickName } = this.data.userInfo
-      this.setData({
-        "userInfo.avatarUrl": avatarUrl,
-        hasUserInfo: nickName && avatarUrl && avatarUrl !== defaultAvatarUrl,
-      })
+      this.setData({ "userInfo.avatarUrl": avatarUrl })
+      this.saveUserInfo()
     },
+
     // 输入昵称
-    onInputChange(e: any) {
+    onInputChange(e: WechatMiniprogram.CustomEvent) {
       const nickName = e.detail.value
-      const { avatarUrl } = this.data.userInfo
-      this.setData({
-        "userInfo.nickName": nickName,
-        hasUserInfo: nickName && avatarUrl && avatarUrl !== defaultAvatarUrl,
-      })
+      this.setData({ "userInfo.nickName": nickName })
+      this.saveUserInfo()
     },
-    // 获取用户信息
-    getUserProfile() {
-      wx.getUserProfile({
-        desc: '展示用户信息',
+
+    // 保存用户信息
+    saveUserInfo() {
+      appInstance.globalData.userInfo = this.data.userInfo
+      wx.setStorageSync('userInfo', this.data.userInfo)
+    },
+
+    // 退出登录
+    handleLogout() {
+      wx.showModal({
+        title: '提示',
+        content: '确定要退出登录吗？',
         success: (res) => {
-          console.log(res)
-          this.setData({
-            userInfo: res.userInfo,
-            hasUserInfo: true
-          })
+          if (res.confirm) {
+            this.setData({
+              isLoggedIn: false,
+              userInfo: { avatarUrl: defaultAvatarUrl, nickName: '' }
+            })
+            appInstance.globalData.isLoggedIn = false
+            appInstance.globalData.userInfo = null
+            wx.removeStorageSync('isLoggedIn')
+            wx.removeStorageSync('userInfo')
+            wx.showToast({ title: '已退出登录', icon: 'success' })
+          }
         }
       })
     },
+
     // 联系客服
     contactShop() {
-      // TODO: 调用联系客服接口或跳转客服
-      wx.showToast({
-        title: '联系客服功能待开发',
-        icon: 'none'
-      })
+      wx.showToast({ title: '联系客服功能待开发', icon: 'none' })
     },
+
     // 我的订单
     goToOrders() {
-      // TODO: 跳转到订单列表
-      wx.showToast({
-        title: '订单功能待开发',
-        icon: 'none'
-      })
+      wx.showToast({ title: '订单功能待开发', icon: 'none' })
     },
+
     // 我的地址
     goToAddress() {
-      // TODO: 跳转到地址管理页面
-      wx.showToast({
-        title: '地址管理功能待开发',
-        icon: 'none'
-      })
+      wx.showToast({ title: '地址管理功能待开发', icon: 'none' })
     }
   },
 })
-

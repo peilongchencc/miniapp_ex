@@ -2,16 +2,29 @@
 <view class="mine-container">
   <!-- 用户信息区域 -->
   <view class="user-header">
-    <!-- 头像 -->
-    <view class="avatar-wrapper">
-      <image class="avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-      <button class="avatar-overlay" open-type="chooseAvatar" hover-class="none" bind:chooseavatar="onChooseAvatar"></button>
-    </view>
-    <!-- 昵称 -->
-    <view class="user-info-right">
-      <input type="nickname" class="nickname-input-hidden" value="{{userInfo.nickName}}" bind:change="onInputChange" />
-      <text class="nickname">{{userInfo.nickName}}</text>
-    </view>
+    <!-- 未登录状态 -->
+    <block wx:if="{{!isLoggedIn}}">
+      <view class="avatar-wrapper">
+        <image class="avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
+      </view>
+      <view class="login-section">
+        <view class="login-btn" bindtap="handleLogin">登录/注册</view>
+        <text class="login-tip">登录后享受更多服务</text>
+      </view>
+    </block>
+
+    <!-- 已登录状态 -->
+    <block wx:else>
+      <view class="avatar-wrapper">
+        <image class="avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
+        <button class="avatar-overlay" open-type="chooseAvatar" hover-class="none" bind:chooseavatar="onChooseAvatar"></button>
+      </view>
+      <view class="user-info-right">
+        <input type="nickname" class="nickname-input-hidden" value="{{userInfo.nickName}}" bind:change="onInputChange" />
+        <text class="nickname">{{userInfo.nickName}}</text>
+        <text class="edit-tip">点击头像或昵称可修改</text>
+      </view>
+    </block>
   </view>
 
   <!-- 常用功能区域 -->
@@ -32,5 +45,9 @@
       </view>
     </view>
   </view>
-</view>
 
+  <!-- 退出登录按钮 (仅登录后显示) -->
+  <view wx:if="{{isLoggedIn}}" class="logout-section">
+    <view class="logout-btn" bindtap="handleLogout">退出登录</view>
+  </view>
+</view>

@@ -1,8 +1,14 @@
 /// <reference path="./types/index.d.ts" />
 
+interface IUserInfo {
+  avatarUrl: string
+  nickName: string
+}
+
 interface IAppOption {
   globalData: {
-    userInfo?: WechatMiniprogram.UserInfo,
+    isLoggedIn: boolean
+    userInfo: IUserInfo | null
   }
-  userInfoReadyCallback?: WechatMiniprogram.GetUserInfoSuccessCallback,
+  userInfoReadyCallback?: WechatMiniprogram.GetUserInfoSuccessCallback
 }
