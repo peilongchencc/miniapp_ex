@@ -61,9 +61,9 @@ Component({
     
     // 联系信息
     contact: {
-      phone: '400-XXX-XXXX',
+      phone: '13895617366',
       workTime: '24小时服务',
-      address: '贵阳市XX区XX路XX号'
+      address: '宁夏回族自治区银川市兴庆区立达国际建材城39号楼2层203室'
     }
   },
 
