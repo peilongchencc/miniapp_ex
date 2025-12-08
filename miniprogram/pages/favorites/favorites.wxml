@@ -1,0 +1,35 @@
+<!--favorites.wxml-->
+<navigation-bar title="我的收藏" back="{{true}}" />
+
+<view class="favorites-container">
+  <!-- 空状态 -->
+  <view wx:if="{{favoriteList.length === 0}}" class="empty-state">
+    <image class="empty-icon" src="/images/cart-empty.png" mode="aspectFit"></image>
+    <text class="empty-text">暂无收藏商品</text>
+    <view class="go-shopping-btn" bindtap="goShopping">去逛逛</view>
+  </view>
+
+  <!-- 收藏列表 -->
+  <view wx:else class="favorites-list">
+    <view 
+      class="favorite-item" 
+      wx:for="{{favoriteList}}" 
+      wx:key="id"
+      bindtap="goToDetail"
+      data-item="{{item}}"
+    >
+      <image class="product-image" src="{{item.image}}" mode="aspectFill"></image>
+      <view class="product-info">
+        <text class="product-name">{{item.name}}</text>
+        <view class="price-row">
+          <text class="current-price">¥{{item.userPrice || item.basePrice}}</text>
+          <text wx:if="{{item.userPrice && item.userPrice < item.basePrice}}" class="original-price">¥{{item.basePrice}}</text>
+        </view>
+      </view>
+      <view class="action-btns">
+        <view class="add-cart-btn" catchtap="addToCart" data-item="{{item}}">加入购物车</view>
+        <view class="remove-btn" catchtap="removeFavorite" data-id="{{item.id}}">取消收藏</view>
+      </view>
+    </view>
+  </view>
+</view>

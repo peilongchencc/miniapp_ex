@@ -66,6 +66,13 @@ Component({
     }
   },
 
+  pageLifetimes: {
+    show() {
+      // 刷新收藏状态
+      this.checkFavoriteStatus()
+    }
+  },
+
   methods: {
     /**
      * 初始化导航栏高度
@@ -298,14 +305,38 @@ Component({
     },
 
     /**
+     * 检查收藏状态
+     */
+    checkFavoriteStatus() {
+      const { product } = this.data
+      if (product) {
+        const isFavorite = app.isFavorite(product.id)
+        this.setData({ isFavorite })
+      }
+    },
+
+    /**
      * 切换收藏状态
      */
     toggleFavorite() {
-      this.setData({ isFavorite: !this.data.isFavorite })
-      wx.showToast({
-        title: this.data.isFavorite ? '已收藏' : '已取消收藏',
-        icon: 'none'
-      })
+      const { product, isFavorite } = this.data
+      if (!product) return
+
+      if (isFavorite) {
+        app.removeFavorite(product.id)
+        this.setData({ isFavorite: false })
+        wx.showToast({ title: '已取消收藏', icon: 'none' })
+      } else {
+        app.addFavorite({
+          id: product.id,
+          name: product.name,
+          image: product.images[0],
+          basePrice: product.basePrice,
+          userPrice: product.userPrice
+        })
+        this.setData({ isFavorite: true })
+        wx.showToast({ title: '已收藏', icon: 'success' })
+      }
     },
 
     /**

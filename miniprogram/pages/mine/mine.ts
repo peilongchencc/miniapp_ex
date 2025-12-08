@@ -115,6 +115,11 @@ Component({
       wx.showToast({ title: '联系客服功能待开发', icon: 'none' })
     },
 
+    // 我的收藏
+    goToFavorites() {
+      wx.navigateTo({ url: '/pages/favorites/favorites' })
+    },
+
     // 我的订单（快捷复购入口）
     goToOrders() {
       wx.navigateTo({ url: '/pages/orders/orders' })

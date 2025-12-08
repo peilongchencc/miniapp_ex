@@ -31,9 +31,9 @@
   <view class="common-functions">
     <view class="section-title">常用功能</view>
     <view class="function-grid">
-      <view class="function-item" bindtap="contactShop">
-        <image class="function-icon" src="/images/contact-icon.png" mode="aspectFit"></image>
-        <text class="function-text">联系客服</text>
+      <view class="function-item" bindtap="goToFavorites">
+        <image class="function-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiM2NjY2NjYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMjAuODQgNC42MWE1LjUgNS41IDAgMCAwLTcuNzggMEwxMiA1LjY3bC0xLjA2LTEuMDZhNS41IDUuNSAwIDAgMC03Ljc4IDcuNzhsMS4wNiAxLjA2TDEyIDIxLjIzbDcuNzgtNy43OCAxLjA2LTEuMDZhNS41IDUuNSAwIDAgMCAwLTcuNzh6Ij48L3BhdGg+PC9zdmc+" mode="aspectFit"></image>
+        <text class="function-text">我的收藏</text>
       </view>
       <view class="function-item" bindtap="goToOrders">
         <image class="function-icon" src="/images/orders-icon.png" mode="aspectFit"></image>
@@ -42,6 +42,10 @@
       <view class="function-item" bindtap="goToAddress">
         <image class="function-icon" src="/images/address-icon.png" mode="aspectFit"></image>
         <text class="function-text">我的地址</text>
+      </view>
+      <view class="function-item" bindtap="contactShop">
+        <image class="function-icon" src="/images/contact-icon.png" mode="aspectFit"></image>
+        <text class="function-text">联系客服</text>
       </view>
     </view>
   </view>

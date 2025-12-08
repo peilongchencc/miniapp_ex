@@ -25,16 +25,29 @@ interface IOrder {
   remark?: string
 }
 
+interface IFavoriteItem {
+  id: string
+  name: string
+  image: string
+  basePrice: number
+  userPrice?: number | null
+  addTime: number
+}
+
 interface IAppOption {
   globalData: {
     isLoggedIn: boolean
     userInfo: IUserInfo | null
     cartItems: ICartItem[]
     orderHistory: IOrder[]
+    favorites: IFavoriteItem[]
   }
   userInfoReadyCallback?: WechatMiniprogram.GetUserInfoSuccessCallback
   addToCart: (item: ICartItem) => void
   clearCart: () => void
   submitOrder: (remark?: string) => IOrder | null
   reorder: (orderId: string) => boolean
+  addFavorite: (item: Omit<IFavoriteItem, 'addTime'>) => boolean
+  removeFavorite: (id: string) => void
+  isFavorite: (id: string) => boolean
 }

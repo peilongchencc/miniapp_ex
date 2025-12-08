@@ -7,6 +7,7 @@ App<IAppOption>({
     userInfo: null,
     cartItems: [] as ICartItem[],
     orderHistory: [] as IOrder[],
+    favorites: [] as IFavoriteItem[],
   },
 
   onLaunch() {
@@ -27,6 +28,12 @@ App<IAppOption>({
     const cartItems = wx.getStorageSync('cartItems')
     if (cartItems) {
       this.globalData.cartItems = cartItems
+    }
+
+    // 加载收藏数据
+    const favorites = wx.getStorageSync('favorites')
+    if (favorites) {
+      this.globalData.favorites = favorites
     }
 
     // 加载订单历史
@@ -135,5 +142,29 @@ App<IAppOption>({
       this.addToCart({ ...item })
     })
     return true
+  },
+
+  // 添加收藏
+  addFavorite(item: Omit<IFavoriteItem, 'addTime'>) {
+    const exists = this.globalData.favorites.some(f => f.id === item.id)
+    if (exists) return false
+    
+    this.globalData.favorites.unshift({
+      ...item,
+      addTime: Date.now()
+    })
+    wx.setStorageSync('favorites', this.globalData.favorites)
+    return true
+  },
+
+  // 取消收藏
+  removeFavorite(id: string) {
+    this.globalData.favorites = this.globalData.favorites.filter(f => f.id !== id)
+    wx.setStorageSync('favorites', this.globalData.favorites)
+  },
+
+  // 检查是否已收藏
+  isFavorite(id: string) {
+    return this.globalData.favorites.some(f => f.id === id)
   },
 })
