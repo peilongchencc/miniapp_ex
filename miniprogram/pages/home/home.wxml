@@ -1,10 +1,145 @@
 <!--home.wxml-->
 <navigation-bar title="首页" back="{{false}}" color="white" background="linear-gradient(135deg, rgba(130, 180, 170, 0.75) 0%, rgba(100, 160, 150, 0.85) 50%, rgba(90, 150, 145, 0.9) 100%)"></navigation-bar>
+
 <scroll-view class="scrollarea" scroll-y type="list">
-  <view class="container">
-    <view class="welcome-section">
-      <text class="welcome-text">{{welcomeText}}</text>
+  <!-- 1. 搜索栏 -->
+  <view class="search-section">
+    <view class="search-bar">
+      <image class="search-icon" src="/images/search-icon.png" mode="aspectFit"></image>
+      <input 
+        class="search-input" 
+        placeholder="搜索商品，如骨灰盒、寿衣" 
+        placeholder-class="search-placeholder"
+        value="{{searchKeyword}}"
+        bindinput="onSearchInput"
+        bindconfirm="onSearch"
+      />
+      <view class="search-btn" bindtap="onSearch">搜索</view>
     </view>
   </view>
+
+  <!-- 2. 轮播图 -->
+  <view class="banner-section">
+    <swiper 
+      class="banner-swiper" 
+      autoplay 
+      circular 
+      interval="{{4000}}" 
+      duration="{{500}}"
+      bindchange="onBannerChange"
+    >
+      <swiper-item wx:for="{{banners}}" wx:key="id">
+        <view class="banner-item" bindtap="onBannerTap" data-id="{{item.id}}">
+          <image class="banner-image" src="{{item.image}}" mode="aspectFill"></image>
+          <view class="banner-title">{{item.title}}</view>
+        </view>
+      </swiper-item>
+    </swiper>
+    <view class="banner-dots">
+      <view 
+        wx:for="{{banners}}" 
+        wx:key="id" 
+        class="dot {{currentBanner === index ? 'active' : ''}}"
+      ></view>
+    </view>
+  </view>
+
+  <!-- 3. 商品分类入口 -->
+  <view class="category-section">
+    <view class="category-grid">
+      <view 
+        wx:for="{{categories}}" 
+        wx:key="id" 
+        class="category-item"
+        bindtap="onCategoryTap"
+        data-id="{{item.id}}"
+      >
+        <image class="category-icon" src="{{item.icon}}" mode="aspectFill"></image>
+        <text class="category-name">{{item.name}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 4. 热销/推荐商品 -->
+  <view class="product-section">
+    <view class="section-header">
+      <text class="section-title">热销推荐</text>
+      <text class="section-more">查看更多 ></text>
+    </view>
+    <view class="product-grid">
+      <view 
+        wx:for="{{hotProducts}}" 
+        wx:key="id" 
+        class="product-item"
+        bindtap="onProductTap"
+        data-id="{{item.id}}"
+      >
+        <image class="product-image" src="{{item.image}}" mode="aspectFill"></image>
+        <view class="product-info">
+          <text class="product-name">{{item.name}}</text>
+          <view class="product-price-row">
+            <text class="product-price">¥{{item.price}}</text>
+            <text class="product-original-price">¥{{item.originalPrice}}</text>
+          </view>
+          <text class="product-sales">已售{{item.sales}}件</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 5. 服务特色 -->
+  <view class="service-section">
+    <view class="section-header">
+      <text class="section-title">服务保障</text>
+    </view>
+    <view class="service-grid">
+      <view wx:for="{{services}}" wx:key="id" class="service-item">
+        <text class="service-icon">{{item.icon}}</text>
+        <text class="service-title">{{item.title}}</text>
+        <text class="service-desc">{{item.desc}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 6. 联系方式 -->
+  <view class="contact-section">
+    <view class="section-header">
+      <text class="section-title">联系我们</text>
+    </view>
+    <view class="contact-list">
+      <view class="contact-item" bindtap="onCallPhone">
+        <text class="contact-icon">📞</text>
+        <view class="contact-info">
+          <text class="contact-label">服务热线</text>
+          <text class="contact-value">{{contact.phone}}</text>
+        </view>
+        <text class="contact-arrow">></text>
+      </view>
+      <view class="contact-item" bindtap="onContactService">
+        <text class="contact-icon">💬</text>
+        <view class="contact-info">
+          <text class="contact-label">在线客服</text>
+          <text class="contact-value">{{contact.workTime}}</text>
+        </view>
+        <text class="contact-arrow">></text>
+      </view>
+      <view class="contact-item" bindtap="onViewAddress">
+        <text class="contact-icon">📍</text>
+        <view class="contact-info">
+          <text class="contact-label">门店地址</text>
+          <text class="contact-value">{{contact.address}}</text>
+        </view>
+        <text class="contact-arrow">></text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部留白 -->
+  <view class="footer-space"></view>
 </scroll-view>
 
+<!-- 悬浮客服按钮 -->
+<view class="float-service" bindtap="onContactService">
+  <text class="float-icon">💬</text>
+  <text class="float-text">客服</text>
+</view>
