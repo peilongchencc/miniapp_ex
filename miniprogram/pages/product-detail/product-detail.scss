@@ -241,56 +241,6 @@
   }
 }
 
-// 商品咨询
-.consult-section {
-  background: #fff;
-  padding: 30rpx;
-  margin-top: 20rpx;
-
-  .consult-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24rpx;
-
-    .consult-title {
-      font-size: 30rpx;
-      font-weight: 600;
-      color: #333;
-    }
-
-    .consult-tip {
-      font-size: 24rpx;
-      color: #999;
-    }
-  }
-
-  .consult-actions {
-    display: flex;
-    gap: 30rpx;
-
-    .consult-btn {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12rpx;
-      padding: 24rpx;
-      background: #f8f9fa;
-      border-radius: 12rpx;
-
-      .btn-icon {
-        font-size: 36rpx;
-      }
-
-      .btn-text {
-        font-size: 28rpx;
-        color: #333;
-      }
-    }
-  }
-}
-
 .bottom-placeholder {
   height: 40rpx;
 }

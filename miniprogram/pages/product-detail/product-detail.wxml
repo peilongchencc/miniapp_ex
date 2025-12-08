@@ -101,24 +101,6 @@
       </view>
     </view>
 
-    <!-- 商品咨询入口 -->
-    <view class="consult-section">
-      <view class="consult-header">
-        <text class="consult-title">商品咨询</text>
-        <text class="consult-tip">有疑问？联系我们</text>
-      </view>
-      <view class="consult-actions">
-        <view class="consult-btn" bindtap="contactService">
-          <text class="btn-icon">📞</text>
-          <text class="btn-text">电话咨询</text>
-        </view>
-        <view class="consult-btn" bindtap="contactService">
-          <text class="btn-icon">💬</text>
-          <text class="btn-text">在线客服</text>
-        </view>
-      </view>
-    </view>
-
     <!-- 底部占位 -->
     <view class="bottom-placeholder"></view>
   </scroll-view>
