@@ -1,80 +1,339 @@
 // product-detail.ts
-// 商品详情页 - 展示商品信息，支持加入购物车
+// 商品详情页 - 支持用户专属价格显示
 
 const app = getApp<IAppOption>()
 
+/** 商品规格类型 */
+interface ProductSpec {
+  id: string
+  name: string
+  values: SpecValue[]
+}
+
+/** 规格值类型 */
+interface SpecValue {
+  id: string
+  name: string
+  selected?: boolean
+}
+
+/** 商品详情类型 */
+interface ProductDetail {
+  id: string
+  name: string
+  images: string[]
+  /** 用户专属价格，null表示未设置 */
+  userPrice: number | null
+  soldCount: number
+  stock: number
+  categoryId: string
+  subCategoryId: string
+  description: string
+  specs: ProductSpec[]
+  details: string[]
+  services: string[]
+}
+
+/** 价格显示状态 */
+type PriceStatus = 'not_logged_in' | 'no_price' | 'has_price'
+
 Component({
   data: {
-    product: null as {
-      id: string
-      name: string
-      image: string
-      categoryId: string
-      subCategoryId: string
-      description?: string
-    } | null,
+    // 商品详情
+    product: null as ProductDetail | null,
+    // 用户登录状态
+    isLoggedIn: false,
+    // 价格显示状态
+    priceStatus: 'not_logged_in' as PriceStatus,
+    // 当前轮播索引
+    currentImageIndex: 0,
+    // 购买数量
     quantity: 1,
-    isAddingToCart: false
+    // 已选规格文本
+    selectedSpecText: '请选择规格',
+    // 是否显示规格弹窗
+    showSpecPopup: false,
+    // 是否正在加入购物车
+    isAddingToCart: false,
+    // 是否收藏
+    isFavorite: false
   },
 
   lifetimes: {
     attached() {
+      this.checkLoginStatus()
+      this.loadProductDetail()
+    }
+  },
+
+  methods: {
+    /**
+     * 检查用户登录状态
+     * TODO: 替换为真实登录状态检查
+     */
+    checkLoginStatus() {
+      // 模拟：从全局状态或storage获取登录状态
+      const isLoggedIn = wx.getStorageSync('isLoggedIn') || false
+      this.setData({ isLoggedIn })
+    },
+
+    /**
+     * 加载商品详情
+     * TODO: 替换为真实API调用
+     */
+    loadProductDetail() {
       const pages = getCurrentPages()
       const currentPage = pages[pages.length - 1] as WechatMiniprogram.Page.Instance<
         Record<string, unknown>,
         Record<string, unknown>
       >
-      const { id, name, image } = currentPage.options || {}
-      
-      if (id && name) {
-        this.setData({
-          product: {
-            id: id as string,
-            name: decodeURIComponent(name as string),
-            image: decodeURIComponent((image as string) || '/images/default-product.png'),
-            categoryId: '',
-            subCategoryId: '',
-            description: '如需了解详细规格和价格，请联系客服咨询'
-          }
-        })
-      }
-    }
-  },
+      const { id } = currentPage.options || {}
 
-  methods: {
-    // 减少数量
+      // 模拟商品数据
+      // 实际开发时，后端会根据当前登录用户返回对应的 userPrice
+      const mockProduct: ProductDetail = {
+        id: (id as string) || '1',
+        name: '高档檀木骨灰盒 精雕细琢 庄重典雅',
+        images: [
+          '/images/default-product.png',
+          '/images/default-product.png',
+          '/images/default-product.png'
+        ],
+        // userPrice: null 表示该用户没有专属价格
+        // userPrice: 128 表示该用户专属价格为128
+        userPrice: null,  // 模拟：未设置价格
+        soldCount: 128,
+        stock: 50,
+        categoryId: '1',
+        subCategoryId: '101',
+        description: '采用优质檀木精心制作，工艺精湛，庄重典雅，是对逝者最好的缅怀。',
+        specs: [
+          {
+            id: 'material',
+            name: '材质',
+            values: [
+              { id: 'm1', name: '檀木', selected: true },
+              { id: 'm2', name: '楠木', selected: false },
+              { id: 'm3', name: '红木', selected: false }
+            ]
+          },
+          {
+            id: 'size',
+            name: '尺寸',
+            values: [
+              { id: 's1', name: '标准款', selected: true },
+              { id: 's2', name: '加大款', selected: false }
+            ]
+          }
+        ],
+        details: [
+          '材质：精选优质檀木',
+          '工艺：传统手工雕刻',
+          '尺寸：长32cm × 宽22cm × 高20cm',
+          '重量：约3.5kg',
+          '包装：精美礼盒包装'
+        ],
+        services: [
+          '7天无理由退换',
+          '正品保障',
+          '全国配送'
+        ]
+      }
+
+      // 确定价格显示状态
+      const priceStatus = this.getPriceStatus(mockProduct.userPrice)
+
+      this.setData({
+        product: mockProduct,
+        priceStatus,
+        selectedSpecText: this.getSelectedSpecText(mockProduct.specs)
+      })
+    },
+
+    /**
+     * 获取价格显示状态
+     */
+    getPriceStatus(userPrice: number | null): PriceStatus {
+      if (!this.data.isLoggedIn) {
+        return 'not_logged_in'
+      }
+      if (userPrice === null || userPrice === undefined) {
+        return 'no_price'
+      }
+      return 'has_price'
+    },
+
+    /**
+     * 获取已选规格文本
+     */
+    getSelectedSpecText(specs: ProductSpec[]): string {
+      const selected = specs.map(spec => {
+        const selectedValue = spec.values.find(v => v.selected)
+        return selectedValue ? selectedValue.name : ''
+      }).filter(Boolean)
+      
+      return selected.length > 0 ? selected.join('，') : '请选择规格'
+    },
+
+    /**
+     * 跳转登录
+     */
+    goToLogin() {
+      wx.navigateTo({ url: '/pages/login/login' })
+    },
+
+    /**
+     * 联系客服获取报价
+     */
+    contactForPrice() {
+      wx.showActionSheet({
+        itemList: ['拨打电话咨询', '微信客服'],
+        success: (res) => {
+          if (res.tapIndex === 0) {
+            wx.makePhoneCall({
+              phoneNumber: '13900000000',
+              fail: () => {
+                wx.showToast({ title: '拨打失败', icon: 'none' })
+              }
+            })
+          } else {
+            wx.showToast({ title: '请添加微信：xxxxx', icon: 'none', duration: 3000 })
+          }
+        }
+      })
+    },
+
+    /**
+     * 轮播图切换
+     */
+    onSwiperChange(e: WechatMiniprogram.SwiperChange) {
+      this.setData({
+        currentImageIndex: e.detail.current
+      })
+    },
+
+    /**
+     * 预览图片
+     */
+    previewImage(e: WechatMiniprogram.TouchEvent) {
+      const { index } = e.currentTarget.dataset
+      const { product } = this.data
+      if (!product) return
+
+      wx.previewImage({
+        current: product.images[index],
+        urls: product.images
+      })
+    },
+
+    /**
+     * 显示规格弹窗
+     */
+    showSpecSelector() {
+      this.setData({ showSpecPopup: true })
+    },
+
+    /**
+     * 隐藏规格弹窗
+     */
+    hideSpecPopup() {
+      this.setData({ showSpecPopup: false })
+    },
+
+    /**
+     * 选择规格
+     */
+    selectSpec(e: WechatMiniprogram.TouchEvent) {
+      const { specId, valueId } = e.currentTarget.dataset
+      const { product } = this.data
+      if (!product) return
+
+      const newSpecs = product.specs.map(spec => {
+        if (spec.id === specId) {
+          return {
+            ...spec,
+            values: spec.values.map(v => ({
+              ...v,
+              selected: v.id === valueId
+            }))
+          }
+        }
+        return spec
+      })
+
+      this.setData({
+        'product.specs': newSpecs,
+        selectedSpecText: this.getSelectedSpecText(newSpecs)
+      })
+    },
+
+    /**
+     * 减少数量
+     */
     decreaseQuantity() {
       if (this.data.quantity > 1) {
         this.setData({ quantity: this.data.quantity - 1 })
       }
     },
 
-    // 增加数量
+    /**
+     * 增加数量
+     */
     increaseQuantity() {
-      if (this.data.quantity < 999) {
-        this.setData({ quantity: this.data.quantity + 1 })
+      const { product, quantity } = this.data
+      if (product && quantity < product.stock) {
+        this.setData({ quantity: quantity + 1 })
       }
     },
 
-    // 输入数量
+    /**
+     * 输入数量
+     */
     onQuantityInput(e: WechatMiniprogram.Input) {
+      const { product } = this.data
       let value = parseInt(e.detail.value) || 1
       if (value < 1) value = 1
-      if (value > 999) value = 999
+      if (product && value > product.stock) value = product.stock
       this.setData({ quantity: value })
     },
 
-    // 加入购物车
+    /**
+     * 切换收藏状态
+     */
+    toggleFavorite() {
+      this.setData({ isFavorite: !this.data.isFavorite })
+      wx.showToast({
+        title: this.data.isFavorite ? '已收藏' : '已取消收藏',
+        icon: 'none'
+      })
+    },
+
+    /**
+     * 加入购物车
+     */
     addToCart() {
-      const { product, quantity } = this.data
-      if (!product || this.data.isAddingToCart) return
+      const { product, quantity, isAddingToCart, isLoggedIn } = this.data
+      if (!product || isAddingToCart) return
+
+      // 未登录提示
+      if (!isLoggedIn) {
+        wx.showModal({
+          title: '提示',
+          content: '请先登录后再操作',
+          confirmText: '去登录',
+          success: (res) => {
+            if (res.confirm) this.goToLogin()
+          }
+        })
+        return
+      }
 
       this.setData({ isAddingToCart: true })
 
       app.addToCart({
         id: product.id,
         name: product.name,
-        image: product.image,
+        image: product.images[0],
         quantity: quantity
       })
 
@@ -85,46 +344,74 @@ Component({
       })
 
       setTimeout(() => {
-        this.setData({ isAddingToCart: false })
+        this.setData({ 
+          isAddingToCart: false,
+          showSpecPopup: false
+        })
       }, 1500)
     },
 
-    // 立即下单（加入购物车并跳转）
+    /**
+     * 立即购买
+     */
     buyNow() {
-      const { product, quantity } = this.data
+      const { product, quantity, isLoggedIn } = this.data
       if (!product) return
+
+      // 未登录提示
+      if (!isLoggedIn) {
+        wx.showModal({
+          title: '提示',
+          content: '请先登录后再操作',
+          confirmText: '去登录',
+          success: (res) => {
+            if (res.confirm) this.goToLogin()
+          }
+        })
+        return
+      }
 
       app.addToCart({
         id: product.id,
         name: product.name,
-        image: product.image,
+        image: product.images[0],
         quantity: quantity
       })
 
       wx.switchTab({ url: '/pages/cart/cart' })
     },
 
-    // 联系客服询价
+    /**
+     * 联系客服
+     */
     contactService() {
-      wx.showModal({
-        title: '联系客服',
-        content: '如需询价或了解更多，请拨打电话或添加微信联系我们',
-        confirmText: '拨打电话',
-        cancelText: '取消',
+      wx.showActionSheet({
+        itemList: ['拨打电话', '在线客服'],
         success: (res) => {
-          if (res.confirm) {
+          if (res.tapIndex === 0) {
             wx.makePhoneCall({
-              phoneNumber: '13900000000', // 替换为真实电话
+              phoneNumber: '13900000000',
               fail: () => {
                 wx.showToast({ title: '拨打失败', icon: 'none' })
               }
             })
+          } else {
+            wx.showToast({ title: '客服功能开发中', icon: 'none' })
           }
         }
       })
     },
 
-    // 返回
+    /**
+     * 分享商品
+     */
+    shareProduct() {
+      wx.showToast({ title: '分享功能开发中', icon: 'none' })
+    },
+
+    /**
+     * 返回上一页
+     */
     goBack() {
       wx.navigateBack()
     }

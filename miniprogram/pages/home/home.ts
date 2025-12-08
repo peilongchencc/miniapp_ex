@@ -1,8 +1,21 @@
 // home.ts
 // 首页 - 包含搜索、轮播、分类、推荐商品、服务特色、联系方式
 
+/** 热销商品类型 */
+interface HotProduct {
+  id: number
+  name: string
+  /** 用户专属价格，null表示未设置 */
+  userPrice: number | null
+  image: string
+  sales: number
+}
+
 Component({
   data: {
+    // 用户登录状态
+    isLoggedIn: false,
+    
     // 搜索关键词
     searchKeyword: '',
     
@@ -27,12 +40,14 @@ Component({
     ],
     
     // 热销/推荐商品
+    // userPrice: null 表示该用户没有专属价格
+    // userPrice: 128 表示该用户专属价格为128
     hotProducts: [
-      { id: 1, name: '高档真丝寿衣七件套', price: 1280, originalPrice: 1580, image: '/images/default-product.png', sales: 328 },
-      { id: 2, name: '天然玉石骨灰盒', price: 2680, originalPrice: 3200, image: '/images/default-product.png', sales: 256 },
-      { id: 3, name: '鲜花花圈精选款', price: 388, originalPrice: 488, image: '/images/default-product.png', sales: 512 },
-      { id: 4, name: '祭祀用品套装', price: 168, originalPrice: 218, image: '/images/default-product.png', sales: 892 }
-    ],
+      { id: 1, name: '高档真丝寿衣七件套', userPrice: null, image: '/images/default-product.png', sales: 328 },
+      { id: 2, name: '天然玉石骨灰盒', userPrice: null, image: '/images/default-product.png', sales: 256 },
+      { id: 3, name: '鲜花花圈精选款', userPrice: null, image: '/images/default-product.png', sales: 512 },
+      { id: 4, name: '祭祀用品套装', userPrice: null, image: '/images/default-product.png', sales: 892 }
+    ] as HotProduct[],
     
     // 服务特色
     services: [
@@ -50,7 +65,73 @@ Component({
     }
   },
 
+  lifetimes: {
+    attached() {
+      this.checkLoginStatus()
+      this.loadHotProducts()
+    }
+  },
+
+  pageLifetimes: {
+    show() {
+      // 每次显示页面时检查登录状态（可能从登录页返回）
+      this.checkLoginStatus()
+    }
+  },
+
   methods: {
+    /**
+     * 检查用户登录状态
+     */
+    checkLoginStatus() {
+      const isLoggedIn = wx.getStorageSync('isLoggedIn') || false
+      this.setData({ isLoggedIn })
+    },
+
+    /**
+     * 加载热销商品
+     * TODO: 替换为真实API调用，后端根据当前用户返回对应的userPrice
+     */
+    loadHotProducts() {
+      // 模拟数据，实际开发时从后端获取
+      // 后端会根据当前登录用户返回每个商品的 userPrice
+      const mockProducts: HotProduct[] = [
+        { id: 1, name: '高档真丝寿衣七件套', userPrice: null, image: '/images/default-product.png', sales: 328 },
+        { id: 2, name: '天然玉石骨灰盒', userPrice: null, image: '/images/default-product.png', sales: 256 },
+        { id: 3, name: '鲜花花圈精选款', userPrice: null, image: '/images/default-product.png', sales: 512 },
+        { id: 4, name: '祭祀用品套装', userPrice: null, image: '/images/default-product.png', sales: 892 }
+      ]
+      this.setData({ hotProducts: mockProducts })
+    },
+
+    /**
+     * 跳转登录
+     */
+    goToLogin() {
+      wx.navigateTo({ url: '/pages/login/login' })
+    },
+
+    /**
+     * 联系客服获取报价
+     */
+    contactForPrice() {
+      wx.showActionSheet({
+        itemList: ['拨打电话咨询', '微信客服'],
+        success: (res) => {
+          if (res.tapIndex === 0) {
+            wx.makePhoneCall({
+              phoneNumber: '13900000000',
+              fail: () => {
+                wx.showToast({ title: '拨打失败', icon: 'none' })
+              }
+            })
+          } else {
+            wx.showToast({ title: '请添加微信：xxxxx', icon: 'none', duration: 3000 })
+          }
+        }
+      })
+    },
+
     // 搜索输入
     onSearchInput(e: WechatMiniprogram.Input) {
       this.setData({ searchKeyword: e.detail.value })
@@ -78,7 +159,6 @@ Component({
 
     // 点击分类
     onCategoryTap() {
-      // 跳转到分类页
       wx.switchTab({ url: '/pages/category/category' })
     },
 

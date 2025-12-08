@@ -6,48 +6,137 @@
     color="white"
     background="linear-gradient(135deg, rgba(130, 180, 170, 0.85) 0%, rgba(100, 160, 150, 0.95) 100%)"
     bindback="goBack"
-  ></navigation-bar>
+  />
 
   <scroll-view class="detail-body" scroll-y wx:if="{{product}}">
-    <!-- 商品图片 -->
-    <view class="product-image-section">
-      <image class="product-image" src="{{product.image}}" mode="aspectFill"></image>
-    </view>
-
-    <!-- 商品信息 -->
-    <view class="product-info-section">
-      <text class="product-name">{{product.name}}</text>
-      <view class="price-tip">
-        <text class="price-label">价格面议</text>
-        <text class="price-desc">不同客户价格不同，请联系客服询价</text>
+    <!-- 商品图片轮播 -->
+    <view class="swiper-section">
+      <swiper 
+        class="product-swiper"
+        indicator-dots="{{false}}"
+        autoplay="{{true}}"
+        interval="{{4000}}"
+        circular="{{true}}"
+        bindchange="onSwiperChange"
+      >
+        <swiper-item wx:for="{{product.images}}" wx:key="index">
+          <image 
+            class="swiper-image" 
+            src="{{item}}" 
+            mode="aspectFill"
+            data-index="{{index}}"
+            bindtap="previewImage"
+          />
+        </swiper-item>
+      </swiper>
+      <view class="swiper-indicator">
+        <text class="indicator-text">{{currentImageIndex + 1}}/{{product.images.length}}</text>
       </view>
     </view>
 
-    <!-- 商品说明 -->
-    <view class="product-desc-section">
-      <view class="section-title">商品说明</view>
-      <text class="desc-text">{{product.description}}</text>
+    <!-- 商品基本信息 -->
+    <view class="product-info-section">
+      <!-- 价格区域 - 根据状态显示不同内容 -->
+      <view class="price-row">
+        <!-- 未登录状态 -->
+        <view class="price-area" wx:if="{{priceStatus === 'not_logged_in'}}">
+          <view class="price-login-tip" bindtap="goToLogin">
+            <text class="login-icon">🔒</text>
+            <text class="login-text">登录查看价格</text>
+            <text class="login-arrow">›</text>
+          </view>
+        </view>
+
+        <!-- 已登录但无专属价格 -->
+        <view class="price-area" wx:elif="{{priceStatus === 'no_price'}}">
+          <view class="price-contact-tip" bindtap="contactForPrice">
+            <text class="contact-icon">💬</text>
+            <text class="contact-text">咨询客服获取报价</text>
+            <text class="contact-arrow">›</text>
+          </view>
+        </view>
+
+        <!-- 已登录且有专属价格 -->
+        <view class="price-area" wx:else>
+          <text class="price-symbol">¥</text>
+          <text class="price-value">{{product.userPrice}}</text>
+          <text class="price-tag">专属价</text>
+        </view>
+
+        <view class="sold-info">
+          <text class="sold-text">已售 {{product.soldCount}} 件</text>
+        </view>
+      </view>
+      
+      <!-- 商品名称 -->
+      <view class="product-name-row">
+        <text class="product-name">{{product.name}}</text>
+      </view>
+      
+      <!-- 商品简介 -->
+      <view class="product-desc-row">
+        <text class="product-desc">{{product.description}}</text>
+      </view>
+    </view>
+
+    <!-- 服务保障 -->
+    <view class="service-section">
+      <view class="service-item" wx:for="{{product.services}}" wx:key="index">
+        <text class="service-icon">✓</text>
+        <text class="service-text">{{item}}</text>
+      </view>
+    </view>
+
+    <!-- 规格选择入口 -->
+    <view class="spec-entry" bindtap="showSpecSelector">
+      <view class="spec-label">
+        <text class="label-text">规格</text>
+      </view>
+      <view class="spec-value">
+        <text class="value-text">{{selectedSpecText}}</text>
+        <text class="arrow-icon">›</text>
+      </view>
+    </view>
+
+    <!-- 商品详情 -->
+    <view class="detail-section">
+      <view class="section-header">
+        <view class="header-line"></view>
+        <text class="header-title">商品详情</text>
+        <view class="header-line"></view>
+      </view>
+      
+      <view class="detail-content">
+        <view class="detail-item" wx:for="{{product.details}}" wx:key="index">
+          <text class="detail-text">{{item}}</text>
+        </view>
+      </view>
+
+      <!-- 温馨提示 -->
       <view class="notice-box">
         <text class="notice-title">温馨提示</text>
-        <text class="notice-item">• 本平台仅供选购下单，不显示价格</text>
-        <text class="notice-item">• 下单后我们会主动联系您确认订单和价格</text>
-        <text class="notice-item">• 老客户可直接下单，新客户建议先联系咨询</text>
+        <text class="notice-item">• 商品价格根据客户情况有所不同</text>
+        <text class="notice-item">• 新客户请先联系客服获取专属报价</text>
+        <text class="notice-item">• 老客户可直接下单，按专属价结算</text>
         <text class="notice-item">• 支持宁夏、内蒙、甘肃地区配送</text>
       </view>
     </view>
 
-    <!-- 数量选择 -->
-    <view class="quantity-section">
-      <text class="quantity-label">购买数量</text>
-      <view class="quantity-control">
-        <view class="qty-btn {{quantity <= 1 ? 'disabled' : ''}}" bindtap="decreaseQuantity">-</view>
-        <input 
-          class="qty-input" 
-          type="number" 
-          value="{{quantity}}" 
-          bindinput="onQuantityInput"
-        />
-        <view class="qty-btn" bindtap="increaseQuantity">+</view>
+    <!-- 商品咨询入口 -->
+    <view class="consult-section">
+      <view class="consult-header">
+        <text class="consult-title">商品咨询</text>
+        <text class="consult-tip">有疑问？联系我们</text>
+      </view>
+      <view class="consult-actions">
+        <view class="consult-btn" bindtap="contactService">
+          <text class="btn-icon">📞</text>
+          <text class="btn-text">电话咨询</text>
+        </view>
+        <view class="consult-btn" bindtap="contactService">
+          <text class="btn-icon">💬</text>
+          <text class="btn-text">在线客服</text>
+        </view>
       </view>
     </view>
 
@@ -60,12 +149,80 @@
     <view class="bar-left">
       <view class="bar-item" bindtap="contactService">
         <text class="bar-icon">📞</text>
-        <text class="bar-text">询价</text>
+        <text class="bar-text">客服</text>
+      </view>
+      <view class="bar-item" bindtap="toggleFavorite">
+        <text class="bar-icon">{{isFavorite ? '❤️' : '🤍'}}</text>
+        <text class="bar-text">收藏</text>
+      </view>
+      <view class="bar-item" bindtap="shareProduct">
+        <text class="bar-icon">📤</text>
+        <text class="bar-text">分享</text>
       </view>
     </view>
     <view class="bar-right">
       <view class="btn-cart {{isAddingToCart ? 'disabled' : ''}}" bindtap="addToCart">加入购物车</view>
       <view class="btn-buy" bindtap="buyNow">立即下单</view>
+    </view>
+  </view>
+
+  <!-- 规格选择弹窗 -->
+  <view class="spec-popup-mask {{showSpecPopup ? 'show' : ''}}" bindtap="hideSpecPopup"></view>
+  <view class="spec-popup {{showSpecPopup ? 'show' : ''}}">
+    <view class="popup-header">
+      <image class="popup-image" src="{{product.images[0]}}" mode="aspectFill" />
+      <view class="popup-info">
+        <text class="popup-name">{{product.name}}</text>
+        <!-- 弹窗内价格显示 -->
+        <view class="popup-price" wx:if="{{priceStatus === 'has_price'}}">
+          <text class="popup-price-symbol">¥</text>
+          <text class="popup-price-value">{{product.userPrice}}</text>
+        </view>
+        <text class="popup-price-tip" wx:elif="{{priceStatus === 'no_price'}}">咨询客服获取报价</text>
+        <text class="popup-price-tip" wx:else>登录查看价格</text>
+        <text class="popup-stock">库存: {{product.stock}} 件</text>
+      </view>
+      <view class="popup-close" bindtap="hideSpecPopup">×</view>
+    </view>
+
+    <scroll-view class="popup-body" scroll-y>
+      <!-- 规格选项 -->
+      <view class="spec-group" wx:for="{{product.specs}}" wx:key="id">
+        <text class="spec-name">{{item.name}}</text>
+        <view class="spec-values">
+          <view 
+            class="spec-value-item {{value.selected ? 'selected' : ''}}"
+            wx:for="{{item.values}}"
+            wx:for-item="value"
+            wx:key="id"
+            data-spec-id="{{item.id}}"
+            data-value-id="{{value.id}}"
+            bindtap="selectSpec"
+          >
+            <text>{{value.name}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 数量选择 -->
+      <view class="quantity-row">
+        <text class="quantity-label">购买数量</text>
+        <view class="quantity-control">
+          <view class="qty-btn {{quantity <= 1 ? 'disabled' : ''}}" bindtap="decreaseQuantity">-</view>
+          <input 
+            class="qty-input" 
+            type="number" 
+            value="{{quantity}}" 
+            bindinput="onQuantityInput"
+          />
+          <view class="qty-btn {{quantity >= product.stock ? 'disabled' : ''}}" bindtap="increaseQuantity">+</view>
+        </view>
+      </view>
+    </scroll-view>
+
+    <view class="popup-footer">
+      <view class="popup-btn cart" bindtap="addToCart">加入购物车</view>
+      <view class="popup-btn buy" bindtap="buyNow">立即下单</view>
     </view>
   </view>
 </view>
