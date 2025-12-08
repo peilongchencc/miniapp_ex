@@ -75,6 +75,8 @@
         class="product-item"
         bindtap="onProductTap"
         data-id="{{item.id}}"
+        data-name="{{item.name}}"
+        data-image="{{item.image}}"
       >
         <image class="product-image" src="{{item.image}}" mode="aspectFill"></image>
         <view class="product-info">

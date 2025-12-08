@@ -8,11 +8,103 @@
   ></navigation-bar>
 
   <view class="cart-body">
+    <!-- 空状态 -->
     <view class="empty-state" wx:if="{{!hasItems}}">
       <image class="empty-image" src="{{emptyImage}}" mode="aspectFit"></image>
       <text class="empty-text">购物车空空如也</text>
+      <text class="empty-tip">快去挑选商品吧</text>
       <button class="go-shopping-btn" bindtap="goToCategory" hover-class="none">去逛逛</button>
+    </view>
+
+    <!-- 购物车列表 -->
+    <scroll-view class="cart-list" scroll-y wx:else>
+      <!-- 提示信息 -->
+      <view class="cart-notice">
+        <text class="notice-icon">💡</text>
+        <text class="notice-text">本平台不显示价格，提交订单后我们会联系您确认</text>
+      </view>
+
+      <!-- 商品列表 -->
+      <view class="cart-items">
+        <view class="cart-item" wx:for="{{cartItems}}" wx:key="id">
+          <!-- 选择框 -->
+          <view 
+            class="item-checkbox {{item.selected ? 'checked' : ''}}" 
+            data-index="{{index}}"
+            bindtap="toggleSelect"
+          >
+            <text wx:if="{{item.selected}}">✓</text>
+          </view>
+
+          <!-- 商品图片 -->
+          <image class="item-image" src="{{item.image}}" mode="aspectFill"></image>
+
+          <!-- 商品信息 -->
+          <view class="item-info">
+            <text class="item-name">{{item.name}}</text>
+            <text class="item-spec" wx:if="{{item.spec}}">{{item.spec}}</text>
+            <text class="item-price">价格面议</text>
+          </view>
+
+          <!-- 数量控制 -->
+          <view class="item-actions">
+            <view class="quantity-control">
+              <view 
+                class="qty-btn {{item.quantity <= 1 ? 'disabled' : ''}}" 
+                data-index="{{index}}"
+                bindtap="decreaseQuantity"
+              >-</view>
+              <input 
+                class="qty-input" 
+                type="number" 
+                value="{{item.quantity}}"
+                data-index="{{index}}"
+                bindinput="onQuantityInput"
+              />
+              <view 
+                class="qty-btn" 
+                data-index="{{index}}"
+                bindtap="increaseQuantity"
+              >+</view>
+            </view>
+            <view class="delete-btn" data-index="{{index}}" bindtap="deleteItem">删除</view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 备注输入 -->
+      <view class="remark-section">
+        <text class="remark-label">订单备注</text>
+        <textarea 
+          class="remark-input" 
+          placeholder="如有特殊要求请在此备注，如：急需、指定配送时间等"
+          value="{{remark}}"
+          bindinput="onRemarkInput"
+          maxlength="200"
+        ></textarea>
+      </view>
+
+      <!-- 底部占位 -->
+      <view class="bottom-placeholder"></view>
+    </scroll-view>
+
+    <!-- 底部结算栏 -->
+    <view class="bottom-bar" wx:if="{{hasItems}}">
+      <view class="bar-left">
+        <view 
+          class="select-all {{selectAll ? 'checked' : ''}}" 
+          bindtap="toggleSelectAll"
+        >
+          <view class="checkbox">
+            <text wx:if="{{selectAll}}">✓</text>
+          </view>
+          <text class="select-text">全选</text>
+        </view>
+      </view>
+      <view class="bar-right">
+        <text class="total-text">共 {{totalCount}} 件</text>
+        <view class="submit-btn" bindtap="submitOrder">提交订单</view>
+      </view>
     </view>
   </view>
 </view>
-

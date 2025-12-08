@@ -253,8 +253,8 @@ page {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 30rpx;
-  min-width: 180rpx;
+  padding: 24rpx 20rpx;
+  flex: 1;
 }
 
 .function-item:active {
@@ -262,14 +262,15 @@ page {
 }
 
 .function-icon {
-  width: 80rpx;
-  height: 80rpx;
-  margin-bottom: 16rpx;
+  width: 100rpx;
+  height: 100rpx;
+  margin-bottom: 20rpx;
 }
 
 .function-text {
-  font-size: 28rpx;
+  font-size: 30rpx;
   color: #5a8a7e;  /* 青绿墨色 */
   text-align: center;
+  font-weight: 500;
 }
 

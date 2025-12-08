@@ -1,0 +1,224 @@
+// product-detail.scss
+.detail-page {
+  min-height: 100vh;
+  background: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-body {
+  flex: 1;
+  padding-bottom: 120rpx;
+}
+
+// 商品图片
+.product-image-section {
+  width: 100%;
+  height: 600rpx;
+  background: #fff;
+
+  .product-image {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+// 商品信息
+.product-info-section {
+  background: #fff;
+  padding: 30rpx;
+  margin-top: 20rpx;
+
+  .product-name {
+    font-size: 36rpx;
+    font-weight: 600;
+    color: #333;
+    line-height: 1.4;
+    display: block;
+  }
+
+  .price-tip {
+    margin-top: 20rpx;
+    padding: 20rpx;
+    background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+    border-radius: 12rpx;
+
+    .price-label {
+      font-size: 32rpx;
+      font-weight: 600;
+      color: #f57c00;
+      display: block;
+    }
+
+    .price-desc {
+      font-size: 24rpx;
+      color: #666;
+      margin-top: 8rpx;
+      display: block;
+    }
+  }
+}
+
+// 商品说明
+.product-desc-section {
+  background: #fff;
+  padding: 30rpx;
+  margin-top: 20rpx;
+
+  .section-title {
+    font-size: 30rpx;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20rpx;
+  }
+
+  .desc-text {
+    font-size: 28rpx;
+    color: #666;
+    line-height: 1.6;
+  }
+
+  .notice-box {
+    margin-top: 30rpx;
+    padding: 24rpx;
+    background: #f8f9fa;
+    border-radius: 12rpx;
+    border-left: 6rpx solid #82b4aa;
+
+    .notice-title {
+      font-size: 28rpx;
+      font-weight: 600;
+      color: #333;
+      display: block;
+      margin-bottom: 16rpx;
+    }
+
+    .notice-item {
+      font-size: 26rpx;
+      color: #666;
+      line-height: 1.8;
+      display: block;
+    }
+  }
+}
+
+// 数量选择
+.quantity-section {
+  background: #fff;
+  padding: 30rpx;
+  margin-top: 20rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .quantity-label {
+    font-size: 30rpx;
+    color: #333;
+  }
+
+  .quantity-control {
+    display: flex;
+    align-items: center;
+    border: 1rpx solid #ddd;
+    border-radius: 8rpx;
+    overflow: hidden;
+
+    .qty-btn {
+      width: 70rpx;
+      height: 60rpx;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36rpx;
+      color: #333;
+      background: #f5f5f5;
+
+      &.disabled {
+        color: #ccc;
+      }
+    }
+
+    .qty-input {
+      width: 100rpx;
+      height: 60rpx;
+      text-align: center;
+      font-size: 28rpx;
+      border-left: 1rpx solid #ddd;
+      border-right: 1rpx solid #ddd;
+    }
+  }
+}
+
+.bottom-placeholder {
+  height: 40rpx;
+}
+
+// 底部操作栏
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100rpx;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  padding: 0 20rpx;
+  padding-bottom: env(safe-area-inset-bottom);
+  box-shadow: 0 -2rpx 10rpx rgba(0, 0, 0, 0.05);
+
+  .bar-left {
+    display: flex;
+    padding-right: 20rpx;
+
+    .bar-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 20rpx;
+
+      .bar-icon {
+        font-size: 40rpx;
+      }
+
+      .bar-text {
+        font-size: 22rpx;
+        color: #666;
+        margin-top: 4rpx;
+      }
+    }
+  }
+
+  .bar-right {
+    flex: 1;
+    display: flex;
+    gap: 16rpx;
+
+    .btn-cart,
+    .btn-buy {
+      flex: 1;
+      height: 80rpx;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 40rpx;
+      font-size: 28rpx;
+      font-weight: 500;
+    }
+
+    .btn-cart {
+      background: #fff;
+      color: #82b4aa;
+      border: 2rpx solid #82b4aa;
+
+      &.disabled {
+        opacity: 0.6;
+      }
+    }
+
+    .btn-buy {
+      background: linear-gradient(135deg, #82b4aa 0%, #6a9e94 100%);
+      color: #fff;
+    }
+  }
+}

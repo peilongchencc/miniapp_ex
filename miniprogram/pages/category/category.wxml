@@ -56,7 +56,9 @@
             wx:for-item="product"
             wx:key="id"
             class="product-item"
+            data-id="{{product.id}}"
             data-name="{{product.name}}"
+            data-image="{{product.image}}"
             bindtap="onProductTap"
           >
             <image class="product-image" src="{{product.image}}" mode="aspectFill"></image>

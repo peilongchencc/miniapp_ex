@@ -1,15 +1,227 @@
 // cart.ts
+// 购物车页面 - 展示已选商品，支持修改数量、删除、提交订单
+
+const cartApp = getApp<IAppOption>()
+
+interface CartItem {
+  id: string
+  name: string
+  image: string
+  quantity: number
+  spec?: string
+  selected?: boolean
+}
+
 Component({
   data: {
+    cartItems: [] as CartItem[],
     hasItems: false,
-    emptyImage: '/images/cart-empty.png'
+    emptyImage: '/images/cart-empty.png',
+    selectAll: true,
+    totalCount: 0,
+    remark: ''
   },
+
+  lifetimes: {
+    attached() {
+      this.loadCartItems()
+    }
+  },
+
+  pageLifetimes: {
+    show() {
+      this.loadCartItems()
+    }
+  },
+
   methods: {
-    goToCategory() {
-      wx.switchTab({
-        url: '/pages/category/category'
+    // 加载购物车数据
+    loadCartItems() {
+      const items = cartApp.globalData.cartItems || []
+      const cartItems = items.map(item => ({
+        ...item,
+        selected: true
+      }))
+      const totalCount = cartItems.reduce((sum, item) => 
+        item.selected ? sum + item.quantity : sum, 0
+      )
+      
+      this.setData({
+        cartItems,
+        hasItems: cartItems.length > 0,
+        selectAll: cartItems.length > 0 && cartItems.every(item => item.selected),
+        totalCount
       })
+    },
+
+    // 切换单个商品选中状态
+    toggleSelect(e: WechatMiniprogram.TouchEvent) {
+      const index = e.currentTarget.dataset.index as number
+      const key = `cartItems[${index}].selected`
+      const newValue = !this.data.cartItems[index].selected
+      
+      this.setData({ [key]: newValue })
+      this.updateSelectAll()
+      this.updateTotalCount()
+    },
+
+    // 切换全选
+    toggleSelectAll() {
+      const newSelectAll = !this.data.selectAll
+      const cartItems = this.data.cartItems.map(item => ({
+        ...item,
+        selected: newSelectAll
+      }))
+      
+      this.setData({
+        selectAll: newSelectAll,
+        cartItems
+      })
+      this.updateTotalCount()
+    },
+
+    // 更新全选状态
+    updateSelectAll() {
+      const selectAll = this.data.cartItems.every(item => item.selected)
+      this.setData({ selectAll })
+    },
+
+    // 更新总数量
+    updateTotalCount() {
+      const totalCount = this.data.cartItems.reduce((sum, item) => 
+        item.selected ? sum + item.quantity : sum, 0
+      )
+      this.setData({ totalCount })
+    },
+
+    // 减少数量
+    decreaseQuantity(e: WechatMiniprogram.TouchEvent) {
+      const index = e.currentTarget.dataset.index as number
+      const item = this.data.cartItems[index]
+      
+      if (item.quantity > 1) {
+        const key = `cartItems[${index}].quantity`
+        this.setData({ [key]: item.quantity - 1 })
+        this.syncToGlobal()
+        this.updateTotalCount()
+      }
+    },
+
+    // 增加数量
+    increaseQuantity(e: WechatMiniprogram.TouchEvent) {
+      const index = e.currentTarget.dataset.index as number
+      const item = this.data.cartItems[index]
+      
+      if (item.quantity < 999) {
+        const key = `cartItems[${index}].quantity`
+        this.setData({ [key]: item.quantity + 1 })
+        this.syncToGlobal()
+        this.updateTotalCount()
+      }
+    },
+
+    // 输入数量
+    onQuantityInput(e: WechatMiniprogram.Input) {
+      const index = e.currentTarget.dataset.index as number
+      let value = parseInt(e.detail.value) || 1
+      if (value < 1) value = 1
+      if (value > 999) value = 999
+      
+      const key = `cartItems[${index}].quantity`
+      this.setData({ [key]: value })
+      this.syncToGlobal()
+      this.updateTotalCount()
+    },
+
+    // 删除商品
+    deleteItem(e: WechatMiniprogram.TouchEvent) {
+      const index = e.currentTarget.dataset.index as number
+      const item = this.data.cartItems[index]
+      
+      wx.showModal({
+        title: '确认删除',
+        content: `确定要删除"${item.name}"吗？`,
+        success: (res) => {
+          if (res.confirm) {
+            const cartItems = [...this.data.cartItems]
+            cartItems.splice(index, 1)
+            this.setData({
+              cartItems,
+              hasItems: cartItems.length > 0
+            })
+            this.syncToGlobal()
+            this.updateSelectAll()
+            this.updateTotalCount()
+          }
+        }
+      })
+    },
+
+    // 同步到全局数据
+    syncToGlobal() {
+      const items = this.data.cartItems.map(({ selected, ...rest }) => rest)
+      cartApp.globalData.cartItems = items
+      wx.setStorageSync('cartItems', items)
+    },
+
+    // 输入备注
+    onRemarkInput(e: WechatMiniprogram.Input) {
+      this.setData({ remark: e.detail.value })
+    },
+
+    // 提交订单
+    submitOrder() {
+      const selectedItems = this.data.cartItems.filter(item => item.selected)
+      
+      if (selectedItems.length === 0) {
+        wx.showToast({ title: '请选择商品', icon: 'none' })
+        return
+      }
+
+      wx.showModal({
+        title: '确认提交订单',
+        content: '提交后我们会尽快联系您确认订单详情和价格',
+        confirmText: '确认提交',
+        success: (res) => {
+          if (res.confirm) {
+            // 只提交选中的商品
+            const itemsToSubmit = selectedItems.map(({ selected, ...rest }) => rest)
+            
+            // 临时替换全局购物车为选中商品
+            cartApp.globalData.cartItems = itemsToSubmit
+            
+            const order = cartApp.submitOrder(this.data.remark)
+            
+            // 恢复未选中的商品到购物车
+            const unselectedItems = this.data.cartItems
+              .filter(item => !item.selected)
+              .map(({ selected, ...rest }) => rest)
+            cartApp.globalData.cartItems = unselectedItems
+            wx.setStorageSync('cartItems', unselectedItems)
+            
+            if (order) {
+              wx.showToast({
+                title: '订单提交成功',
+                icon: 'success',
+                duration: 2000
+              })
+              
+              setTimeout(() => {
+                wx.navigateTo({
+                  url: `/pages/order-detail/order-detail?id=${order.id}`
+                })
+              }, 1500)
+              
+              this.loadCartItems()
+            }
+          }
+        }
+      })
+    },
+
+    // 去逛逛
+    goToCategory() {
+      wx.switchTab({ url: '/pages/category/category' })
     }
   }
 })
-

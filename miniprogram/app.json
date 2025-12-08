@@ -6,6 +6,7 @@
     "pages/mine/mine",
     "pages/orders/orders",
     "pages/order-detail/order-detail",
+    "pages/product-detail/product-detail",
     "pages/logs/logs"
   ],
   "window": {

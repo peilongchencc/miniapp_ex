@@ -336,11 +336,9 @@ Component({
     
     // 点击商品
     onProductTap(e: WechatMiniprogram.CustomEvent) {
-      const productName = e.currentTarget.dataset.name
-      wx.showToast({
-        title: `${productName}功能待开发，敬请期待`,
-        icon: 'none',
-        duration: 2000
+      const { id, name, image } = e.currentTarget.dataset
+      wx.navigateTo({
+        url: `/pages/product-detail/product-detail?id=${id}&name=${encodeURIComponent(name)}&image=${encodeURIComponent(image)}`
       })
     }
   }

@@ -32,8 +32,24 @@ Component({
     loadOrder(orderId: string) {
       const order = app.globalData.orderHistory.find(o => o.id === orderId)
       if (order) {
-        this.setData({ order })
+        // 格式化时间
+        const formattedOrder = {
+          ...order,
+          createTime: this.formatTime(order.createTime as number)
+        }
+        this.setData({ order: formattedOrder })
       }
+    },
+
+    // 格式化时间
+    formatTime(timestamp: number): string {
+      const date = new Date(timestamp)
+      const y = date.getFullYear()
+      const m = String(date.getMonth() + 1).padStart(2, '0')
+      const d = String(date.getDate()).padStart(2, '0')
+      const h = String(date.getHours()).padStart(2, '0')
+      const min = String(date.getMinutes()).padStart(2, '0')
+      return `${y}-${m}-${d} ${h}:${min}`
     },
 
     // 快捷复购

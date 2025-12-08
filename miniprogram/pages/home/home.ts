@@ -72,23 +72,22 @@ Component({
     },
 
     // 点击轮播图
-    onBannerTap(e: WechatMiniprogram.TouchEvent) {
-      const id = e.currentTarget.dataset.id
+    onBannerTap() {
       wx.showToast({ title: '轮播详情待开发', icon: 'none' })
     },
 
     // 点击分类
-    onCategoryTap(e: WechatMiniprogram.TouchEvent) {
-      const id = e.currentTarget.dataset.id
-      const category = this.data.categories.find(c => c.id === id)
+    onCategoryTap() {
       // 跳转到分类页
       wx.switchTab({ url: '/pages/category/category' })
     },
 
     // 点击商品
     onProductTap(e: WechatMiniprogram.TouchEvent) {
-      const id = e.currentTarget.dataset.id
-      wx.showToast({ title: '商品详情待开发', icon: 'none' })
+      const { id, name, image } = e.currentTarget.dataset
+      wx.navigateTo({
+        url: `/pages/product-detail/product-detail?id=${id}&name=${encodeURIComponent(name)}&image=${encodeURIComponent(image)}`
+      })
     },
 
     // 拨打电话
@@ -103,7 +102,22 @@ Component({
 
     // 联系客服
     onContactService() {
-      wx.showToast({ title: '在线客服待开发', icon: 'none' })
+      wx.showModal({
+        title: '联系我们',
+        content: '如需咨询或下单，请拨打电话或添加微信联系',
+        confirmText: '拨打电话',
+        cancelText: '取消',
+        success: (res) => {
+          if (res.confirm) {
+            wx.makePhoneCall({
+              phoneNumber: this.data.contact.phone.replace(/-/g, ''),
+              fail: () => {
+                wx.showToast({ title: '拨打失败', icon: 'none' })
+              }
+            })
+          }
+        }
+      })
     },
 
     // 查看地址
