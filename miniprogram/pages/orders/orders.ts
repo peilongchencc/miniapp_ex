@@ -28,7 +28,12 @@ Component({
     // 加载订单列表
     loadOrders() {
       const orderHistory = app.globalData.orderHistory || []
-      this.setData({ orderList: orderHistory })
+      // 格式化订单时间
+      const formattedOrders = orderHistory.map(order => ({
+        ...order,
+        createTime: this.formatTime(order.createTime as number)
+      }))
+      this.setData({ orderList: formattedOrders })
     },
 
     // 快捷复购
