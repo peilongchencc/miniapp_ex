@@ -1,29 +1,12 @@
 // app.ts
-
-// 商品类型定义
-interface CartItem {
-  id: string
-  name: string
-  image: string
-  quantity: number
-  spec?: string  // 规格
-}
-
-// 订单类型定义
-interface Order {
-  id: string
-  items: CartItem[]
-  createTime: number
-  status: 'pending' | 'confirmed' | 'shipped' | 'completed'
-  remark?: string
-}
+// 类型定义已移至 typings/index.d.ts
 
 App<IAppOption>({
   globalData: {
     isLoggedIn: false,
     userInfo: null,
-    cartItems: [] as CartItem[],
-    orderHistory: [] as Order[],
+    cartItems: [] as ICartItem[],
+    orderHistory: [] as IOrder[],
   },
 
   onLaunch() {
@@ -109,7 +92,7 @@ App<IAppOption>({
   },
 
   // 添加商品到购物车
-  addToCart(item: CartItem) {
+  addToCart(item: ICartItem) {
     const existIndex = this.globalData.cartItems.findIndex(i => i.id === item.id)
     if (existIndex > -1) {
       this.globalData.cartItems[existIndex].quantity += item.quantity
@@ -126,10 +109,10 @@ App<IAppOption>({
   },
 
   // 提交订单（将购物车转为订单）
-  submitOrder(remark?: string): Order | null {
+  submitOrder(remark?: string): IOrder | null {
     if (this.globalData.cartItems.length === 0) return null
     
-    const order: Order = {
+    const order: IOrder = {
       id: `ORD${Date.now()}`,
       items: [...this.globalData.cartItems],
       createTime: Date.now(),

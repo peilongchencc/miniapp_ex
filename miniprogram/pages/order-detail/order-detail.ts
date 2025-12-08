@@ -1,9 +1,16 @@
 // order-detail.ts
+import { formatTime } from '../../utils/util'
+
 const app = getApp<IAppOption>()
+
+// 格式化后的订单类型（createTime 为字符串）
+interface FormattedOrder extends Omit<IOrder, 'createTime'> {
+  createTime: string
+}
 
 Component({
   data: {
-    order: null as IOrder | null,
+    order: null as FormattedOrder | null,
     statusMap: {
       pending: '待确认',
       confirmed: '已确认',
@@ -33,23 +40,12 @@ Component({
       const order = app.globalData.orderHistory.find(o => o.id === orderId)
       if (order) {
         // 格式化时间
-        const formattedOrder = {
+        const formattedOrder: FormattedOrder = {
           ...order,
-          createTime: this.formatTime(order.createTime as number)
+          createTime: formatTime(new Date(order.createTime))
         }
         this.setData({ order: formattedOrder })
       }
-    },
-
-    // 格式化时间
-    formatTime(timestamp: number): string {
-      const date = new Date(timestamp)
-      const y = date.getFullYear()
-      const m = String(date.getMonth() + 1).padStart(2, '0')
-      const d = String(date.getDate()).padStart(2, '0')
-      const h = String(date.getHours()).padStart(2, '0')
-      const min = String(date.getMinutes()).padStart(2, '0')
-      return `${y}-${m}-${d} ${h}:${min}`
     },
 
     // 快捷复购

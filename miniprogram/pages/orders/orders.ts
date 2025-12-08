@@ -1,9 +1,16 @@
 // orders.ts
+import { formatTime } from '../../utils/util'
+
 const app = getApp<IAppOption>()
+
+// 格式化后的订单类型（createTime 为字符串）
+interface FormattedOrder extends Omit<IOrder, 'createTime'> {
+  createTime: string
+}
 
 Component({
   data: {
-    orderList: [] as IOrder[],
+    orderList: [] as FormattedOrder[],
     statusMap: {
       pending: '待确认',
       confirmed: '已确认',
@@ -29,9 +36,9 @@ Component({
     loadOrders() {
       const orderHistory = app.globalData.orderHistory || []
       // 格式化订单时间
-      const formattedOrders = orderHistory.map(order => ({
+      const formattedOrders: FormattedOrder[] = orderHistory.map(order => ({
         ...order,
-        createTime: this.formatTime(order.createTime as number)
+        createTime: formatTime(new Date(order.createTime))
       }))
       this.setData({ orderList: formattedOrders })
     },
@@ -62,17 +69,6 @@ Component({
     goToDetail(e: WechatMiniprogram.TouchEvent) {
       const orderId = e.currentTarget.dataset.id as string
       wx.navigateTo({ url: `/pages/order-detail/order-detail?id=${orderId}` })
-    },
-
-    // 格式化时间
-    formatTime(timestamp: number): string {
-      const date = new Date(timestamp)
-      const y = date.getFullYear()
-      const m = String(date.getMonth() + 1).padStart(2, '0')
-      const d = String(date.getDate()).padStart(2, '0')
-      const h = String(date.getHours()).padStart(2, '0')
-      const min = String(date.getMinutes()).padStart(2, '0')
-      return `${y}-${m}-${d} ${h}:${min}`
     },
 
     // 返回上一页
