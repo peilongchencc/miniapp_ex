@@ -96,8 +96,9 @@
       <view class="notice-box">
         <text class="notice-title">温馨提示</text>
         <text class="notice-item">• 量大可咨询店主获取优惠价格</text>
-        <text class="notice-item">• 支持宁夏、内蒙、甘肃地区配送</text>
         <text class="notice-item">• 24小时服务，随时响应</text>
+        <text class="notice-item">• 支持宁夏全境，内蒙、甘肃部分地区免费开车配送</text>
+        <text class="notice-item">• 其他地区请咨询店主获取运费报价，量大可享免运费</text>
       </view>
     </view>
 
