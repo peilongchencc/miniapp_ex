@@ -41,7 +41,7 @@
       </view>
       
       <!-- 按二级分类分组展示 -->
-      <view wx:for="{{groupedProducts}}" wx:key="subCategory.id" class="sub-category-section">
+      <view wx:for="{{groupedProducts}}" wx:key="id" class="sub-category-section">
         <!-- 二级分类标题 -->
         <view class="sub-category-header">
           <view class="sub-category-line"></view>

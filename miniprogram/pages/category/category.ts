@@ -25,6 +25,7 @@ interface Product {
 
 // 分组后的商品数据类型
 interface GroupedProducts {
+  id: string  // 用于 wx:key
   subCategory: SubCategory
   products: Product[]
 }
@@ -323,6 +324,7 @@ Component({
         )
         if (subCategory) {
           result.push({
+            id: subCategoryId,  // 添加 id 用于 wx:key
             subCategory,
             products: prods
           })
