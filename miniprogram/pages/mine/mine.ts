@@ -115,9 +115,9 @@ Component({
       wx.showToast({ title: '联系客服功能待开发', icon: 'none' })
     },
 
-    // 我的订单
+    // 我的订单（快捷复购入口）
     goToOrders() {
-      wx.showToast({ title: '订单功能待开发', icon: 'none' })
+      wx.navigateTo({ url: '/pages/orders/orders' })
     },
 
     // 我的地址
