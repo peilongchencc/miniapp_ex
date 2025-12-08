@@ -57,9 +57,8 @@
     .price-area {
       display: flex;
       align-items: baseline;
-      gap: 8rpx;
+      gap: 12rpx;
 
-      // 有价格时的显示
       .price-symbol {
         font-size: 28rpx;
         color: #e64340;
@@ -72,63 +71,11 @@
         font-weight: 700;
       }
 
-      .price-tag {
-        font-size: 20rpx;
-        color: #fff;
-        background: linear-gradient(135deg, #82b4aa 0%, #6a9e94 100%);
-        padding: 4rpx 12rpx;
-        border-radius: 6rpx;
-        margin-left: 12rpx;
-      }
-
-      // 登录查看价格
-      .price-login-tip {
-        display: flex;
-        align-items: center;
-        gap: 12rpx;
-        padding: 16rpx 24rpx;
-        background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
-        border-radius: 12rpx;
-
-        .login-icon {
-          font-size: 32rpx;
-        }
-
-        .login-text {
-          font-size: 28rpx;
-          color: #f57c00;
-          font-weight: 500;
-        }
-
-        .login-arrow {
-          font-size: 28rpx;
-          color: #f57c00;
-        }
-      }
-
-      // 咨询获取报价
-      .price-contact-tip {
-        display: flex;
-        align-items: center;
-        gap: 12rpx;
-        padding: 16rpx 24rpx;
-        background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-        border-radius: 12rpx;
-
-        .contact-icon {
-          font-size: 32rpx;
-        }
-
-        .contact-text {
-          font-size: 28rpx;
-          color: #1976d2;
-          font-weight: 500;
-        }
-
-        .contact-arrow {
-          font-size: 28rpx;
-          color: #1976d2;
-        }
+      // 划线价
+      .original-price {
+        font-size: 28rpx;
+        color: #999;
+        text-decoration: line-through;
       }
     }
 
@@ -490,10 +437,16 @@
         margin-bottom: 12rpx;
       }
 
+      .popup-price-wrap {
+        display: flex;
+        align-items: baseline;
+        gap: 12rpx;
+        margin-bottom: 8rpx;
+      }
+
       .popup-price {
         display: flex;
         align-items: baseline;
-        margin-bottom: 8rpx;
 
         .popup-price-symbol {
           font-size: 24rpx;
@@ -508,10 +461,10 @@
         }
       }
 
-      .popup-price-tip {
-        font-size: 26rpx;
-        color: #1976d2;
-        margin-bottom: 8rpx;
+      .popup-original-price {
+        font-size: 24rpx;
+        color: #999;
+        text-decoration: line-through;
       }
 
       .popup-stock {

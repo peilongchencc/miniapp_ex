@@ -77,25 +77,16 @@
         data-id="{{item.id}}"
         data-name="{{item.name}}"
         data-image="{{item.image}}"
+        data-base-price="{{item.basePrice}}"
       >
         <image class="product-image" src="{{item.image}}" mode="aspectFill"></image>
         <view class="product-info">
           <text class="product-name">{{item.name}}</text>
           
-          <!-- 价格区域 - 根据登录状态和是否有专属价显示 -->
+          <!-- 价格区域：当前价 + 划线价 -->
           <view class="product-price-row">
-            <!-- 未登录 -->
-            <view class="price-login" wx:if="{{!isLoggedIn}}" catchtap="goToLogin">
-              <text class="price-login-text">登录查看</text>
-            </view>
-            <!-- 已登录但无专属价 -->
-            <view class="price-contact" wx:elif="{{item.userPrice === null}}" catchtap="contactForPrice">
-              <text class="price-contact-text">咨询报价</text>
-            </view>
-            <!-- 已登录且有专属价 -->
-            <view class="price-value-wrap" wx:else>
-              <text class="product-price">¥{{item.userPrice}}</text>
-            </view>
+            <text class="product-price">¥{{item.userPrice ? item.userPrice : item.basePrice}}</text>
+            <text wx:if="{{item.userPrice}}" class="original-price">¥{{item.basePrice}}</text>
           </view>
           
           <text class="product-sales">已售{{item.sales}}件</text>

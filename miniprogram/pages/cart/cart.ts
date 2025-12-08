@@ -10,6 +10,10 @@ interface CartItem {
   quantity: number
   spec?: string
   selected?: boolean
+  /** 基准价（划线价） */
+  basePrice?: number
+  /** 用户专属价格，null表示未设置需咨询 */
+  userPrice?: number | null
 }
 
 Component({

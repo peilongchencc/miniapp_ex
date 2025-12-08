@@ -36,33 +36,13 @@
 
     <!-- 商品基本信息 -->
     <view class="product-info-section">
-      <!-- 价格区域 - 根据状态显示不同内容 -->
+      <!-- 价格区域：当前价 + 划线价 -->
       <view class="price-row">
-        <!-- 未登录状态 -->
-        <view class="price-area" wx:if="{{priceStatus === 'not_logged_in'}}">
-          <view class="price-login-tip" bindtap="goToLogin">
-            <text class="login-icon">🔒</text>
-            <text class="login-text">登录查看价格</text>
-            <text class="login-arrow">›</text>
-          </view>
-        </view>
-
-        <!-- 已登录但无专属价格 -->
-        <view class="price-area" wx:elif="{{priceStatus === 'no_price'}}">
-          <view class="price-contact-tip" bindtap="contactForPrice">
-            <text class="contact-icon">💬</text>
-            <text class="contact-text">咨询客服获取报价</text>
-            <text class="contact-arrow">›</text>
-          </view>
-        </view>
-
-        <!-- 已登录且有专属价格 -->
-        <view class="price-area" wx:else>
+        <view class="price-area">
           <text class="price-symbol">¥</text>
-          <text class="price-value">{{product.userPrice}}</text>
-          <text class="price-tag">专属价</text>
+          <text class="price-value">{{product.userPrice ? product.userPrice : product.basePrice}}</text>
+          <text wx:if="{{product.userPrice}}" class="original-price">¥{{product.basePrice}}</text>
         </view>
-
         <view class="sold-info">
           <text class="sold-text">已售 {{product.soldCount}} 件</text>
         </view>
@@ -115,10 +95,9 @@
       <!-- 温馨提示 -->
       <view class="notice-box">
         <text class="notice-title">温馨提示</text>
-        <text class="notice-item">• 商品价格根据客户情况有所不同</text>
-        <text class="notice-item">• 新客户请先联系客服获取专属报价</text>
-        <text class="notice-item">• 老客户可直接下单，按专属价结算</text>
+        <text class="notice-item">• 量大可咨询店主获取优惠价格</text>
         <text class="notice-item">• 支持宁夏、内蒙、甘肃地区配送</text>
+        <text class="notice-item">• 24小时服务，随时响应</text>
       </view>
     </view>
 
@@ -174,12 +153,13 @@
       <view class="popup-info">
         <text class="popup-name">{{product.name}}</text>
         <!-- 弹窗内价格显示 -->
-        <view class="popup-price" wx:if="{{priceStatus === 'has_price'}}">
-          <text class="popup-price-symbol">¥</text>
-          <text class="popup-price-value">{{product.userPrice}}</text>
+        <view class="popup-price-wrap">
+          <view class="popup-price">
+            <text class="popup-price-symbol">¥</text>
+            <text class="popup-price-value">{{product.userPrice || product.basePrice}}</text>
+          </view>
+          <text wx:if="{{product.userPrice}}" class="popup-original-price">¥{{product.basePrice}}</text>
         </view>
-        <text class="popup-price-tip" wx:elif="{{priceStatus === 'no_price'}}">咨询客服获取报价</text>
-        <text class="popup-price-tip" wx:else>登录查看价格</text>
         <text class="popup-stock">库存: {{product.stock}} 件</text>
       </view>
       <view class="popup-close" bindtap="hideSpecPopup">×</view>

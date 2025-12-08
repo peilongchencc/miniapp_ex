@@ -32,7 +32,10 @@ interface OrderDetail {
     image: string
     quantity: number
     spec?: string
-    price: number
+    /** 基准价（划线价） */
+    basePrice: number
+    /** 用户专属价格，null表示未设置 */
+    userPrice: number | null
   }>
   // 价格信息
   pricing: {
@@ -103,6 +106,13 @@ Component({
         time: index <= currentIndex ? this.getMockStatusTime(order.createTime, index) : undefined
       }))
 
+      // 商品列表（添加价格信息）
+      const itemsWithPrice = order.items.map(item => ({
+        ...item,
+        basePrice: item.basePrice || this.getMockBasePrice(item.name),
+        userPrice: item.userPrice !== undefined ? item.userPrice : null
+      }))
+
       // 模拟完整订单详情数据（后续替换为真实API数据）
       const orderDetail: OrderDetail = {
         id: order.id,
@@ -116,13 +126,9 @@ Component({
           phone: '138****8888',
           address: '北京市朝阳区XX街道XX小区XX号楼XX单元XX室'
         },
-        // 商品列表（添加模拟价格）
-        items: order.items.map(item => ({
-          ...item,
-          price: this.getMockPrice(item.name)
-        })),
-        // 模拟价格信息
-        pricing: this.calculatePricing(order.items),
+        items: itemsWithPrice,
+        // 计算总价
+        pricing: this.calculatePricing(itemsWithPrice),
         statusSteps,
         // 配送中状态显示物流信息
         logistics: order.status === 'shipped' || order.status === 'completed' ? {
@@ -135,31 +141,32 @@ Component({
       this.setData({ order: orderDetail })
     },
 
-    // 模拟获取商品价格
-    getMockPrice(name: string): number {
+    // 模拟获取商品基准价
+    getMockBasePrice(name: string): number {
       const priceMap: Record<string, number> = {
-        '金元宝（大号）': 28,
-        '香烛套装': 35,
-        '纸钱（整箱）': 68,
-        '花圈（中号）': 188,
-        '寿衣套装': 688,
-        '莲花灯': 15,
-        '黄纸（大捆）': 25,
-        '骨灰盒（红木）': 2888,
-        '寿被': 268,
-        '挽联': 38,
-        '白布': 45,
-        '纸扎别墅': 388,
-        '纸扎汽车': 268,
-        '纸扎手机': 88
+        '金元宝（大号）': 38,
+        '香烛套装': 48,
+        '纸钱（整箱）': 88,
+        '花圈（中号）': 268,
+        '寿衣套装': 888,
+        '莲花灯': 25,
+        '黄纸（大捆）': 35,
+        '骨灰盒（红木）': 3888,
+        '寿被': 368,
+        '挽联': 58,
+        '白布': 68,
+        '纸扎别墅': 588,
+        '纸扎汽车': 388,
+        '纸扎手机': 128
       }
-      return priceMap[name] || 99
+      return priceMap[name] || 128
     },
 
-    // 计算价格
-    calculatePricing(items: ICartItem[]) {
+    // 计算价格（优先使用专属价，否则使用基准价）
+    calculatePricing(items: Array<{ userPrice: number | null; basePrice: number; quantity: number }>) {
       const subtotal = items.reduce((sum, item) => {
-        return sum + this.getMockPrice(item.name) * item.quantity
+        const price = item.userPrice ?? item.basePrice
+        return sum + price * item.quantity
       }, 0)
       const freight = subtotal >= 200 ? 0 : 15
       const discount = subtotal >= 500 ? 20 : 0

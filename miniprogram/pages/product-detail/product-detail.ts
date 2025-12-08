@@ -22,6 +22,8 @@ interface ProductDetail {
   id: string
   name: string
   images: string[]
+  /** 基准价（划线价） */
+  basePrice: number
   /** 用户专属价格，null表示未设置 */
   userPrice: number | null
   soldCount: number
@@ -34,17 +36,12 @@ interface ProductDetail {
   services: string[]
 }
 
-/** 价格显示状态 */
-type PriceStatus = 'not_logged_in' | 'no_price' | 'has_price'
-
 Component({
   data: {
     // 商品详情
     product: null as ProductDetail | null,
     // 用户登录状态
     isLoggedIn: false,
-    // 价格显示状态
-    priceStatus: 'not_logged_in' as PriceStatus,
     // 当前轮播索引
     currentImageIndex: 0,
     // 购买数量
@@ -87,21 +84,26 @@ Component({
         Record<string, unknown>,
         Record<string, unknown>
       >
-      const { id } = currentPage.options || {}
+      const { id, name, image, basePrice } = currentPage.options || {}
+
+      // 从URL参数获取基准价，如果没有则使用默认值
+      const parsedBasePrice = basePrice ? parseInt(basePrice as string) : 2888
 
       // 模拟商品数据
       // 实际开发时，后端会根据当前登录用户返回对应的 userPrice
       const mockProduct: ProductDetail = {
         id: (id as string) || '1',
-        name: '高档檀木骨灰盒 精雕细琢 庄重典雅',
+        name: name ? decodeURIComponent(name as string) : '高档檀木骨灰盒 精雕细琢 庄重典雅',
         images: [
-          '/images/default-product.png',
+          image ? decodeURIComponent(image as string) : '/images/default-product.png',
           '/images/default-product.png',
           '/images/default-product.png'
         ],
-        // userPrice: null 表示该用户没有专属价格
-        // userPrice: 128 表示该用户专属价格为128
-        userPrice: null,  // 模拟：未设置价格
+        // basePrice: 基准价（划线价），从URL参数获取或使用默认值
+        basePrice: parsedBasePrice,
+        // userPrice: 用户专属价格（当前价），低于基准价时显示划线效果
+        // TODO: 实际开发时从后端API获取当前用户的专属价
+        userPrice: Math.round(parsedBasePrice * 0.85),  // 模拟：专属价为基准价的85%
         soldCount: 128,
         stock: 50,
         categoryId: '1',
@@ -140,27 +142,10 @@ Component({
         ]
       }
 
-      // 确定价格显示状态
-      const priceStatus = this.getPriceStatus(mockProduct.userPrice)
-
       this.setData({
         product: mockProduct,
-        priceStatus,
         selectedSpecText: this.getSelectedSpecText(mockProduct.specs)
       })
-    },
-
-    /**
-     * 获取价格显示状态
-     */
-    getPriceStatus(userPrice: number | null): PriceStatus {
-      if (!this.data.isLoggedIn) {
-        return 'not_logged_in'
-      }
-      if (userPrice === null || userPrice === undefined) {
-        return 'no_price'
-      }
-      return 'has_price'
     },
 
     /**
@@ -334,7 +319,9 @@ Component({
         id: product.id,
         name: product.name,
         image: product.images[0],
-        quantity: quantity
+        quantity: quantity,
+        basePrice: product.basePrice,
+        userPrice: product.userPrice
       })
 
       wx.showToast({
@@ -375,7 +362,9 @@ Component({
         id: product.id,
         name: product.name,
         image: product.images[0],
-        quantity: quantity
+        quantity: quantity,
+        basePrice: product.basePrice,
+        userPrice: product.userPrice
       })
 
       wx.switchTab({ url: '/pages/cart/cart' })

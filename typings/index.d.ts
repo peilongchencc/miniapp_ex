@@ -11,6 +11,10 @@ interface ICartItem {
   image: string
   quantity: number
   spec?: string
+  /** 基准价（划线价） */
+  basePrice?: number
+  /** 用户专属价格，null表示未设置需咨询 */
+  userPrice?: number | null
 }
 
 interface IOrder {

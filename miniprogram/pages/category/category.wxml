@@ -59,10 +59,12 @@
             data-id="{{product.id}}"
             data-name="{{product.name}}"
             data-image="{{product.image}}"
+            data-base-price="{{product.basePrice}}"
             bindtap="onProductTap"
           >
             <image class="product-image" src="{{product.image}}" mode="aspectFill"></image>
             <text class="product-name">{{product.name}}</text>
+            <text class="product-price">¥{{product.basePrice}}</text>
           </view>
         </view>
       </view>

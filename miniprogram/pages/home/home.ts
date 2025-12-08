@@ -5,6 +5,8 @@
 interface HotProduct {
   id: number
   name: string
+  /** 基准价（划线价） */
+  basePrice: number
   /** 用户专属价格，null表示未设置 */
   userPrice: number | null
   image: string
@@ -40,13 +42,13 @@ Component({
     ],
     
     // 热销/推荐商品
-    // userPrice: null 表示该用户没有专属价格
-    // userPrice: 128 表示该用户专属价格为128
+    // basePrice: 基准价（划线价）
+    // userPrice: 用户专属价格（当前价），低于基准价时显示划线效果
     hotProducts: [
-      { id: 1, name: '高档真丝寿衣七件套', userPrice: null, image: '/images/default-product.png', sales: 328 },
-      { id: 2, name: '天然玉石骨灰盒', userPrice: null, image: '/images/default-product.png', sales: 256 },
-      { id: 3, name: '鲜花花圈精选款', userPrice: null, image: '/images/default-product.png', sales: 512 },
-      { id: 4, name: '祭祀用品套装', userPrice: null, image: '/images/default-product.png', sales: 892 }
+      { id: 1, name: '高档真丝寿衣七件套', basePrice: 1580, userPrice: 1280, image: '/images/default-product.png', sales: 328 },
+      { id: 2, name: '天然玉石骨灰盒', basePrice: 4280, userPrice: 3680, image: '/images/default-product.png', sales: 256 },
+      { id: 3, name: '鲜花花圈精选款', basePrice: 488, userPrice: 388, image: '/images/default-product.png', sales: 512 },
+      { id: 4, name: '祭祀用品套装', basePrice: 218, userPrice: 168, image: '/images/default-product.png', sales: 892 }
     ] as HotProduct[],
     
     // 服务特色
@@ -95,11 +97,13 @@ Component({
     loadHotProducts() {
       // 模拟数据，实际开发时从后端获取
       // 后端会根据当前登录用户返回每个商品的 userPrice
+      // basePrice: 基准价（划线价）
+      // userPrice: 用户专属价格（当前价）
       const mockProducts: HotProduct[] = [
-        { id: 1, name: '高档真丝寿衣七件套', userPrice: null, image: '/images/default-product.png', sales: 328 },
-        { id: 2, name: '天然玉石骨灰盒', userPrice: null, image: '/images/default-product.png', sales: 256 },
-        { id: 3, name: '鲜花花圈精选款', userPrice: null, image: '/images/default-product.png', sales: 512 },
-        { id: 4, name: '祭祀用品套装', userPrice: null, image: '/images/default-product.png', sales: 892 }
+        { id: 1, name: '高档真丝寿衣七件套', basePrice: 1580, userPrice: 1280, image: '/images/default-product.png', sales: 328 },
+        { id: 2, name: '天然玉石骨灰盒', basePrice: 4280, userPrice: 3680, image: '/images/default-product.png', sales: 256 },
+        { id: 3, name: '鲜花花圈精选款', basePrice: 488, userPrice: 388, image: '/images/default-product.png', sales: 512 },
+        { id: 4, name: '祭祀用品套装', basePrice: 218, userPrice: 168, image: '/images/default-product.png', sales: 892 }
       ]
       this.setData({ hotProducts: mockProducts })
     },
@@ -164,9 +168,9 @@ Component({
 
     // 点击商品
     onProductTap(e: WechatMiniprogram.TouchEvent) {
-      const { id, name, image } = e.currentTarget.dataset
+      const { id, name, image, basePrice } = e.currentTarget.dataset
       wx.navigateTo({
-        url: `/pages/product-detail/product-detail?id=${id}&name=${encodeURIComponent(name)}&image=${encodeURIComponent(image)}`
+        url: `/pages/product-detail/product-detail?id=${id}&name=${encodeURIComponent(name)}&image=${encodeURIComponent(image)}&basePrice=${basePrice}`
       })
     },
 

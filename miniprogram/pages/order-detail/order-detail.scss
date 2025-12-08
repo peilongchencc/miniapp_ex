@@ -321,12 +321,24 @@ page {
   justify-content: space-between;
   align-items: center;
   margin-top: auto;
+
+  .price-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8rpx;
+  }
 }
 
 .item-price {
   font-size: 28rpx;
   color: #e64340;
   font-weight: 500;
+}
+
+.item-original-price {
+  font-size: 22rpx;
+  color: #999;
+  text-decoration: line-through;
 }
 
 .item-quantity {

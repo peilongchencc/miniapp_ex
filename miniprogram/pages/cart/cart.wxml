@@ -21,7 +21,7 @@
       <!-- 提示信息 -->
       <view class="cart-notice">
         <text class="notice-icon">💡</text>
-        <text class="notice-text">本平台不显示价格，提交订单后我们会联系您确认</text>
+        <text class="notice-text">量大可咨询店主获取优惠价格</text>
       </view>
 
       <!-- 商品列表 -->
@@ -43,7 +43,11 @@
           <view class="item-info">
             <text class="item-name">{{item.name}}</text>
             <text class="item-spec" wx:if="{{item.spec}}">{{item.spec}}</text>
-            <text class="item-price">价格面议</text>
+            <!-- 价格显示：当前价 + 划线价 -->
+            <view class="item-price-row">
+              <text class="item-price">¥{{item.userPrice || item.basePrice || 0}}</text>
+              <text class="item-original-price" wx:if="{{item.userPrice && item.basePrice && item.userPrice < item.basePrice}}">¥{{item.basePrice}}</text>
+            </view>
           </view>
 
           <!-- 数量控制 -->
