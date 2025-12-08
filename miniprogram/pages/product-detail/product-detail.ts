@@ -42,6 +42,8 @@ Component({
     product: null as ProductDetail | null,
     // 用户登录状态
     isLoggedIn: false,
+    // 导航栏高度（用于安全区占位）
+    navBarHeight: 0,
     // 当前轮播索引
     currentImageIndex: 0,
     // 购买数量
@@ -58,12 +60,25 @@ Component({
 
   lifetimes: {
     attached() {
+      this.initNavBarHeight()
       this.checkLoginStatus()
       this.loadProductDetail()
     }
   },
 
   methods: {
+    /**
+     * 初始化导航栏高度
+     * 用于计算安全区占位，防止内容与状态栏重叠
+     */
+    initNavBarHeight() {
+      const rect = wx.getMenuButtonBoundingClientRect()
+      const systemInfo = wx.getSystemInfoSync()
+      // 导航栏高度 = 状态栏高度 + 胶囊按钮高度 + 上下边距
+      const navBarHeight = systemInfo.statusBarHeight! + rect.height + (rect.top - systemInfo.statusBarHeight!) * 2
+      this.setData({ navBarHeight })
+    },
+
     /**
      * 检查用户登录状态
      * TODO: 替换为真实登录状态检查

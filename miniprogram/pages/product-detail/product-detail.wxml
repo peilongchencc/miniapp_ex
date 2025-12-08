@@ -8,7 +8,7 @@
     bindback="goBack"
   />
 
-  <scroll-view class="detail-body" scroll-y wx:if="{{product}}">
+  <scroll-view class="detail-body" scroll-y wx:if="{{product}}" style="padding-top: {{navBarHeight}}px;">
     <!-- 商品图片轮播 -->
     <view class="swiper-section">
       <swiper 
