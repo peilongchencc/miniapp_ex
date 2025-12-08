@@ -54,7 +54,9 @@
         bindtap="onCategoryTap"
         data-id="{{item.id}}"
       >
-        <image class="category-icon" src="{{item.icon}}" mode="aspectFill"></image>
+        <view class="category-icon-wrapper">
+          <text class="category-emoji">{{item.emoji}}</text>
+        </view>
         <text class="category-name">{{item.name}}</text>
       </view>
     </view>
@@ -140,6 +142,9 @@
 
 <!-- 悬浮客服按钮 -->
 <view class="float-service" bindtap="onContactService">
-  <text class="float-icon">💬</text>
+  <view class="float-icon-wrapper">
+    <view class="float-headset"></view>
+  </view>
   <text class="float-text">客服</text>
+  <view class="float-pulse"></view>
 </view>

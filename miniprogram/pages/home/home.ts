@@ -16,14 +16,14 @@ Component({
     
     // 商品分类入口
     categories: [
-      { id: 1, name: '寿衣', icon: '/images/default-product.png' },
-      { id: 2, name: '骨灰盒', icon: '/images/default-product.png' },
-      { id: 3, name: '花圈', icon: '/images/default-product.png' },
-      { id: 4, name: '祭祀用品', icon: '/images/default-product.png' },
-      { id: 5, name: '丧葬服务', icon: '/images/default-product.png' },
-      { id: 6, name: '纸扎用品', icon: '/images/default-product.png' },
-      { id: 7, name: '香烛', icon: '/images/default-product.png' },
-      { id: 8, name: '更多', icon: '/images/default-product.png' }
+      { id: 1, name: '寿衣', emoji: '👔' },
+      { id: 2, name: '骨灰盒', emoji: '🏺' },
+      { id: 3, name: '花圈', emoji: '💐' },
+      { id: 4, name: '祭祀用品', emoji: '🕯️' },
+      { id: 5, name: '丧葬服务', emoji: '🙏' },
+      { id: 6, name: '纸扎用品', emoji: '📜' },
+      { id: 7, name: '香烛', emoji: '🪔' },
+      { id: 8, name: '更多', emoji: '📋' }
     ],
     
     // 热销/推荐商品

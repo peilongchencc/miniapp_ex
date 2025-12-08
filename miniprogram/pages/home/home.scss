@@ -123,9 +123,9 @@ page {
   display: flex;
   flex-wrap: wrap;
   background: #fff;
-  border-radius: 16rpx;
-  padding: 24rpx 0;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+  border-radius: 20rpx;
+  padding: 28rpx 12rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.06);
 }
 
 .category-item {
@@ -136,17 +136,27 @@ page {
   padding: 16rpx 0;
 }
 
-.category-icon {
-  width: 88rpx;
-  height: 88rpx;
-  border-radius: 16rpx;
-  background: linear-gradient(135deg, #e8f4f0 0%, #d4e8e0 100%);
-  margin-bottom: 12rpx;
+.category-icon-wrapper {
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 24rpx;
+  background: linear-gradient(145deg, #f0f7f5 0%, #e0efe9 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14rpx;
+  box-shadow: 0 4rpx 12rpx rgba(90, 150, 144, 0.15);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.category-emoji {
+  font-size: 44rpx;
 }
 
 .category-name {
   font-size: 24rpx;
-  color: #333;
+  color: #444;
+  font-weight: 500;
 }
 
 
@@ -334,24 +344,87 @@ page {
   position: fixed;
   right: 30rpx;
   bottom: 200rpx;
-  width: 100rpx;
-  height: 100rpx;
-  background: linear-gradient(135deg, #82b4aa 0%, #5a9690 100%);
-  border-radius: 50%;
+  width: 110rpx;
+  height: 110rpx;
+  background: linear-gradient(145deg, #5a9690 0%, #4a8680 100%);
+  border-radius: 28rpx;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8rpx 24rpx rgba(90, 150, 144, 0.4);
+  box-shadow: 
+    0 8rpx 32rpx rgba(74, 134, 128, 0.45),
+    0 2rpx 8rpx rgba(0, 0, 0, 0.1),
+    inset 0 1rpx 0 rgba(255, 255, 255, 0.2);
   z-index: 100;
 }
 
-.float-icon {
-  font-size: 36rpx;
+.float-icon-wrapper {
+  width: 44rpx;
+  height: 44rpx;
+  position: relative;
+  margin-bottom: 6rpx;
+}
+
+/* CSS绘制耳机图标 */
+.float-headset {
+  width: 36rpx;
+  height: 36rpx;
+  border: 4rpx solid #fff;
+  border-radius: 50%;
+  border-bottom: none;
+  position: relative;
+  margin: 0 auto;
+}
+
+.float-headset::before,
+.float-headset::after {
+  content: '';
+  position: absolute;
+  bottom: -6rpx;
+  width: 12rpx;
+  height: 18rpx;
+  background: #fff;
+  border-radius: 4rpx;
+}
+
+.float-headset::before {
+  left: -4rpx;
+}
+
+.float-headset::after {
+  right: -4rpx;
 }
 
 .float-text {
-  font-size: 20rpx;
+  font-size: 22rpx;
   color: #fff;
-  margin-top: 4rpx;
+  font-weight: 500;
+  letter-spacing: 2rpx;
+}
+
+/* 呼吸光效 */
+.float-pulse {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 28rpx;
+  background: transparent;
+  box-shadow: 0 0 0 0 rgba(90, 150, 144, 0.5);
+  animation: pulse 2s infinite;
+  pointer-events: none;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(90, 150, 144, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 16rpx rgba(90, 150, 144, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(90, 150, 144, 0);
+  }
 }
