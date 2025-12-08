@@ -33,21 +33,42 @@
       </view>
     </scroll-view>
     
-    <!-- 右侧商品列表 -->
+    <!-- 右侧商品列表（按二级分类分组） -->
     <scroll-view class="product-list" scroll-y>
-      <view class="product-grid">
-        <view 
-          wx:for="{{currentProducts}}" 
-          wx:key="id"
-          class="product-item"
-          data-name="{{item.name}}"
-          bindtap="onProductTap"
-        >
-          <image class="product-image" src="{{item.image}}" mode="aspectFill"></image>
-          <text class="product-name">{{item.name}}</text>
+      <!-- 搜索模式提示 -->
+      <view wx:if="{{isSearchMode}}" class="search-result-tip">
+        搜索结果: "{{searchKeyword}}"
+      </view>
+      
+      <!-- 按二级分类分组展示 -->
+      <view wx:for="{{groupedProducts}}" wx:key="subCategory.id" class="sub-category-section">
+        <!-- 二级分类标题 -->
+        <view class="sub-category-header">
+          <view class="sub-category-line"></view>
+          <text class="sub-category-name">{{item.subCategory.name}}</text>
+          <view class="sub-category-line"></view>
         </view>
+        
+        <!-- 该二级分类下的商品 -->
+        <view class="product-grid">
+          <view 
+            wx:for="{{item.products}}" 
+            wx:for-item="product"
+            wx:key="id"
+            class="product-item"
+            data-name="{{product.name}}"
+            bindtap="onProductTap"
+          >
+            <image class="product-image" src="{{product.image}}" mode="aspectFill"></image>
+            <text class="product-name">{{product.name}}</text>
+          </view>
+        </view>
+      </view>
+      
+      <!-- 空状态 -->
+      <view wx:if="{{groupedProducts.length === 0}}" class="empty-state">
+        <text>暂无商品</text>
       </view>
     </scroll-view>
   </view>
 </view>
-
