@@ -28,15 +28,21 @@ Component({
   data: {
     isLoggedIn: false,
     showLoginPopup: false,
-    showPrivacyPopup: false,  // 是否显示隐私协议弹窗
-    agreedPrivacy: false,  // 是否同意隐私协议
+    showPrivacyPopup: false,
+    agreedPrivacy: false,
     userInfo: {
       avatarUrl: defaultAvatarUrl,
       nickName: '',
       phoneNumber: '',
     },
-    nicknameHighlight: false,  // 昵称高亮闪烁状态
-    avatarHighlight: false,    // 头像高亮闪烁状态
+    nicknameHighlight: false,
+    avatarHighlight: false,
+    // 订单数量统计
+    orderCounts: {
+      pending: 0,    // 待确认
+      preparing: 0,  // 备货中
+      shipping: 0,   // 配送中
+    }
   },
 
   lifetimes: {
@@ -48,10 +54,24 @@ Component({
   pageLifetimes: {
     show() {
       this.checkLoginStatus()
+      this.loadOrderCounts()
     }
   },
 
   methods: {
+    // 加载订单数量
+    loadOrderCounts() {
+      // TODO: 从后端获取订单数量
+      // 模拟数据
+      this.setData({
+        orderCounts: {
+          pending: 2,
+          preparing: 1,
+          shipping: 0,
+        }
+      })
+    },
+
     // 显示登录弹窗
     showLoginPopup() {
       this.setData({ showLoginPopup: true })
@@ -117,36 +137,24 @@ Component({
     onGetPhoneNumber(e: WechatMiniprogram.CustomEvent) {
       const { code, errMsg } = e.detail
 
-      // 用户拒绝授权
       if (errMsg === 'getPhoneNumber:fail user deny' || !code) {
         wx.showToast({ title: '需要授权手机号才能登录', icon: 'none' })
         return
       }
 
-      // 显示加载中
       wx.showLoading({ title: '登录中...' })
-
-      // TODO: 将 code 发送到后端服务器换取手机号
-      // 后端需要调用微信接口: POST https://api.weixin.qq.com/wxa/business/getuserphonenumber
-      // 请求参数: { code: code }
-      // 返回: { phone_info: { phoneNumber: "138xxxx8888", ... } }
-      
-      // 模拟后端返回（正式上线时替换为真实接口调用）
       this.mockGetPhoneFromServer(code)
     },
 
     /**
      * 模拟从服务器获取手机号
-     * 正式上线时需要替换为真实的后端接口调用
      */
     mockGetPhoneFromServer(code: string) {
       console.log('手机号验证 code:', code)
       
-      // 模拟网络延迟
       setTimeout(() => {
         wx.hideLoading()
         
-        // 模拟获取到的手机号（正式环境由后端返回）
         const mockPhone = '13888888888'
         const defaultNickName = getRandomNickname()
         
@@ -158,16 +166,14 @@ Component({
 
         this.setData({ isLoggedIn: true, showLoginPopup: false, userInfo })
         
-        // 保存到全局和本地存储
         appInstance.globalData.isLoggedIn = true
         appInstance.globalData.userInfo = userInfo
         wx.setStorageSync('isLoggedIn', true)
         wx.setStorageSync('userInfo', userInfo)
         
         wx.showToast({ title: '登录成功', icon: 'success' })
-        
-        // 触发登录成功高亮动画
         this.playLoginHighlightAnimation()
+        this.loadOrderCounts()
       }, 800)
     },
 
@@ -203,7 +209,8 @@ Component({
           if (res.confirm) {
             this.setData({
               isLoggedIn: false,
-              userInfo: { avatarUrl: defaultAvatarUrl, nickName: '', phoneNumber: '' }
+              userInfo: { avatarUrl: defaultAvatarUrl, nickName: '', phoneNumber: '' },
+              orderCounts: { pending: 0, preparing: 0, shipping: 0 }
             })
             appInstance.globalData.isLoggedIn = false
             appInstance.globalData.userInfo = null
@@ -215,9 +222,10 @@ Component({
       })
     },
 
-    // 联系客服
-    contactShop() {
-      wx.showToast({ title: '联系客服功能待开发', icon: 'none' })
+    // 按状态跳转订单
+    goToOrdersByStatus(e: WechatMiniprogram.CustomEvent) {
+      const status = e.currentTarget.dataset.status
+      wx.navigateTo({ url: `/pages/orders/orders?status=${status}` })
     },
 
     // 我的收藏
@@ -225,29 +233,40 @@ Component({
       wx.navigateTo({ url: '/pages/favorites/favorites' })
     },
 
-    // 我的订单
-    goToOrders() {
-      wx.navigateTo({ url: '/pages/orders/orders' })
+    // 我的足迹
+    goToFootprints() {
+      wx.showToast({ title: '我的足迹功能待开发', icon: 'none' })
     },
 
-    // 我的地址
+    // 收货地址
     goToAddress() {
       wx.showToast({ title: '地址管理功能待开发', icon: 'none' })
     },
 
+    // 发票管理
+    goToInvoice() {
+      wx.showToast({ title: '发票管理功能待开发', icon: 'none' })
+    },
+
+    // 常见问题
+    goToFAQ() {
+      wx.showToast({ title: '常见问题功能待开发', icon: 'none' })
+    },
+
+    // 关于我们
+    goToAbout() {
+      wx.showToast({ title: '关于我们功能待开发', icon: 'none' })
+    },
+
     /**
      * 播放登录成功高亮动画
-     * 先让昵称光圈扩散两下，再让头像光圈扩散两下
      */
     playLoginHighlightAnimation() {
-      // 昵称开始动画（0.8s × 2 = 1.6s）
       this.setData({ nicknameHighlight: true })
       
-      // 1.6秒后昵称动画结束，开始头像动画
       setTimeout(() => {
         this.setData({ nicknameHighlight: false, avatarHighlight: true })
         
-        // 1.6秒后头像动画结束
         setTimeout(() => {
           this.setData({ avatarHighlight: false })
         }, 1600)
