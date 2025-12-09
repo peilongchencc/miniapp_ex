@@ -150,15 +150,6 @@ Component({
         wx.setStorageSync('userInfo', userInfo)
         
         wx.showToast({ title: '登录成功', icon: 'success' })
-        
-        // 提示用户可以修改头像和昵称
-        setTimeout(() => {
-          wx.showToast({ 
-            title: '点击头像或昵称可修改个人信息', 
-            icon: 'none',
-            duration: 2500
-          })
-        }, 1500)
       }, 800)
     },
 

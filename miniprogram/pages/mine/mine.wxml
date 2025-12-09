@@ -24,7 +24,6 @@
           <input type="nickname" class="nickname-input" value="{{userInfo.nickName}}" bind:change="onInputChange" placeholder="点击设置昵称" />
         </view>
         <text class="phone-display">{{userInfo.phoneNumber}}</text>
-        <text class="edit-tip">点击头像或昵称可修改</text>
       </view>
     </block>
   </view>
