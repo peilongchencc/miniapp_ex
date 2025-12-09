@@ -34,6 +34,8 @@ Component({
       nickName: '',
       phoneNumber: '',
     },
+    nicknameHighlight: false,  // 昵称高亮闪烁状态
+    avatarHighlight: false,    // 头像高亮闪烁状态
   },
 
   lifetimes: {
@@ -150,6 +152,9 @@ Component({
         wx.setStorageSync('userInfo', userInfo)
         
         wx.showToast({ title: '登录成功', icon: 'success' })
+        
+        // 触发登录成功高亮动画
+        this.playLoginHighlightAnimation()
       }, 800)
     },
 
@@ -215,6 +220,25 @@ Component({
     // 我的地址
     goToAddress() {
       wx.showToast({ title: '地址管理功能待开发', icon: 'none' })
+    },
+
+    /**
+     * 播放登录成功高亮动画
+     * 先让昵称光圈扩散两下，再让头像光圈扩散两下
+     */
+    playLoginHighlightAnimation() {
+      // 昵称开始动画（0.8s × 2 = 1.6s）
+      this.setData({ nicknameHighlight: true })
+      
+      // 1.6秒后昵称动画结束，开始头像动画
+      setTimeout(() => {
+        this.setData({ nicknameHighlight: false, avatarHighlight: true })
+        
+        // 1.6秒后头像动画结束
+        setTimeout(() => {
+          this.setData({ avatarHighlight: false })
+        }, 1600)
+      }, 1600)
     }
   },
 })

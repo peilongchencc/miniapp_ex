@@ -15,13 +15,15 @@
 
     <!-- 已登录状态 -->
     <block wx:else>
-      <view class="avatar-wrapper">
+      <view class="avatar-wrapper {{avatarHighlight ? 'highlight' : ''}}">
         <image class="avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
         <button class="avatar-overlay" open-type="chooseAvatar" hover-class="none" bind:chooseavatar="onChooseAvatar"></button>
+        <view class="avatar-pulse"></view>
       </view>
       <view class="user-info-right">
-        <view class="nickname-row">
+        <view class="nickname-row {{nicknameHighlight ? 'highlight' : ''}}">
           <input type="nickname" class="nickname-input" value="{{userInfo.nickName}}" bind:change="onInputChange" placeholder="点击设置昵称" />
+          <view class="nickname-pulse"></view>
         </view>
         <text class="phone-display">{{userInfo.phoneNumber}}</text>
       </view>
