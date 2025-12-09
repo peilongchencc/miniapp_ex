@@ -28,6 +28,7 @@ Component({
   data: {
     isLoggedIn: false,
     showLoginPopup: false,
+    showPrivacyPopup: false,  // 是否显示隐私协议弹窗
     agreedPrivacy: false,  // 是否同意隐私协议
     userInfo: {
       avatarUrl: defaultAvatarUrl,
@@ -75,8 +76,20 @@ Component({
 
     // 查看隐私协议
     viewPrivacyPolicy() {
-      // TODO: 跳转到隐私协议页面，或打开 webview 显示协议内容
-      wx.showToast({ title: '隐私协议页面待开发', icon: 'none' })
+      this.setData({ showPrivacyPopup: true })
+    },
+
+    // 隐藏隐私协议弹窗
+    hidePrivacyPopup() {
+      this.setData({ showPrivacyPopup: false })
+    },
+
+    // 确认已阅读隐私协议
+    confirmPrivacyPolicy() {
+      this.setData({ 
+        showPrivacyPopup: false,
+        agreedPrivacy: true
+      })
     },
 
     // 检查登录状态

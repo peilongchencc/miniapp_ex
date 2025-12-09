@@ -480,3 +480,138 @@ page {
   font-weight: 500;
 }
 
+/* 隐私协议弹窗遮罩 */
+.privacy-popup-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 200;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.privacy-popup-mask.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* 隐私协议弹窗 */
+.privacy-popup {
+  position: fixed;
+  left: 5%;
+  right: 5%;
+  top: 10%;
+  bottom: 10%;
+  background: #fff;
+  border-radius: 24rpx;
+  z-index: 201;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.9);
+  transition: all 0.3s ease;
+}
+
+.privacy-popup.show {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+}
+
+.privacy-popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 28rpx 32rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+  flex-shrink: 0;
+}
+
+.privacy-popup-title {
+  font-size: 34rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.privacy-popup-close {
+  font-size: 48rpx;
+  color: #999;
+  line-height: 1;
+  padding: 10rpx;
+}
+
+.privacy-popup-content {
+  flex: 1;
+  overflow: hidden;
+}
+
+.privacy-text {
+  padding: 32rpx;
+  font-size: 28rpx;
+  line-height: 1.8;
+  color: #333;
+}
+
+.privacy-intro {
+  margin-bottom: 32rpx;
+  text-align: justify;
+}
+
+.privacy-section-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+  margin-top: 28rpx;
+  margin-bottom: 16rpx;
+}
+
+.privacy-section-desc {
+  color: #666;
+  margin-bottom: 16rpx;
+  text-align: justify;
+}
+
+.privacy-item {
+  display: flex;
+  flex-direction: column;
+  margin: 16rpx 0;
+  padding-left: 16rpx;
+}
+
+.privacy-item-title {
+  font-weight: 500;
+  color: #333;
+}
+
+.privacy-item-desc {
+  color: #666;
+  margin-top: 4rpx;
+}
+
+.privacy-footer {
+  margin-top: 32rpx;
+  color: #666;
+}
+
+.privacy-popup-footer {
+  padding: 24rpx 32rpx;
+  padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
+  border-top: 1rpx solid #f0f0f0;
+  flex-shrink: 0;
+}
+
+.privacy-confirm-btn {
+  background: linear-gradient(135deg, #5a8a7e 0%, #4a7a6e 100%);
+  color: #fff;
+  font-size: 32rpx;
+  font-weight: bold;
+  padding: 24rpx 0;
+  border-radius: 48rpx;
+  text-align: center;
+}
+
