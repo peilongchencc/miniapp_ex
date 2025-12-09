@@ -25,7 +25,7 @@ Component({
     banners: [
       { id: 1, image: '/images/default-product.png', title: '专业殡葬服务 用心守护每一程' },
       { id: 2, image: '/images/default-product.png', title: '全城免费配送 24小时响应' },
-      { id: 3, image: '/images/default-product.png', title: '品质保证 价格透明' }
+      { id: 3, image: '/images/default-product.png', title: '品质保证 价格优惠' }
     ],
     currentBanner: 0,
     
