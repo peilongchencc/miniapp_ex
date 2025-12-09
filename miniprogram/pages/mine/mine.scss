@@ -49,15 +49,16 @@ page {
   pointer-events: none;
 }
 
-/* 用户信息头部 - 青绿山水色调 */
+/* 用户信息头部 - 浅色卡片风格，与导航栏形成对比 */
 .user-header {
   background: linear-gradient(135deg, 
-    rgba(130, 180, 170, 0.75) 0%,   /* 青绿 */
-    rgba(100, 160, 150, 0.85) 50%,   /* 深青 */
-    rgba(90, 150, 145, 0.9) 100%     /* 墨青 */
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(248, 252, 250, 0.95) 100%
   );
   backdrop-filter: blur(10rpx);
-  padding: 30rpx 20rpx 30rpx 30rpx;
+  margin: 20rpx 30rpx;
+  padding: 30rpx;
+  border-radius: 16rpx;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -65,6 +66,7 @@ page {
   position: relative;
   z-index: 1;
   box-shadow: 0 4rpx 20rpx rgba(100, 150, 140, 0.15);
+  border: 1rpx solid rgba(130, 170, 160, 0.15);
 }
 
 /* 头部装饰 - 水墨晕染效果 */
@@ -76,8 +78,8 @@ page {
   width: 300rpx;
   height: 300rpx;
   background: radial-gradient(circle, 
-    rgba(255, 255, 255, 0.15) 0%, 
-    rgba(255, 255, 255, 0.05) 40%, 
+    rgba(130, 180, 170, 0.1) 0%, 
+    rgba(130, 180, 170, 0.05) 40%, 
     transparent 70%
   );
   pointer-events: none;
@@ -98,7 +100,7 @@ page {
   width: 120rpx;
   height: 120rpx;
   border-radius: 50%;
-  border: 4rpx solid rgba(255, 255, 255, 0.8);
+  border: 4rpx solid rgba(130, 180, 170, 0.5);
   margin-right: 0;
   box-shadow: 0 4rpx 12rpx rgba(90, 130, 120, 0.2);
   transition: all 0.15s ease;
@@ -167,7 +169,7 @@ page {
 }
 
 .nickname-input {
-  color: #fff;
+  color: #333;
   font-size: 36rpx;
   font-weight: bold;
   background: transparent;
@@ -209,11 +211,11 @@ page {
 }
 
 .nickname-input::placeholder {
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(100, 150, 140, 0.6);
 }
 
 .phone-display {
-  color: rgba(255, 255, 255, 0.9);
+  color: #666;
   font-size: 26rpx;
   margin-top: 6rpx;
 }
@@ -230,7 +232,7 @@ page {
 }
 
 .login-btn {
-  color: #fff;
+  color: #5a8a7e;
   font-size: 36rpx;
   font-weight: bold;
 }
@@ -240,7 +242,7 @@ page {
 }
 
 .login-tip {
-  color: rgba(255, 255, 255, 0.8);
+  color: #999;
   font-size: 24rpx;
   margin-top: 12rpx;
 }
