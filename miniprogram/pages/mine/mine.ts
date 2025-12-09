@@ -12,14 +12,27 @@ function getRandomNickname() {
   return nicknameList[randomIndex]
 }
 
+/**
+ * 手机号脱敏处理
+ * @param phone 完整手机号
+ * @returns 脱敏后的手机号，如 138****8888
+ */
+function maskPhoneNumber(phone: string): string {
+  if (!phone || phone.length !== 11) return phone
+  return phone.substring(0, 3) + '****' + phone.substring(7)
+}
+
 const appInstance = getApp<IAppOption>()
 
 Component({
   data: {
     isLoggedIn: false,
+    showLoginPopup: false,
+    agreedPrivacy: false,  // 是否同意隐私协议
     userInfo: {
       avatarUrl: defaultAvatarUrl,
       nickName: '',
+      phoneNumber: '',
     },
   },
 
@@ -36,37 +49,117 @@ Component({
   },
 
   methods: {
+    // 显示登录弹窗
+    showLoginPopup() {
+      this.setData({ showLoginPopup: true })
+    },
+
+    // 隐藏登录弹窗
+    hideLoginPopup() {
+      this.setData({ showLoginPopup: false })
+    },
+
+    // 切换隐私协议勾选状态
+    togglePrivacyAgreement() {
+      this.setData({ agreedPrivacy: !this.data.agreedPrivacy })
+    },
+
+    // 未勾选协议时点击登录按钮
+    onLoginBtnTap() {
+      if (!this.data.agreedPrivacy) {
+        wx.showToast({ title: '请先阅读并同意用户隐私协议', icon: 'none' })
+      }
+    },
+
+    // 查看隐私协议
+    viewPrivacyPolicy() {
+      // TODO: 跳转到隐私协议页面，或打开 webview 显示协议内容
+      wx.showToast({ title: '隐私协议页面待开发', icon: 'none' })
+    },
+
     // 检查登录状态
     checkLoginStatus() {
       const isLoggedIn = appInstance.globalData.isLoggedIn
       const userInfo = appInstance.globalData.userInfo
       if (isLoggedIn && userInfo) {
-        this.setData({ isLoggedIn: true, userInfo })
+        this.setData({ 
+          isLoggedIn: true, 
+          userInfo: {
+            avatarUrl: userInfo.avatarUrl,
+            nickName: userInfo.nickName,
+            phoneNumber: userInfo.phoneNumber || ''
+          }
+        })
       } else {
         this.setData({
           isLoggedIn: false,
-          userInfo: { avatarUrl: defaultAvatarUrl, nickName: '' }
+          userInfo: { avatarUrl: defaultAvatarUrl, nickName: '', phoneNumber: '' }
         })
       }
     },
 
-    // 点击登录/注册按钮
-    handleLogin() {
-      // 生成随机昵称作为默认昵称
-      const defaultNickName = getRandomNickname()
-      this.setData({
-        isLoggedIn: true,
-        userInfo: {
+    // 手机号快速验证回调
+    onGetPhoneNumber(e: WechatMiniprogram.CustomEvent) {
+      const { code, errMsg } = e.detail
+
+      // 用户拒绝授权
+      if (errMsg === 'getPhoneNumber:fail user deny' || !code) {
+        wx.showToast({ title: '需要授权手机号才能登录', icon: 'none' })
+        return
+      }
+
+      // 显示加载中
+      wx.showLoading({ title: '登录中...' })
+
+      // TODO: 将 code 发送到后端服务器换取手机号
+      // 后端需要调用微信接口: POST https://api.weixin.qq.com/wxa/business/getuserphonenumber
+      // 请求参数: { code: code }
+      // 返回: { phone_info: { phoneNumber: "138xxxx8888", ... } }
+      
+      // 模拟后端返回（正式上线时替换为真实接口调用）
+      this.mockGetPhoneFromServer(code)
+    },
+
+    /**
+     * 模拟从服务器获取手机号
+     * 正式上线时需要替换为真实的后端接口调用
+     */
+    mockGetPhoneFromServer(code: string) {
+      console.log('手机号验证 code:', code)
+      
+      // 模拟网络延迟
+      setTimeout(() => {
+        wx.hideLoading()
+        
+        // 模拟获取到的手机号（正式环境由后端返回）
+        const mockPhone = '13888888888'
+        const defaultNickName = getRandomNickname()
+        
+        const userInfo = {
           avatarUrl: defaultAvatarUrl,
           nickName: defaultNickName,
+          phoneNumber: maskPhoneNumber(mockPhone),
         }
-      })
-      // 保存到全局和本地存储
-      appInstance.globalData.isLoggedIn = true
-      appInstance.globalData.userInfo = this.data.userInfo
-      wx.setStorageSync('isLoggedIn', true)
-      wx.setStorageSync('userInfo', this.data.userInfo)
-      wx.showToast({ title: '登录成功', icon: 'success' })
+
+        this.setData({ isLoggedIn: true, showLoginPopup: false, userInfo })
+        
+        // 保存到全局和本地存储
+        appInstance.globalData.isLoggedIn = true
+        appInstance.globalData.userInfo = userInfo
+        wx.setStorageSync('isLoggedIn', true)
+        wx.setStorageSync('userInfo', userInfo)
+        
+        wx.showToast({ title: '登录成功', icon: 'success' })
+        
+        // 提示用户可以修改头像和昵称
+        setTimeout(() => {
+          wx.showToast({ 
+            title: '点击头像或昵称可修改个人信息', 
+            icon: 'none',
+            duration: 2500
+          })
+        }, 1500)
+      }, 800)
     },
 
     // 选择头像
@@ -74,13 +167,16 @@ Component({
       const { avatarUrl } = e.detail
       this.setData({ "userInfo.avatarUrl": avatarUrl })
       this.saveUserInfo()
+      wx.showToast({ title: '头像已更新', icon: 'success' })
     },
 
     // 输入昵称
     onInputChange(e: WechatMiniprogram.CustomEvent) {
       const nickName = e.detail.value
-      this.setData({ "userInfo.nickName": nickName })
-      this.saveUserInfo()
+      if (nickName && nickName.trim()) {
+        this.setData({ "userInfo.nickName": nickName })
+        this.saveUserInfo()
+      }
     },
 
     // 保存用户信息
@@ -98,7 +194,7 @@ Component({
           if (res.confirm) {
             this.setData({
               isLoggedIn: false,
-              userInfo: { avatarUrl: defaultAvatarUrl, nickName: '' }
+              userInfo: { avatarUrl: defaultAvatarUrl, nickName: '', phoneNumber: '' }
             })
             appInstance.globalData.isLoggedIn = false
             appInstance.globalData.userInfo = null
@@ -120,7 +216,7 @@ Component({
       wx.navigateTo({ url: '/pages/favorites/favorites' })
     },
 
-    // 我的订单（快捷复购入口）
+    // 我的订单
     goToOrders() {
       wx.navigateTo({ url: '/pages/orders/orders' })
     },

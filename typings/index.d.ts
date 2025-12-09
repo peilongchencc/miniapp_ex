@@ -3,6 +3,7 @@
 interface IUserInfo {
   avatarUrl: string
   nickName: string
+  phoneNumber?: string  // 用户手机号（脱敏显示）
 }
 
 interface ICartItem {
