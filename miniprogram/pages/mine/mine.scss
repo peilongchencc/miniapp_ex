@@ -18,10 +18,10 @@ page {
 
 .mine-container {
   width: 100%;
-  min-height: 100%;
   position: relative;
   overflow: hidden;
   padding-bottom: 40rpx;
+  box-sizing: border-box;
 }
 
 /* 山水装饰元素 - 远山 */
