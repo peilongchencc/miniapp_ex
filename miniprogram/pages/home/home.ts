@@ -59,9 +59,9 @@ Component({
       { id: 4, icon: '✅', title: '品质保证', desc: '正品保障' }
     ],
     
-    // 联系信息
+    // 联系信息（修改电话号码在此处）
     contact: {
-      phone: '13895617366',
+      phone: '13895617366',  // 服务热线号码，点击后会调用 wx.makePhoneCall
       workTime: '24小时服务',
       address: '宁夏回族自治区银川市兴庆区立达国际建材城39号楼2层203室'
     }
@@ -182,7 +182,13 @@ Component({
       })
     },
 
-    // 拨打电话
+    /**
+     * 拨打服务热线
+     * 
+     * 使用 wx.makePhoneCall 调起系统拨号界面
+     * 注意：弹窗文案 "拨打xxx?" 是系统原生弹窗，无法自定义
+     * 开发者工具中显示 "【仅为模拟】"，真机上会直接调起拨号
+     */
     onCallPhone() {
       wx.makePhoneCall({
         phoneNumber: this.data.contact.phone.replace(/-/g, ''),
