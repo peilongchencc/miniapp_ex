@@ -62,9 +62,14 @@ Component({
     // 联系信息（修改电话号码在此处）
     contact: {
       phone: '13895617366',  // 服务热线号码，点击后会调用 wx.makePhoneCall
+      wechat: 'peilongchencc',  // 微信号
+      wechatQrcode: 'https://funeral-supplies.oss-cn-beijing.aliyuncs.com/wechat/wechat-qrcode.png',  // 微信二维码图片
       workTime: '24小时服务',
       address: '宁夏回族自治区银川市兴庆区立达国际建材城39号楼2层203室'
-    }
+    },
+    
+    // 微信二维码弹窗显示状态
+    showWechatModal: false
   },
 
   lifetimes: {
@@ -198,22 +203,33 @@ Component({
       })
     },
 
-    // 联系客服
-    onContactService() {
-      wx.showModal({
-        title: '联系我们',
-        content: '如需咨询或下单，请拨打电话或添加微信联系',
-        confirmText: '拨打电话',
-        cancelText: '取消',
-        success: (res) => {
-          if (res.confirm) {
-            wx.makePhoneCall({
-              phoneNumber: this.data.contact.phone.replace(/-/g, ''),
-              fail: () => {
-                wx.showToast({ title: '拨打失败', icon: 'none' })
-              }
-            })
-          }
+    /**
+     * 微信联系
+     * 
+     * 显示微信二维码弹窗，用户可长按识别或复制微信号
+     */
+    onContactWechat() {
+      this.setData({ showWechatModal: true })
+    },
+
+    /**
+     * 关闭微信二维码弹窗
+     */
+    onCloseWechatModal() {
+      this.setData({ showWechatModal: false })
+    },
+
+    /**
+     * 复制微信号
+     */
+    onCopyWechat() {
+      wx.setClipboardData({
+        data: this.data.contact.wechat,
+        success: () => {
+          wx.showToast({ title: '微信号已复制', icon: 'success' })
+        },
+        fail: () => {
+          wx.showToast({ title: '复制失败', icon: 'none' })
         }
       })
     },

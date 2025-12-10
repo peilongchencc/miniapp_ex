@@ -123,10 +123,10 @@
         </view>
         <text class="contact-arrow">></text>
       </view>
-      <view class="contact-item" bindtap="onContactService">
+      <view class="contact-item" bindtap="onContactWechat">
         <text class="contact-icon">💬</text>
         <view class="contact-info">
-          <text class="contact-label">在线客服</text>
+          <text class="contact-label">微信联系</text>
           <text class="contact-value">{{contact.workTime}}</text>
         </view>
         <text class="contact-arrow">></text>
@@ -147,10 +147,36 @@
 </scroll-view>
 
 <!-- 悬浮客服按钮 -->
-<view class="float-service" bindtap="onContactService">
+<view class="float-service" bindtap="onCallPhone">
   <view class="float-icon-wrapper">
     <view class="float-headset"></view>
   </view>
   <text class="float-text">客服</text>
   <view class="float-pulse"></view>
+</view>
+
+<!-- 微信二维码弹窗 -->
+<view class="wechat-modal-mask" wx:if="{{showWechatModal}}" bindtap="onCloseWechatModal">
+  <view class="wechat-modal" catchtap="">
+    <view class="wechat-modal-header">
+      <text class="wechat-modal-title">微信联系</text>
+      <view class="wechat-modal-close" bindtap="onCloseWechatModal">×</view>
+    </view>
+    <view class="wechat-modal-body">
+      <image 
+        class="wechat-qrcode" 
+        src="{{contact.wechatQrcode}}" 
+        mode="aspectFit"
+        show-menu-by-longpress="{{true}}"
+      ></image>
+      <text class="wechat-tip">长按识别二维码添加好友</text>
+      <view class="wechat-id-row">
+        <text class="wechat-id-label">微信号：</text>
+        <text class="wechat-id-value">{{contact.wechat}}</text>
+      </view>
+    </view>
+    <view class="wechat-modal-footer">
+      <view class="wechat-copy-btn" bindtap="onCopyWechat">复制微信号</view>
+    </view>
+  </view>
 </view>
