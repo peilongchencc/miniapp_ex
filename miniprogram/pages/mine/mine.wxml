@@ -113,7 +113,7 @@
   <!-- 温馨提示 -->
   <view class="tips-card">
     <view class="tips-title">💡 温馨提示</view>
-    <text class="tips-content">本平台为预约下单平台，商家确认后将根据您的地址安排配送或物流发货</text>
+    <text class="tips-content">本平台为预约下单平台，商家确认后将根据您的地址安排配送或物流发货。</text>
   </view>
 
   <!-- 退出登录按钮 (仅登录后显示) -->
