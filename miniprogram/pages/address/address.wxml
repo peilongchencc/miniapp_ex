@@ -1,0 +1,57 @@
+<!--address.wxml-->
+<navigation-bar title="收货地址" back="{{true}}" color="white" background="linear-gradient(135deg, rgba(130, 180, 170, 0.75) 0%, rgba(100, 160, 150, 0.85) 50%, rgba(90, 150, 145, 0.9) 100%)"></navigation-bar>
+
+<scroll-view class="scrollarea" scroll-y type="list" enhanced show-scrollbar="{{false}}">
+  <view class="address-container">
+    <!-- 地址列表 -->
+    <block wx:if="{{addressList.length > 0}}">
+      <view class="address-list">
+        <view 
+          class="address-item {{item.isDefault ? 'default' : ''}}" 
+          wx:for="{{addressList}}" 
+          wx:key="id"
+        >
+          <view class="address-content" bindtap="selectAddress" data-id="{{item.id}}">
+            <view class="address-header">
+              <text class="name">{{item.userName}}</text>
+              <text class="phone">{{item.telNumber}}</text>
+              <view wx:if="{{item.isDefault}}" class="default-tag">默认</view>
+            </view>
+            <view class="address-detail">
+              {{item.provinceName}}{{item.cityName}}{{item.countyName}}{{item.detailInfo}}
+            </view>
+          </view>
+          <view class="address-actions">
+            <view class="action-item" bindtap="setDefault" data-id="{{item.id}}">
+              <text class="action-icon">{{item.isDefault ? '✓' : '○'}}</text>
+              <text class="action-text">默认</text>
+            </view>
+            <view class="action-item" bindtap="editAddress" data-index="{{index}}">
+              <text class="action-icon">✏️</text>
+              <text class="action-text">编辑</text>
+            </view>
+            <view class="action-item delete" bindtap="deleteAddress" data-id="{{item.id}}">
+              <text class="action-icon">🗑️</text>
+              <text class="action-text">删除</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <!-- 空状态 -->
+    <view wx:else class="empty-state">
+      <text class="empty-icon">📍</text>
+      <text class="empty-text">暂无收货地址</text>
+      <text class="empty-tip">点击下方按钮添加地址</text>
+    </view>
+  </view>
+</scroll-view>
+
+<!-- 底部添加按钮 -->
+<view class="bottom-bar">
+  <view class="add-btn" bindtap="addAddressFromWx">
+    <text class="add-icon">+</text>
+    <text>新增收货地址</text>
+  </view>
+</view>

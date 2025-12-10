@@ -8,6 +8,7 @@
     "pages/order-detail/order-detail",
     "pages/product-detail/product-detail",
     "pages/favorites/favorites",
+    "pages/address/address",
     "pages/logs/logs"
   ],
   "window": {

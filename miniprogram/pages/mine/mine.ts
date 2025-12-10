@@ -240,7 +240,7 @@ Component({
 
     // 收货地址
     goToAddress() {
-      wx.showToast({ title: '地址管理功能待开发', icon: 'none' })
+      wx.navigateTo({ url: '/pages/address/address' })
     },
 
     // 发票管理
