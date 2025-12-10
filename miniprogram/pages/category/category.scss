@@ -162,7 +162,7 @@ page {
 
 /* 二级分类区块 */
 .sub-category-section {
-  margin-bottom: 20rpx;
+  margin-bottom: 0;
 }
 
 /* 二级分类标题 */
@@ -170,7 +170,12 @@ page {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24rpx 20rpx 16rpx;
+  padding: 4rpx 20rpx 4rpx;
+}
+
+/* 第一个二级分类保持与搜索栏的间距 */
+.sub-category-section:first-child .sub-category-header {
+  padding-top: 24rpx;
 }
 
 .sub-category-line {
