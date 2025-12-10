@@ -1,42 +1,37 @@
-# Technology Stack
+# 技术栈
 
-## Framework & Platform
+## 框架与运行时
 
-- **Platform**: WeChat Mini Program (微信小程序)
-- **Component Framework**: Glass Easel
-- **Renderer**: Skyline rendering engine enabled
-- **Mini Program API Version**: 2.32.3
+- **平台**: 微信小程序
+- **基础库版本**: 2.32.3
+- **渲染引擎**: Skyline + glass-easel 组件框架
 
-## Languages & Preprocessors
+## 开发语言
 
-- **TypeScript**: Strict mode enabled with ES2020 target
-- **SCSS**: For styling (compiled via WeChat DevTools)
-- **WXML**: WeChat Markup Language for templates
+- **TypeScript**: 主要开发语言，严格模式启用
+- **SCSS**: 样式预处理器
+- **WXML**: 微信小程序模板语言
 
-## TypeScript Configuration
+## 编译配置
 
-Strict TypeScript settings enforced:
-- `strictNullChecks`, `noImplicitAny`, `noImplicitThis`
-- `noImplicitReturns`, `noUnusedLocals`, `noUnusedParameters`
-- `strictPropertyInitialization`
+- TypeScript 目标: ES2020
+- 模块系统: CommonJS
+- 启用严格空值检查、隐式 any 检查等严格类型检查
 
-## Development Tools
+## 依赖
 
-- **WeChat DevTools**: Primary IDE for development and debugging
-- **Compiler Plugins**: TypeScript and SASS compilation built into WeChat DevTools
-- **Type Definitions**: `miniprogram-api-typings` for WeChat API types
+- `miniprogram-api-typings`: 微信小程序 API 类型定义
 
-## Build & Compilation
+## 常用命令
 
-The project uses WeChat DevTools' built-in compilation system. No separate build commands needed - compilation happens automatically in the IDE.
+小程序项目通过微信开发者工具进行编译和预览，无需额外的构建命令。
 
-### Editor Settings
-- Tab size: 2 spaces
-- Indentation: spaces (not tabs)
+- 打开项目: 使用微信开发者工具导入项目根目录
+- 编译: 开发者工具自动编译 TypeScript 和 SCSS
+- 预览: 开发者工具点击"预览"生成二维码
+- 上传: 开发者工具点击"上传"提交审核
 
-## Key Features Enabled
+## 编辑器配置
 
-- Lazy code loading with `requiredComponents`
-- Source map upload for debugging
-- Minification for WXSS and WXML in production
-- Enhanced compilation mode
+- 缩进: 2 空格
+- 使用空格而非 Tab

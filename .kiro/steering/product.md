@@ -1,15 +1,18 @@
-# Product Overview
+# 产品概述
 
-This is a WeChat Mini Program for an e-commerce platform (贵发祥殡葬用品商城 - funeral supplies store).
+这是一个微信小程序电商应用，专注于殡葬用品销售服务。
 
-## Core Features
+## 核心功能
 
-- Home page with welcome section
-- Product category browsing
-- Shopping cart functionality
-- User profile/account management
-- Order history tracking
+- **首页**: 搜索、轮播图、商品分类入口、热销推荐、服务特色展示
+- **分类**: 商品分类浏览
+- **购物车**: 商品管理、数量调整、订单提交
+- **我的**: 用户登录（手机号授权）、订单管理、收藏夹、个人设置
+- **订单**: 订单列表、订单详情、快捷复购
 
-## Platform
+## 业务特点
 
-WeChat Mini Program using the native WeChat framework with custom navigation and tab bar navigation.
+- 支持用户专属价格（userPrice）与基准价（basePrice）双价格体系
+- 24小时服务响应
+- 全城免费配送
+- 手机号一键登录授权
