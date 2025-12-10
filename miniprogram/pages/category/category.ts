@@ -49,6 +49,7 @@ Component({
     
     // 左侧一级分类列表
     categories: [
+      { id: 'hot', name: '热销推荐' },
       { id: '1', name: '寿衣系列' },
       { id: '2', name: '祭祀用品' },
       { id: '3', name: '丧葬配件' },
@@ -61,6 +62,9 @@ Component({
 
     // 二级分类列表
     subCategories: [
+      // 热销推荐
+      { id: 'hot-1', name: '爆款热卖', parentId: 'hot' },
+      { id: 'hot-2', name: '人气精选', parentId: 'hot' },
       // 寿衣系列
       { id: '1-1', name: '男款寿衣', parentId: '1' },
       { id: '1-2', name: '女款寿衣', parentId: '1' },
@@ -99,10 +103,25 @@ Component({
     ] as SubCategory[],
     
     // 当前选中的分类ID
-    currentCategoryId: '1',
+    currentCategoryId: 'hot',
     
     // 所有商品列表（含基准价）
     allProducts: [
+      // 热销推荐 - 爆款热卖（来自首页热销商品）
+      { id: 'hot-101', name: '高档真丝寿衣七件套', image: '/images/default-product.png', categoryId: 'hot', subCategoryId: 'hot-1', basePrice: 1580 },
+      { id: 'hot-102', name: '天然玉石骨灰盒', image: '/images/default-product.png', categoryId: 'hot', subCategoryId: 'hot-1', basePrice: 4280 },
+      { id: 'hot-103', name: '鲜花花圈精选款', image: '/images/default-product.png', categoryId: 'hot', subCategoryId: 'hot-1', basePrice: 488 },
+      { id: 'hot-104', name: '祭祀用品套装', image: '/images/default-product.png', categoryId: 'hot', subCategoryId: 'hot-1', basePrice: 218 },
+      { id: 'hot-105', name: '精品檀木骨灰盒', image: '/images/default-product.png', categoryId: 'hot', subCategoryId: 'hot-1', basePrice: 3880 },
+      { id: 'hot-106', name: '豪华寿衣九件套', image: '/images/default-product.png', categoryId: 'hot', subCategoryId: 'hot-1', basePrice: 2680 },
+      // 热销推荐 - 人气精选
+      { id: 'hot-201', name: '白菊花圈大号', image: '/images/default-product.png', categoryId: 'hot', subCategoryId: 'hot-2', basePrice: 358 },
+      { id: 'hot-202', name: '高级香烛礼盒', image: '/images/default-product.png', categoryId: 'hot', subCategoryId: 'hot-2', basePrice: 128 },
+      { id: 'hot-203', name: '纯铜香炉套装', image: '/images/default-product.png', categoryId: 'hot', subCategoryId: 'hot-2', basePrice: 268 },
+      { id: 'hot-204', name: '精美遗像框', image: '/images/default-product.png', categoryId: 'hot', subCategoryId: 'hot-2', basePrice: 158 },
+      { id: 'hot-205', name: '金银元宝组合装', image: '/images/default-product.png', categoryId: 'hot', subCategoryId: 'hot-2', basePrice: 88 },
+      { id: 'hot-206', name: '殡葬一条龙服务', image: '/images/default-product.png', categoryId: 'hot', subCategoryId: 'hot-2', basePrice: 5880 },
+
       // 寿衣系列 - 男款
       { id: '101', name: '男士唐装寿衣', image: '/images/default-product.png', categoryId: '1', subCategoryId: '1-1', basePrice: 688 },
       { id: '102', name: '男士中山装', image: '/images/default-product.png', categoryId: '1', subCategoryId: '1-1', basePrice: 588 },
