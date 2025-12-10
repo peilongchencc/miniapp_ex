@@ -8,6 +8,7 @@ App<IAppOption>({
     cartItems: [] as ICartItem[],
     orderHistory: [] as IOrder[],
     favorites: [] as IFavoriteItem[],
+    targetCategoryId: undefined,
   },
 
   onLaunch() {

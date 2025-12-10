@@ -166,6 +166,14 @@ Component({
       wx.switchTab({ url: '/pages/category/category' })
     },
 
+    // 查看更多热销商品
+    onViewMoreHot() {
+      // 设置全局状态，让分类页知道要跳转到热销推荐
+      const app = getApp<IAppOption>()
+      app.globalData.targetCategoryId = 'hot'
+      wx.switchTab({ url: '/pages/category/category' })
+    },
+
     // 点击商品
     onProductTap(e: WechatMiniprogram.TouchEvent) {
       const { id, name, image, basePrice } = e.currentTarget.dataset

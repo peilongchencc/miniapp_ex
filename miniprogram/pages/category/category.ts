@@ -254,6 +254,19 @@ Component({
       this.filterProducts(this.data.currentCategoryId)
     }
   },
+
+  pageLifetimes: {
+    show() {
+      // 检查是否有目标分类需要跳转
+      const app = getApp<IAppOption>()
+      if (app.globalData.targetCategoryId) {
+        const targetId = app.globalData.targetCategoryId
+        app.globalData.targetCategoryId = undefined // 清除状态
+        this.setData({ currentCategoryId: targetId })
+        this.filterProducts(targetId)
+      }
+    }
+  },
   
   methods: {
     // 搜索输入
