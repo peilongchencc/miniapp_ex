@@ -234,9 +234,23 @@ Component({
       })
     },
 
-    // 查看地址
+    /**
+     * 查看门店地址
+     * 
+     * 使用 wx.openLocation 打开微信内置地图
+     * 用户可点击"导航"按钮跳转到腾讯地图/高德地图等进行导航
+     */
     onViewAddress() {
-      wx.showToast({ title: '地图导航待开发', icon: 'none' })
+      wx.openLocation({
+        latitude: 38.428080,
+        longitude: 106.303552,
+        name: '立达国际建材城39号楼',
+        address: '宁夏银川市兴庆区立达国际建材城39号楼2层203室',
+        scale: 16,
+        fail: () => {
+          wx.showToast({ title: '打开地图失败', icon: 'none' })
+        }
+      })
     }
   }
 })
