@@ -115,9 +115,7 @@
         </view>
         <view class="pricing-row">
           <text class="pricing-label">运费</text>
-          <text class="pricing-value {{order.pricing.freight === 0 ? 'free' : ''}}">
-            {{order.pricing.freight === 0 ? '免运费' : '¥' + order.pricing.freight}}
-          </text>
+          <text class="pricing-value {{order.pricing.freight === 0 ? 'free' : ''}}">{{order.pricing.freight === 0 ? '免运费' : '¥' + order.pricing.freight}}</text>
         </view>
         <view class="pricing-row" wx:if="{{order.pricing.discount > 0}}">
           <text class="pricing-label">优惠</text>
