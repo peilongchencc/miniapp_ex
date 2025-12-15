@@ -1,5 +1,5 @@
 // product-detail.ts
-// 商品详情页 - 支持用户专属价格显示
+// 商品详情页 - 订货目录展示
 
 const app = getApp<IAppOption>()
 
@@ -22,10 +22,6 @@ interface ProductDetail {
   id: string
   name: string
   images: string[]
-  /** 基准价（划线价） */
-  basePrice: number
-  /** 用户专属价格，null表示未设置 */
-  userPrice: number | null
   soldCount: number
   stock: number
   categoryId: string
@@ -106,13 +102,9 @@ Component({
         Record<string, unknown>,
         Record<string, unknown>
       >
-      const { id, name, image, basePrice } = currentPage.options || {}
-
-      // 从URL参数获取基准价，如果没有则使用默认值
-      const parsedBasePrice = basePrice ? parseInt(basePrice as string) : 2888
+      const { id, name, image } = currentPage.options || {}
 
       // 模拟商品数据
-      // 实际开发时，后端会根据当前登录用户返回对应的 userPrice
       const mockProduct: ProductDetail = {
         id: (id as string) || '1',
         name: name ? decodeURIComponent(name as string) : '高档檀木骨灰盒 精雕细琢 庄重典雅',
@@ -121,11 +113,6 @@ Component({
           '/images/default-product.png',
           '/images/default-product.png'
         ],
-        // basePrice: 基准价（划线价），从URL参数获取或使用默认值
-        basePrice: parsedBasePrice,
-        // userPrice: 用户专属价格（当前价），低于基准价时显示划线效果
-        // TODO: 实际开发时从后端API获取当前用户的专属价
-        userPrice: Math.round(parsedBasePrice * 0.85),  // 模拟：专属价为基准价的85%
         soldCount: 128,
         stock: 50,
         categoryId: '1',
@@ -302,9 +289,7 @@ Component({
         app.addFavorite({
           id: product.id,
           name: product.name,
-          image: product.images[0],
-          basePrice: product.basePrice,
-          userPrice: product.userPrice
+          image: product.images[0]
         })
         this.setData({ isFavorite: true })
         wx.showToast({ title: '已收藏', icon: 'success' })
@@ -339,9 +324,7 @@ Component({
         id: product.id,
         name: product.name,
         image: product.images[0],
-        quantity: quantity,
-        basePrice: product.basePrice,
-        userPrice: product.userPrice
+        quantity: quantity
       })
 
       wx.showToast({
@@ -384,9 +367,7 @@ Component({
         id: product.id,
         name: product.name,
         image: product.images[0],
-        quantity: quantity,
-        basePrice: product.basePrice,
-        userPrice: product.userPrice
+        quantity: quantity
       })
 
       wx.switchTab({ url: '/pages/cart/cart' })
