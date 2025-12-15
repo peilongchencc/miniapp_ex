@@ -7,7 +7,7 @@
     background="linear-gradient(135deg, rgba(130, 180, 170, 0.85) 0%, rgba(100, 160, 150, 0.95) 100%)"
   ></navigation-bar>
 
-  <view class="cart-body">
+  <view class="cart-body" bindtap="resetAllSwipedItems">
     <!-- 空状态 -->
     <view class="empty-state" wx:if="{{!hasItems}}">
       <image class="empty-image" src="{{emptyImage}}" mode="aspectFit"></image>
@@ -19,7 +19,7 @@
     <!-- 购物车列表 -->
     <scroll-view class="cart-list" scroll-y wx:else>
       <!-- 提示信息 -->
-      <view class="cart-notice">
+      <view class="cart-notice" bindtap="resetAllSwipedItems">
         <text class="notice-icon">💡</text>
         <text class="notice-text">量大可咨询店主获取优惠价格</text>
       </view>
@@ -84,7 +84,7 @@
       </view>
 
       <!-- 备注输入 -->
-      <view class="remark-section">
+      <view class="remark-section" bindtap="resetAllSwipedItems">
         <text class="remark-label">订单备注</text>
         <textarea 
           class="remark-input" 
@@ -100,11 +100,11 @@
     </scroll-view>
 
     <!-- 底部结算栏 -->
-    <view class="bottom-bar" wx:if="{{hasItems}}">
+    <view class="bottom-bar" wx:if="{{hasItems}}" catchtap="resetAllSwipedItems">
       <view class="bar-left">
         <view 
           class="select-all {{selectAll ? 'checked' : ''}}" 
-          bindtap="toggleSelectAll"
+          catchtap="toggleSelectAll"
         >
           <view class="checkbox">
             <text wx:if="{{selectAll}}">✓</text>

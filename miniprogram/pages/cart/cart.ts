@@ -237,6 +237,20 @@ Component({
       }
     },
 
+    // 收起所有已展开的删除按钮
+    resetAllSwipedItems() {
+      const updates: Record<string, number | boolean> = {}
+      this.data.cartItems.forEach((item, idx) => {
+        if (item.offsetX !== 0) {
+          updates[`cartItems[${idx}].offsetX`] = 0
+          updates[`cartItems[${idx}].swiped`] = false
+        }
+      })
+      if (Object.keys(updates).length > 0) {
+        this.setData(updates)
+      }
+    },
+
     // 删除商品
     deleteItem(e: WechatMiniprogram.TouchEvent) {
       const index = e.currentTarget.dataset.index as number
@@ -256,6 +270,12 @@ Component({
             this.syncToGlobal()
             this.updateSelectAll()
             this.updateTotalCount()
+          } else {
+            // 用户取消删除，收起滑动按钮
+            this.setData({
+              [`cartItems[${index}].offsetX`]: 0,
+              [`cartItems[${index}].swiped`]: false
+            })
           }
         }
       })
