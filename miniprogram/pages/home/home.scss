@@ -219,27 +219,6 @@ page {
   height: 72rpx;
 }
 
-.product-price-row {
-  display: flex;
-  align-items: baseline;
-  margin-top: 12rpx;
-  min-height: 44rpx;
-  gap: 8rpx;
-}
-
-.product-price {
-  font-size: 32rpx;
-  font-weight: 600;
-  color: #e64340;
-}
-
-// 划线价（原价）
-.original-price {
-  font-size: 24rpx;
-  color: #999;
-  text-decoration: line-through;
-}
-
 // 微信询价
 .inquiry-price {
   display: inline-block;

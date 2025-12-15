@@ -45,7 +45,6 @@ interface IAppOption {
     /** 目标分类ID，用于从首页跳转到分类页时指定分类 */
     targetCategoryId?: string
   }
-  userInfoReadyCallback?: WechatMiniprogram.GetUserInfoSuccessCallback
   addToCart: (item: ICartItem) => void
   clearCart: () => void
   submitOrder: (remark?: string) => IOrder | null

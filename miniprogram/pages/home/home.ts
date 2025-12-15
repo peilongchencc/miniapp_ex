@@ -113,34 +113,6 @@ Component({
       this.setData({ hotProducts: mockProducts })
     },
 
-    /**
-     * 跳转登录
-     */
-    goToLogin() {
-      wx.navigateTo({ url: '/pages/login/login' })
-    },
-
-    /**
-     * 联系客服获取报价
-     */
-    contactForPrice() {
-      wx.showActionSheet({
-        itemList: ['拨打电话咨询', '微信客服'],
-        success: (res) => {
-          if (res.tapIndex === 0) {
-            wx.makePhoneCall({
-              phoneNumber: '13900000000',
-              fail: () => {
-                wx.showToast({ title: '拨打失败', icon: 'none' })
-              }
-            })
-          } else {
-            wx.showToast({ title: '请添加微信：xxxxx', icon: 'none', duration: 3000 })
-          }
-        }
-      })
-    },
-
     // 搜索输入
     onSearchInput(e: WechatMiniprogram.Input) {
       this.setData({ searchKeyword: e.detail.value })

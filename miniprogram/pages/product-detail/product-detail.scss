@@ -69,26 +69,6 @@
       align-items: baseline;
       gap: 12rpx;
 
-      .price-symbol {
-        font-size: 28rpx;
-        color: #e64340;
-        font-weight: 600;
-      }
-
-      .price-value {
-        font-size: 48rpx;
-        color: #e64340;
-        font-weight: 700;
-      }
-
-      // 划线价
-      .original-price {
-        font-size: 28rpx;
-        color: #999;
-        text-decoration: line-through;
-      }
-
-      // 微信询价
       .inquiry-price {
         font-size: 32rpx;
         color: #5a9690;
@@ -412,29 +392,6 @@
         align-items: baseline;
         gap: 12rpx;
         margin-bottom: 8rpx;
-      }
-
-      .popup-price {
-        display: flex;
-        align-items: baseline;
-
-        .popup-price-symbol {
-          font-size: 24rpx;
-          color: #e64340;
-          font-weight: 600;
-        }
-
-        .popup-price-value {
-          font-size: 36rpx;
-          color: #e64340;
-          font-weight: 700;
-        }
-      }
-
-      .popup-original-price {
-        font-size: 24rpx;
-        color: #999;
-        text-decoration: line-through;
       }
 
       .popup-inquiry-price {

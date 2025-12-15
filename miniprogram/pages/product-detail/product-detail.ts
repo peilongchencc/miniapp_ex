@@ -183,34 +183,6 @@ Component({
     },
 
     /**
-     * 跳转登录
-     */
-    goToLogin() {
-      wx.navigateTo({ url: '/pages/login/login' })
-    },
-
-    /**
-     * 联系客服获取报价
-     */
-    contactForPrice() {
-      wx.showActionSheet({
-        itemList: ['拨打电话咨询', '微信客服'],
-        success: (res) => {
-          if (res.tapIndex === 0) {
-            wx.makePhoneCall({
-              phoneNumber: '13900000000',
-              fail: () => {
-                wx.showToast({ title: '拨打失败', icon: 'none' })
-              }
-            })
-          } else {
-            wx.showToast({ title: '请添加微信：xxxxx', icon: 'none', duration: 3000 })
-          }
-        }
-      })
-    },
-
-    /**
      * 轮播图切换
      */
     onSwiperChange(e: WechatMiniprogram.SwiperChange) {
@@ -353,7 +325,9 @@ Component({
           content: '请先登录后再操作',
           confirmText: '去登录',
           success: (res) => {
-            if (res.confirm) this.goToLogin()
+            if (res.confirm) {
+              wx.switchTab({ url: '/pages/mine/mine' })
+            }
           }
         })
         return
@@ -398,7 +372,9 @@ Component({
           content: '请先登录后再操作',
           confirmText: '去登录',
           success: (res) => {
-            if (res.confirm) this.goToLogin()
+            if (res.confirm) {
+              wx.switchTab({ url: '/pages/mine/mine' })
+            }
           }
         })
         return
