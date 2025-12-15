@@ -103,33 +103,6 @@
       </view>
     </view>
 
-    <!-- 价格明细 -->
-    <view class="pricing-card" wx:if="{{order.pricing}}">
-      <view class="card-header">
-        <text class="card-title">价格明细</text>
-      </view>
-      <view class="pricing-list">
-        <view class="pricing-row">
-          <text class="pricing-label">商品小计</text>
-          <text class="pricing-value">¥{{order.pricing.subtotal}}</text>
-        </view>
-        <view class="pricing-row">
-          <text class="pricing-label">运费</text>
-          <text class="pricing-value {{order.pricing.freight === 0 ? 'free' : ''}}">{{order.pricing.freight === 0 ? '免运费' : '¥' + order.pricing.freight}}</text>
-        </view>
-        <view class="pricing-row" wx:if="{{order.pricing.discount > 0}}">
-          <text class="pricing-label">优惠</text>
-          <text class="pricing-value discount">-¥{{order.pricing.discount}}</text>
-        </view>
-        <view class="pricing-total">
-          <text class="total-label">实付金额</text>
-          <text class="total-value">¥{{order.pricing.total}}</text>
-        </view>
-      </view>
-    </view>
-
-
-
     <!-- 订单信息 -->
     <view class="order-info-card">
       <view class="card-header">
