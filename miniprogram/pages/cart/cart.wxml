@@ -1,23 +1,22 @@
 <!--cart.wxml-->
-<view class="cart-page">
-  <navigation-bar
-    title="购物车"
-    back="{{false}}"
-    color="white"
-    background="linear-gradient(135deg, rgba(130, 180, 170, 0.85) 0%, rgba(100, 160, 150, 0.95) 100%)"
-  ></navigation-bar>
+<navigation-bar
+  title="购物车"
+  back="{{false}}"
+  color="white"
+  background="linear-gradient(135deg, rgba(130, 180, 170, 0.85) 0%, rgba(100, 160, 150, 0.95) 100%)"
+></navigation-bar>
 
-  <view class="cart-body" bindtap="resetAllSwipedItems">
-    <!-- 空状态 -->
-    <view class="empty-state" wx:if="{{!hasItems}}">
-      <image class="empty-image" src="{{emptyImage}}" mode="aspectFit"></image>
-      <text class="empty-text">购物车空空如也</text>
-      <text class="empty-tip">快去挑选商品吧</text>
-      <button class="go-shopping-btn" bindtap="goToCategory" hover-class="none">去逛逛</button>
-    </view>
+<scroll-view class="cart-scroll" scroll-y type="list" bindtap="resetAllSwipedItems">
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{!hasItems}}">
+    <image class="empty-image" src="{{emptyImage}}" mode="aspectFit"></image>
+    <text class="empty-text">购物车空空如也</text>
+    <text class="empty-tip">快去挑选商品吧</text>
+    <button class="go-shopping-btn" bindtap="goToCategory" hover-class="none">去逛逛</button>
+  </view>
 
-    <!-- 购物车列表 -->
-    <scroll-view class="cart-list" scroll-y wx:else>
+  <!-- 购物车列表 -->
+  <view class="cart-content" wx:else>
       <!-- 提示信息 -->
       <view class="cart-notice" bindtap="resetAllSwipedItems">
         <text class="notice-icon">💡</text>
@@ -95,27 +94,26 @@
         ></textarea>
       </view>
 
-      <!-- 底部占位 -->
-      <view class="bottom-placeholder"></view>
-    </scroll-view>
+    <!-- 底部占位 -->
+    <view class="bottom-placeholder"></view>
+  </view>
+</scroll-view>
 
-    <!-- 底部结算栏 -->
-    <view class="bottom-bar" wx:if="{{hasItems}}" catchtap="resetAllSwipedItems">
-      <view class="bar-left">
-        <view 
-          class="select-all {{selectAll ? 'checked' : ''}}" 
-          catchtap="toggleSelectAll"
-        >
-          <view class="checkbox">
-            <text wx:if="{{selectAll}}">✓</text>
-          </view>
-          <text class="select-text">全选</text>
-        </view>
+<!-- 底部结算栏 -->
+<view class="bottom-bar" wx:if="{{hasItems}}" catchtap="resetAllSwipedItems">
+  <view class="bar-left">
+    <view 
+      class="select-all {{selectAll ? 'checked' : ''}}" 
+      catchtap="toggleSelectAll"
+    >
+      <view class="checkbox">
+        <text wx:if="{{selectAll}}">✓</text>
       </view>
-      <view class="bar-right">
-        <text class="total-text">共 {{totalCount}} 件</text>
-        <view class="submit-btn" bindtap="submitOrder">提交订单</view>
-      </view>
+      <text class="select-text">全选</text>
     </view>
+  </view>
+  <view class="bar-right">
+    <text class="total-text">共 {{totalCount}} 件</text>
+    <view class="submit-btn" bindtap="submitOrder">提交订单</view>
   </view>
 </view>

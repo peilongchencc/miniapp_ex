@@ -1,20 +1,19 @@
 // cart.scss
-.cart-page {
-  min-height: 100vh;
-  background: #f5f5f5;
+page {
+  height: 100vh;
   display: flex;
   flex-direction: column;
+  background: #f5f5f5;
 }
 
-.cart-body {
+.cart-scroll {
   flex: 1;
-  display: flex;
-  flex-direction: column;
+  overflow-y: hidden;
 }
 
 // 空状态
 .empty-state {
-  flex: 1;
+  min-height: calc(100vh - 200rpx);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -58,9 +57,8 @@
   }
 }
 
-// 购物车列表
-.cart-list {
-  flex: 1;
+// 购物车内容区
+.cart-content {
   padding-bottom: 120rpx;
 }
 
