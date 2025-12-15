@@ -91,11 +91,6 @@
             <text class="item-name">{{item.name}}</text>
             <text class="item-spec" wx:if="{{item.spec}}">规格：{{item.spec}}</text>
             <view class="item-price-row">
-              <!-- 价格显示：当前价 + 划线价 -->
-              <view class="price-wrap">
-                <text class="item-price">¥{{item.userPrice || item.basePrice}}</text>
-                <text class="item-original-price" wx:if="{{item.userPrice && item.userPrice < item.basePrice}}">¥{{item.basePrice}}</text>
-              </view>
               <text class="item-quantity">x{{item.quantity}}</text>
             </view>
           </view>
