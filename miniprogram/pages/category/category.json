@@ -1,6 +1,7 @@
 {
   "usingComponents": {},
   "navigationBarTitleText": "分类",
-  "navigationStyle": "custom"
+  "navigationStyle": "custom",
+  "disableScroll": true
 }
 

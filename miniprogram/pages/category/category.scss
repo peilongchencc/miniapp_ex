@@ -70,6 +70,8 @@ page {
   flex: 1;
   display: flex;
   overflow: hidden;
+  /* 防止内容区域整体被拖动 */
+  overscroll-behavior: none;
 }
 
 /* 左右两侧滚动区域 */
