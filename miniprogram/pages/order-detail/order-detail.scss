@@ -1,6 +1,8 @@
 /* order-detail.scss */
 page {
-  min-height: 100vh;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
   background: linear-gradient(
     180deg,
     #d4e8e0 0%,
@@ -10,16 +12,17 @@ page {
   );
 }
 
-.detail-page {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+.scrollarea {
+  flex: 1;
+  overflow-y: hidden;
 }
 
-.detail-body {
-  flex: 1;
+.detail-content {
   padding: 20rpx;
-  padding-bottom: 160rpx;
+}
+
+.bottom-placeholder {
+  height: 140rpx;
 }
 
 /* 状态头部 */

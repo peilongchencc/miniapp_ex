@@ -1,14 +1,13 @@
 <!--product-detail.wxml-->
-<view class="detail-page">
-  <navigation-bar
-    title="商品详情"
-    back="{{true}}"
-    color="white"
-    background="linear-gradient(135deg, rgba(130, 180, 170, 0.85) 0%, rgba(100, 160, 150, 0.95) 100%)"
-    bindback="goBack"
-  />
+<navigation-bar
+  title="商品详情"
+  back="{{true}}"
+  color="white"
+  background="linear-gradient(135deg, rgba(130, 180, 170, 0.85) 0%, rgba(100, 160, 150, 0.95) 100%)"
+  bindback="goBack"
+/>
 
-  <scroll-view class="detail-body" scroll-y wx:if="{{product}}" style="padding-top: {{navBarHeight}}px;">
+<scroll-view class="scrollarea" scroll-y type="list" enhanced show-scrollbar="{{false}}" wx:if="{{product}}">
     <!-- 商品图片轮播 -->
     <view class="swiper-section">
       <swiper 
@@ -100,12 +99,12 @@
       </view>
     </view>
 
-    <!-- 底部占位 -->
-    <view class="bottom-placeholder"></view>
-  </scroll-view>
+  <!-- 底部占位 -->
+  <view class="bottom-placeholder"></view>
+</scroll-view>
 
-  <!-- 底部操作栏 -->
-  <view class="bottom-bar" wx:if="{{product}}">
+<!-- 底部操作栏 -->
+<view class="bottom-bar" wx:if="{{product}}">
     <view class="bar-left">
       <view class="bar-item" bindtap="contactService">
         <text class="bar-icon">📞</text>
@@ -124,11 +123,11 @@
       <view class="btn-cart {{isAddingToCart ? 'disabled' : ''}}" bindtap="addToCart">加入购物车</view>
       <view class="btn-buy" bindtap="buyNow">立即下单</view>
     </view>
-  </view>
+</view>
 
-  <!-- 规格选择弹窗 -->
-  <view class="spec-popup-mask {{showSpecPopup ? 'show' : ''}}" bindtap="hideSpecPopup"></view>
-  <view class="spec-popup {{showSpecPopup ? 'show' : ''}}">
+<!-- 规格选择弹窗 -->
+<view class="spec-popup-mask {{showSpecPopup ? 'show' : ''}}" bindtap="hideSpecPopup"></view>
+<view class="spec-popup {{showSpecPopup ? 'show' : ''}}">
     <view class="popup-header">
       <image class="popup-image" src="{{product.images[0]}}" mode="aspectFill" />
       <view class="popup-info">
@@ -180,6 +179,5 @@
     <view class="popup-footer">
       <view class="popup-btn cart" bindtap="addToCart">加入购物车</view>
       <view class="popup-btn buy" bindtap="buyNow">立即下单</view>
-    </view>
   </view>
 </view>

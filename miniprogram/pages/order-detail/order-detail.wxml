@@ -1,14 +1,14 @@
 <!--order-detail.wxml-->
-<view class="detail-page">
-  <navigation-bar
-    title="订单详情"
-    back="{{true}}"
-    color="white"
-    background="linear-gradient(135deg, rgba(130, 180, 170, 0.85) 0%, rgba(100, 160, 150, 0.95) 100%)"
-    bindback="goBack"
-  ></navigation-bar>
+<navigation-bar
+  title="订单详情"
+  back="{{true}}"
+  color="white"
+  background="linear-gradient(135deg, rgba(130, 180, 170, 0.85) 0%, rgba(100, 160, 150, 0.95) 100%)"
+  bindback="goBack"
+></navigation-bar>
 
-  <view class="detail-body" wx:if="{{order}}">
+<scroll-view class="scrollarea" scroll-y type="list" enhanced show-scrollbar="{{false}}" wx:if="{{order}}">
+  <view class="detail-content">
     <!-- 订单状态头部 -->
     <view class="status-header status-bg-{{order.status}}">
       <view class="status-main">
@@ -98,54 +98,57 @@
       </view>
     </view>
 
-    <!-- 订单信息 -->
-    <view class="order-info-card">
-      <view class="card-header">
-        <text class="card-title">订单信息</text>
-      </view>
-      <view class="order-info-list">
-        <view class="info-row">
-          <text class="info-label">订单编号</text>
-          <view class="info-value-wrap">
-            <text class="info-value">{{order.id}}</text>
-            <view class="copy-btn small" bindtap="copyOrderId">复制</view>
-          </view>
-        </view>
-        <view class="info-row">
-          <text class="info-label">下单时间</text>
-          <text class="info-value">{{order.createTime}}</text>
-        </view>
-        <view class="info-row" wx:if="{{order.remark}}">
-          <text class="info-label">订单备注</text>
-          <text class="info-value remark">{{order.remark}}</text>
-        </view>
-      </view>
+  <!-- 订单信息 -->
+  <view class="order-info-card">
+    <view class="card-header">
+      <text class="card-title">订单信息</text>
     </view>
-
-    <!-- 底部操作 -->
-    <view class="bottom-actions">
-      <view class="action-left">
-        <view class="action-btn secondary" bindtap="contactService">联系客服</view>
-        <view 
-          class="action-btn secondary" 
-          wx:if="{{order.status === 'pending'}}" 
-          bindtap="cancelOrder"
-        >取消订单</view>
+    <view class="order-info-list">
+      <view class="info-row">
+        <text class="info-label">订单编号</text>
+        <view class="info-value-wrap">
+          <text class="info-value">{{order.id}}</text>
+          <view class="copy-btn small" bindtap="copyOrderId">复制</view>
+        </view>
       </view>
-      <view class="action-right">
-        <view 
-          class="action-btn primary" 
-          wx:if="{{order.status === 'shipped'}}" 
-          bindtap="confirmReceive"
-        >确认收货</view>
-        <view class="action-btn primary" bindtap="handleReorder">再次购买</view>
+      <view class="info-row">
+        <text class="info-label">下单时间</text>
+        <text class="info-value">{{order.createTime}}</text>
+      </view>
+      <view class="info-row" wx:if="{{order.remark}}">
+        <text class="info-label">订单备注</text>
+        <text class="info-value remark">{{order.remark}}</text>
       </view>
     </view>
   </view>
 
-  <!-- 空状态 -->
-  <view class="empty-state" wx:else>
-    <text class="empty-text">订单不存在</text>
-    <view class="empty-btn" bindtap="goBack">返回</view>
+    <!-- 底部占位 -->
+    <view class="bottom-placeholder"></view>
   </view>
+</scroll-view>
+
+<!-- 底部操作 -->
+<view class="bottom-actions" wx:if="{{order}}">
+  <view class="action-left">
+    <view class="action-btn secondary" bindtap="contactService">联系客服</view>
+    <view 
+      class="action-btn secondary" 
+      wx:if="{{order.status === 'pending'}}" 
+      bindtap="cancelOrder"
+    >取消订单</view>
+  </view>
+  <view class="action-right">
+    <view 
+      class="action-btn primary" 
+      wx:if="{{order.status === 'shipped'}}" 
+      bindtap="confirmReceive"
+    >确认收货</view>
+    <view class="action-btn primary" bindtap="handleReorder">再次购买</view>
+  </view>
+</view>
+
+<!-- 空状态 -->
+<view class="empty-state" wx:if="{{!order}}">
+  <text class="empty-text">订单不存在</text>
+  <view class="empty-btn" bindtap="goBack">返回</view>
 </view>

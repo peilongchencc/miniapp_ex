@@ -1,17 +1,23 @@
 /**favorites.scss**/
 page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
   background: linear-gradient(180deg, 
     #d4e8e0 0%,
     #e8f4f0 30%,
     #f0f8f5 60%,
     #e5f2f0 100%
   );
-  min-height: 100vh;
+}
+
+.scrollarea {
+  flex: 1;
+  overflow-y: hidden;
 }
 
 .favorites-container {
   padding: 20rpx;
-  padding-top: 120rpx;
 }
 
 /* 空状态 */

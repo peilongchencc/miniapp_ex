@@ -6,7 +6,7 @@
   background="linear-gradient(135deg, rgba(130, 180, 170, 0.85) 0%, rgba(100, 160, 150, 0.95) 100%)"
 ></navigation-bar>
 
-<scroll-view class="cart-scroll" scroll-y type="list" bindtap="resetAllSwipedItems">
+<scroll-view class="cart-scroll" scroll-y type="list" enhanced show-scrollbar="{{false}}" bindtap="resetAllSwipedItems">
   <!-- 空状态 -->
   <view class="empty-state" wx:if="{{!hasItems}}">
     <image class="empty-image" src="{{emptyImage}}" mode="aspectFit"></image>

@@ -1,24 +1,14 @@
 // product-detail.scss
-.detail-page {
-  min-height: 100vh;
-  background: #f5f5f5;
+page {
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  position: relative;
-
-  // 导航栏固定在顶部
-  navigation-bar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
-  }
+  background: #f5f5f5;
 }
 
-.detail-body {
+.scrollarea {
   flex: 1;
-  padding-bottom: 120rpx;
+  overflow-y: hidden;
 }
 
 // 轮播图区域

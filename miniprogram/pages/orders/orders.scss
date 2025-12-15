@@ -1,6 +1,8 @@
 /* orders.scss */
 page {
-  min-height: 100vh;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
   background: linear-gradient(
     180deg,
     #d4e8e0 0%,
@@ -10,16 +12,9 @@ page {
   );
 }
 
-.orders-page {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.orders-body {
+.scrollarea {
   flex: 1;
-  padding: 20rpx;
-  box-sizing: border-box;
+  overflow-y: hidden;
 }
 
 /* 空状态 */
@@ -29,6 +24,8 @@ page {
   align-items: center;
   justify-content: center;
   padding-top: 200rpx;
+  padding-left: 20rpx;
+  padding-right: 20rpx;
 }
 
 .empty-image {
@@ -47,6 +44,7 @@ page {
   display: flex;
   flex-direction: column;
   gap: 20rpx;
+  padding: 20rpx;
 }
 
 .order-card {
