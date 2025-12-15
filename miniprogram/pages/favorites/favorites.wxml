@@ -21,10 +21,6 @@
       <image class="product-image" src="{{item.image}}" mode="aspectFill"></image>
       <view class="product-info">
         <text class="product-name">{{item.name}}</text>
-        <view class="price-row">
-          <text class="current-price">¥{{item.userPrice || item.basePrice}}</text>
-          <text wx:if="{{item.userPrice && item.userPrice < item.basePrice}}" class="original-price">¥{{item.basePrice}}</text>
-        </view>
       </view>
       <view class="action-btns">
         <view class="add-cart-btn" catchtap="addToCart" data-item="{{item}}">加入购物车</view>

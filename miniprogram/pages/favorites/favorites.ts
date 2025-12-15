@@ -34,7 +34,7 @@ Component({
      */
     goToDetail(e: WechatMiniprogram.TouchEvent) {
       const { item } = e.currentTarget.dataset
-      const params = `id=${item.id}&name=${encodeURIComponent(item.name)}&image=${encodeURIComponent(item.image)}&basePrice=${item.basePrice}`
+      const params = `id=${item.id}&name=${encodeURIComponent(item.name)}&image=${encodeURIComponent(item.image)}`
       wx.navigateTo({ url: `/pages/product-detail/product-detail?${params}` })
     },
 
@@ -47,9 +47,7 @@ Component({
         id: item.id,
         name: item.name,
         image: item.image,
-        quantity: 1,
-        basePrice: item.basePrice,
-        userPrice: item.userPrice
+        quantity: 1
       })
       wx.showToast({ title: '已加入购物车', icon: 'success' })
     },

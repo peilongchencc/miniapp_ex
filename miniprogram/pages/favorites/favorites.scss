@@ -85,25 +85,6 @@ page {
   line-height: 1.4;
 }
 
-.price-row {
-  margin-top: 16rpx;
-  display: flex;
-  align-items: baseline;
-  gap: 12rpx;
-}
-
-.current-price {
-  font-size: 32rpx;
-  color: #e74c3c;
-  font-weight: bold;
-}
-
-.original-price {
-  font-size: 24rpx;
-  color: #999;
-  text-decoration: line-through;
-}
-
 .action-btns {
   display: flex;
   flex-direction: column;
