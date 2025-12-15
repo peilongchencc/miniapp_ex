@@ -1,5 +1,8 @@
 /* category.scss */
 page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
   background: linear-gradient(180deg, 
     #d4e8e0 0%,
     #e8f4f0 30%,
@@ -8,25 +11,10 @@ page {
   );
 }
 
-.container {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background-color: transparent;
-  align-items: stretch;
-  justify-content: flex-start;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-/* 自定义导航栏 */
+/* 自定义导航栏 - 不在滚动容器内，自然固定 */
 .custom-navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
   background-color: transparent;
+  flex-shrink: 0;
 }
 
 .navbar-content {
@@ -82,13 +70,18 @@ page {
   flex: 1;
   display: flex;
   overflow: hidden;
-  margin-top: 0rpx;
+}
+
+/* 左右两侧滚动区域 */
+.category-list,
+.product-list {
+  overflow-y: hidden;
 }
 
 /* 左侧分类列表 */
 .category-list {
   width: 180rpx;
-  height: 100%;
+  flex-shrink: 0;
   background-color: transparent;
   padding-top: 20rpx;
 }
@@ -146,7 +139,6 @@ page {
 /* 右侧商品列表 */
 .product-list {
   flex: 1;
-  height: 100%;
   background-color: transparent;
 }
 

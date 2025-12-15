@@ -1,25 +1,25 @@
 <!--category.wxml-->
-<view class="container" style="padding-top: {{navPlaceholderHeight}}px;">
-  <!-- 自定义导航栏 -->
-  <view class="custom-navbar" style="padding-top: {{statusBarHeight}}px;">
-    <view class="navbar-content" style="height: {{menuButtonHeight}}px; margin-top: {{menuButtonTop - statusBarHeight}}px; padding-right: {{menuButtonRight + menuButtonWidth + 16}}px;">
-      <!-- 搜索框 -->
-      <view class="search-box">
-        <image class="search-icon" src="/images/search-icon.png" mode="aspectFit"></image>
-        <input 
-          class="search-input" 
-          type="text" 
-          placeholder="搜索商品名称" 
-          value="{{searchKeyword}}"
-          bindinput="onSearchInput"
-          bindconfirm="onSearchConfirm"
-        />
-        <view wx:if="{{searchKeyword}}" class="clear-icon" bindtap="onClearSearch">×</view>
-      </view>
+<!-- 自定义导航栏 - 放在最外层，不在滚动容器内 -->
+<view class="custom-navbar" style="padding-top: {{statusBarHeight}}px;">
+  <view class="navbar-content" style="height: {{menuButtonHeight}}px; margin-top: {{menuButtonTop - statusBarHeight}}px; padding-right: {{menuButtonRight + menuButtonWidth + 16}}px;">
+    <!-- 搜索框 -->
+    <view class="search-box">
+      <image class="search-icon" src="/images/search-icon.png" mode="aspectFit"></image>
+      <input 
+        class="search-input" 
+        type="text" 
+        placeholder="搜索商品名称" 
+        value="{{searchKeyword}}"
+        bindinput="onSearchInput"
+        bindconfirm="onSearchConfirm"
+      />
+      <view wx:if="{{searchKeyword}}" class="clear-icon" bindtap="onClearSearch">×</view>
     </view>
   </view>
-  
-  <view class="content">
+</view>
+
+<!-- 内容区域 -->
+<view class="content">
     <!-- 左侧分类列表 -->
     <scroll-view class="category-list" scroll-y>
       <view 
@@ -81,4 +81,3 @@
       </view>
     </scroll-view>
   </view>
-</view>
