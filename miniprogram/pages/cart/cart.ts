@@ -10,7 +10,18 @@ interface CartItem {
   quantity: number
   spec?: string
   selected?: boolean
+  offsetX?: number  // 左滑偏移量 (rpx)
+  swiped?: boolean  // 是否已展开删除按钮
 }
+
+// 滑动相关常量
+const DELETE_BTN_WIDTH = 160  // 删除按钮宽度 (rpx)
+const SWIPE_THRESHOLD = 60   // 触发阈值 (rpx)
+
+// 临时变量，用于记录滑动状态
+let startX = 0
+let startOffsetX = 0
+let touchIndex = -1
 
 Component({
   data: {
@@ -40,7 +51,9 @@ Component({
       const items = cartApp.globalData.cartItems || []
       const cartItems = items.map(item => ({
         ...item,
-        selected: true
+        selected: true,
+        offsetX: 0,
+        swiped: false
       }))
       const totalCount = cartItems.reduce((sum, item) => 
         item.selected ? sum + item.quantity : sum, 0
@@ -158,6 +171,70 @@ Component({
       this.setData({ [key]: value })
       this.syncToGlobal()
       this.updateTotalCount()
+    },
+
+    // 触摸开始
+    onTouchStart(e: WechatMiniprogram.TouchEvent) {
+      const index = e.currentTarget.dataset.index as number
+      const item = this.data.cartItems[index]
+      
+      startX = e.touches[0].clientX
+      startOffsetX = item.offsetX || 0
+      touchIndex = index
+      
+      // 收起其他已展开的项
+      this.resetOtherItems(index)
+    },
+
+    // 触摸移动
+    onTouchMove(e: WechatMiniprogram.TouchEvent) {
+      if (touchIndex < 0) return
+      
+      const currentX = e.touches[0].clientX
+      const diffPx = currentX - startX
+      // px 转 rpx (假设屏幕宽度 750rpx)
+      const diffRpx = diffPx * (750 / wx.getSystemInfoSync().windowWidth)
+      
+      let offsetX = startOffsetX + diffRpx
+      // 限制滑动范围：最多左滑删除按钮宽度，不能右滑超过0
+      offsetX = Math.max(-DELETE_BTN_WIDTH, Math.min(0, offsetX))
+      
+      this.setData({
+        [`cartItems[${touchIndex}].offsetX`]: offsetX
+      })
+    },
+
+    // 触摸结束
+    onTouchEnd() {
+      if (touchIndex < 0) return
+      
+      const item = this.data.cartItems[touchIndex]
+      const offsetX = item.offsetX || 0
+      
+      // 判断是展开还是收起
+      const shouldOpen = offsetX < -SWIPE_THRESHOLD
+      const targetX = shouldOpen ? -DELETE_BTN_WIDTH : 0
+      
+      this.setData({
+        [`cartItems[${touchIndex}].offsetX`]: targetX,
+        [`cartItems[${touchIndex}].swiped`]: shouldOpen
+      })
+      
+      touchIndex = -1
+    },
+
+    // 收起其他已展开的项
+    resetOtherItems(currentIdx: number) {
+      const updates: Record<string, number | boolean> = {}
+      this.data.cartItems.forEach((item, idx) => {
+        if (idx !== currentIdx && item.offsetX !== 0) {
+          updates[`cartItems[${idx}].offsetX`] = 0
+          updates[`cartItems[${idx}].swiped`] = false
+        }
+      })
+      if (Object.keys(updates).length > 0) {
+        this.setData(updates)
+      }
     },
 
     // 删除商品
