@@ -82,13 +82,7 @@
         <image class="product-image" src="{{item.image}}" mode="aspectFill"></image>
         <view class="product-info">
           <text class="product-name">{{item.name}}</text>
-          
-          <!-- 价格区域：当前价 + 划线价 -->
-          <view class="product-price-row">
-            <text class="product-price">¥{{item.userPrice ? item.userPrice : item.basePrice}}</text>
-            <text wx:if="{{item.userPrice}}" class="original-price">¥{{item.basePrice}}</text>
-          </view>
-          
+          <text class="inquiry-price">微信询价</text>
           <text class="product-sales">已售{{item.sales}}件</text>
         </view>
       </view>

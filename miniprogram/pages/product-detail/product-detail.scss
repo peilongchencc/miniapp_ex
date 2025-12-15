@@ -87,6 +87,16 @@
         color: #999;
         text-decoration: line-through;
       }
+
+      // 微信询价
+      .inquiry-price {
+        font-size: 32rpx;
+        color: #5a9690;
+        font-weight: 600;
+        background: linear-gradient(135deg, rgba(90, 150, 144, 0.1) 0%, rgba(130, 180, 170, 0.15) 100%);
+        padding: 8rpx 24rpx;
+        border-radius: 8rpx;
+      }
     }
 
     .sold-info {
@@ -425,6 +435,15 @@
         font-size: 24rpx;
         color: #999;
         text-decoration: line-through;
+      }
+
+      .popup-inquiry-price {
+        font-size: 28rpx;
+        color: #5a9690;
+        font-weight: 600;
+        background: linear-gradient(135deg, rgba(90, 150, 144, 0.1) 0%, rgba(130, 180, 170, 0.15) 100%);
+        padding: 6rpx 20rpx;
+        border-radius: 6rpx;
       }
 
       .popup-stock {

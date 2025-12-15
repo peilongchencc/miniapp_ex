@@ -36,12 +36,10 @@
 
     <!-- 商品基本信息 -->
     <view class="product-info-section">
-      <!-- 价格区域：当前价 + 划线价 -->
+      <!-- 价格区域：微信询价 -->
       <view class="price-row">
         <view class="price-area">
-          <text class="price-symbol">¥</text>
-          <text class="price-value">{{product.userPrice ? product.userPrice : product.basePrice}}</text>
-          <text wx:if="{{product.userPrice}}" class="original-price">¥{{product.basePrice}}</text>
+          <text class="inquiry-price">微信询价</text>
         </view>
         <view class="sold-info">
           <text class="sold-text">已售 {{product.soldCount}} 件</text>
@@ -137,11 +135,7 @@
         <text class="popup-name">{{product.name}}</text>
         <!-- 弹窗内价格显示 -->
         <view class="popup-price-wrap">
-          <view class="popup-price">
-            <text class="popup-price-symbol">¥</text>
-            <text class="popup-price-value">{{product.userPrice || product.basePrice}}</text>
-          </view>
-          <text wx:if="{{product.userPrice}}" class="popup-original-price">¥{{product.basePrice}}</text>
+          <text class="popup-inquiry-price">微信询价</text>
         </view>
         <text class="popup-stock">库存: {{product.stock}} 件</text>
       </view>

@@ -240,6 +240,18 @@ page {
   text-decoration: line-through;
 }
 
+// 微信询价
+.inquiry-price {
+  display: inline-block;
+  font-size: 26rpx;
+  color: #5a9690;
+  font-weight: 600;
+  background: linear-gradient(135deg, rgba(90, 150, 144, 0.1) 0%, rgba(130, 180, 170, 0.15) 100%);
+  padding: 6rpx 16rpx;
+  border-radius: 6rpx;
+  margin-top: 12rpx;
+}
+
 .product-sales {
   font-size: 22rpx;
   color: #999;
