@@ -10,8 +10,8 @@
 │   │   ├── category/        # 分类页
 │   │   ├── cart/            # 购物车
 │   │   ├── mine/            # 我的（个人中心）
-│   │   ├── orders/          # 订单列表
-│   │   ├── order-detail/    # 订单详情
+│   │   ├── orders/          # 订货记录列表
+│   │   ├── order-detail/    # 订货记录详情
 │   │   ├── product-detail/  # 商品详情
 │   │   ├── favorites/       # 收藏夹
 │   │   └── logs/            # 日志页
@@ -39,8 +39,14 @@
 通过 `app.ts` 的 `globalData` 管理：
 - `isLoggedIn`: 登录状态
 - `userInfo`: 用户信息
-- `cartItems`: 购物车数据
-- `orderHistory`: 订单历史
+- `cartItems`: 购物车数据（订货收集）
+- `orderHistory`: 订货记录历史
 - `favorites`: 收藏列表
 
 数据持久化使用 `wx.setStorageSync` / `wx.getStorageSync`。
+
+## 数据特点
+
+- 商品数据不包含价格字段展示
+- 购物车仅收集商品和数量，不计算金额
+- 订货记录用于追踪用户提交的订货清单
