@@ -1,4 +1,30 @@
 /* order-detail.scss */
+
+/* 提交成功提示 */
+.success-tip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24rpx 32rpx;
+  background: linear-gradient(135deg, #52c41a 0%, #389e0d 100%);
+  color: #fff;
+}
+
+.success-icon {
+  width: 40rpx;
+  height: 40rpx;
+  line-height: 40rpx;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  font-size: 24rpx;
+  margin-right: 16rpx;
+}
+
+.success-text {
+  font-size: 28rpx;
+}
+
 page {
   height: 100vh;
   display: flex;

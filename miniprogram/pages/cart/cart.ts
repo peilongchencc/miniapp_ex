@@ -30,7 +30,8 @@ Component({
     emptyImage: '/images/cart-empty.png',
     selectAll: true,
     totalCount: 0,
-    remark: ''
+    remark: '',
+    isSubmitting: false  // 提交中状态，防止显示空购物车
   },
 
   lifetimes: {
@@ -309,6 +310,9 @@ Component({
         confirmText: '确认提交',
         success: (res) => {
           if (res.confirm) {
+            // 设置提交中状态，防止显示空购物车
+            this.setData({ isSubmitting: true })
+            
             // 只提交选中的商品
             const itemsToSubmit = selectedItems.map(({ selected, ...rest }) => rest)
             
@@ -325,19 +329,16 @@ Component({
             wx.setStorageSync('cartItems', unselectedItems)
             
             if (order) {
-              wx.showToast({
-                title: '订单提交成功',
-                icon: 'success',
-                duration: 2000
+              // 先跳转，再更新购物车数据（在 pageLifetimes.show 中会自动刷新）
+              wx.navigateTo({
+                url: `/pages/order-detail/order-detail?id=${order.id}&fromSubmit=1`,
+                complete: () => {
+                  // 跳转完成后重置状态
+                  this.setData({ isSubmitting: false })
+                }
               })
-              
-              setTimeout(() => {
-                wx.navigateTo({
-                  url: `/pages/order-detail/order-detail?id=${order.id}`
-                })
-              }, 1500)
-              
-              this.loadCartItems()
+            } else {
+              this.setData({ isSubmitting: false })
             }
           }
         }

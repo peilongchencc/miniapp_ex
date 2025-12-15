@@ -47,6 +47,7 @@ Component({
   data: {
     order: null as OrderDetail | null,
     orderId: '' as string,
+    showSuccessTip: false,  // 是否显示提交成功提示
     statusMap: {
       pending: '待确认',
       confirmed: '已确认',
@@ -71,9 +72,20 @@ Component({
         Record<string, unknown>
       >
       const orderId = currentPage.options?.id as string
+      const fromSubmit = currentPage.options?.fromSubmit === '1'
       if (orderId && orderId !== this.data.orderId) {
-        this.setData({ orderId })
+        this.setData({ 
+          orderId,
+          showSuccessTip: fromSubmit
+        })
         this.loadOrder(orderId)
+        
+        // 3秒后自动隐藏成功提示
+        if (fromSubmit) {
+          setTimeout(() => {
+            this.setData({ showSuccessTip: false })
+          }, 3000)
+        }
       }
     }
   },

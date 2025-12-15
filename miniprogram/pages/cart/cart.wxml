@@ -7,8 +7,8 @@
 ></navigation-bar>
 
 <scroll-view class="cart-scroll" scroll-y type="list" enhanced show-scrollbar="{{false}}" bindtap="resetAllSwipedItems">
-  <!-- 空状态 -->
-  <view class="empty-state" wx:if="{{!hasItems}}">
+  <!-- 空状态（提交中时不显示，避免闪烁） -->
+  <view class="empty-state" wx:if="{{!hasItems && !isSubmitting}}">
     <image class="empty-image" src="{{emptyImage}}" mode="aspectFit"></image>
     <text class="empty-text">购物车空空如也</text>
     <text class="empty-tip">快去挑选商品吧</text>

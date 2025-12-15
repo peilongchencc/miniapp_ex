@@ -7,6 +7,12 @@
   bindback="goBack"
 ></navigation-bar>
 
+<!-- 提交成功提示 -->
+<view class="success-tip" wx:if="{{showSuccessTip}}">
+  <text class="success-icon">✓</text>
+  <text class="success-text">订单提交成功，我们会尽快联系您确认</text>
+</view>
+
 <scroll-view class="scrollarea" scroll-y type="list" enhanced show-scrollbar="{{false}}" wx:if="{{order}}">
   <view class="detail-content">
     <!-- 订单状态头部 -->
