@@ -196,6 +196,32 @@ page {
   border-radius: 16rpx;
   overflow: hidden;
   box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+  position: relative;
+}
+
+/* 加入购物车按钮 */
+.add-cart-btn {
+  position: absolute;
+  right: 16rpx;
+  bottom: 16rpx;
+  width: 48rpx;
+  height: 48rpx;
+  background: linear-gradient(135deg, #6b9e96 0%, #5a8a82 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 36rpx;
+  font-weight: 300;
+  line-height: 1;
+  box-shadow: 0 2rpx 8rpx rgba(90, 138, 130, 0.3);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.add-cart-btn:active {
+  transform: scale(0.92);
+  box-shadow: 0 1rpx 4rpx rgba(90, 138, 130, 0.2);
 }
 
 .product-image {

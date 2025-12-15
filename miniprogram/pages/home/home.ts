@@ -223,6 +223,48 @@ Component({
           wx.showToast({ title: '打开地图失败', icon: 'none' })
         }
       })
+    },
+
+    /**
+     * 加入购物车
+     * 
+     * 未登录时弹出登录提示，已登录时直接加入购物车
+     */
+    onAddToCart(e: WechatMiniprogram.TouchEvent) {
+      const { id, name, image, basePrice } = e.currentTarget.dataset
+      
+      // 检查登录状态
+      if (!this.data.isLoggedIn) {
+        wx.showModal({
+          title: '提示',
+          content: '请先登录后再加入购物车',
+          confirmText: '去登录',
+          cancelText: '取消',
+          success: (res) => {
+            if (res.confirm) {
+              wx.switchTab({ url: '/pages/mine/mine' })
+            }
+          }
+        })
+        return
+      }
+      
+      // 加入购物车
+      const app = getApp<IAppOption>()
+      const cartItem: ICartItem = {
+        id: String(id),
+        name,
+        image,
+        quantity: 1,
+        basePrice
+      }
+      app.addToCart(cartItem)
+      
+      wx.showToast({
+        title: '已加入购物车',
+        icon: 'success',
+        duration: 1500
+      })
     }
   }
 })

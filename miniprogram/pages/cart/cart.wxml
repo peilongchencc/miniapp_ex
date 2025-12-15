@@ -64,6 +64,7 @@
                 value="{{item.quantity}}"
                 data-index="{{index}}"
                 bindinput="onQuantityInput"
+                bindblur="onQuantityBlur"
               />
               <view 
                 class="qty-btn" 

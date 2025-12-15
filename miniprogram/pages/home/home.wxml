@@ -85,6 +85,15 @@
           <text class="inquiry-price">微信询价</text>
           <text class="product-sales">已售{{item.sales}}件</text>
         </view>
+        <!-- 加入购物车按钮 -->
+        <view 
+          class="add-cart-btn" 
+          catchtap="onAddToCart"
+          data-id="{{item.id}}"
+          data-name="{{item.name}}"
+          data-image="{{item.image}}"
+          data-base-price="{{item.basePrice}}"
+        >+</view>
       </view>
     </view>
   </view>

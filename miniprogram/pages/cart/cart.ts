@@ -124,11 +124,38 @@ Component({
       }
     },
 
-    // 输入数量
+    // 输入数量（输入时不强制最小值，允许用户清空后重新输入）
     onQuantityInput(e: WechatMiniprogram.Input) {
       const index = e.currentTarget.dataset.index as number
-      let value = parseInt(e.detail.value) || 1
-      if (value < 1) value = 1
+      const inputValue = e.detail.value
+      
+      // 允许空值，方便用户清空后输入新数字
+      if (inputValue === '') {
+        return
+      }
+      
+      let value = parseInt(inputValue)
+      if (isNaN(value) || value < 0) {
+        return
+      }
+      if (value > 999) value = 999
+      
+      const key = `cartItems[${index}].quantity`
+      this.setData({ [key]: value })
+      this.syncToGlobal()
+      this.updateTotalCount()
+    },
+
+    // 输入框失焦时校验最小值
+    onQuantityBlur(e: WechatMiniprogram.Input) {
+      const index = e.currentTarget.dataset.index as number
+      const inputValue = e.detail.value
+      let value = parseInt(inputValue)
+      
+      // 如果为空或小于1，恢复为1
+      if (isNaN(value) || value < 1) {
+        value = 1
+      }
       if (value > 999) value = 999
       
       const key = `cartItems[${index}].quantity`
@@ -166,6 +193,7 @@ Component({
       const items = this.data.cartItems.map(({ selected, ...rest }) => rest)
       cartApp.globalData.cartItems = items
       wx.setStorageSync('cartItems', items)
+      cartApp.updateCartBadge()
     },
 
     // 输入备注

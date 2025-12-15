@@ -211,6 +211,31 @@ page {
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
+}
+
+/* 加入购物车按钮 */
+.add-cart-btn {
+  position: absolute;
+  right: 4rpx;
+  top: 110rpx;
+  width: 40rpx;
+  height: 40rpx;
+  background: linear-gradient(135deg, #6b9e96 0%, #5a8a82 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 32rpx;
+  font-weight: 300;
+  line-height: 1;
+  box-shadow: 0 2rpx 6rpx rgba(90, 138, 130, 0.3);
+  transition: transform 0.15s ease;
+}
+
+.add-cart-btn:active {
+  transform: scale(0.92);
 }
 
 /* 每行第3个商品不需要右边距 */

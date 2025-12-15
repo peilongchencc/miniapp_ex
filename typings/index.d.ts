@@ -52,4 +52,5 @@ interface IAppOption {
   addFavorite: (item: Omit<IFavoriteItem, 'addTime'>) => boolean
   removeFavorite: (id: string) => void
   isFavorite: (id: string) => boolean
+  updateCartBadge: () => void
 }

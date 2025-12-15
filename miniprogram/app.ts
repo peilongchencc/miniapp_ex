@@ -97,6 +97,9 @@ App<IAppOption>({
         // 发送 res.code 到后台换取 openId, sessionKey, unionId
       },
     })
+
+    // 初始化购物车角标
+    this.updateCartBadge()
   },
 
   // 添加商品到购物车
@@ -108,12 +111,27 @@ App<IAppOption>({
       this.globalData.cartItems.push(item)
     }
     wx.setStorageSync('cartItems', this.globalData.cartItems)
+    this.updateCartBadge()
+  },
+
+  // 更新购物车角标（显示商品种类数）
+  updateCartBadge() {
+    const count = this.globalData.cartItems.length
+    if (count > 0) {
+      wx.setTabBarBadge({
+        index: 2,  // 购物车是第3个tab，索引为2
+        text: count > 99 ? '99+' : String(count)
+      })
+    } else {
+      wx.removeTabBarBadge({ index: 2 })
+    }
   },
 
   // 清空购物车
   clearCart() {
     this.globalData.cartItems = []
     wx.setStorageSync('cartItems', [])
+    this.updateCartBadge()
   },
 
   // 提交订单（将购物车转为订单）
