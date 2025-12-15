@@ -13,12 +13,12 @@ page {
 
 // 空状态
 .empty-state {
-  min-height: calc(100vh - 200rpx);
+  min-height: calc(100% + 1rpx);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 100rpx 40rpx;
+  padding: 0 40rpx;
 
   .empty-image {
     width: 300rpx;
