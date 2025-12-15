@@ -8,7 +8,7 @@ page {
 
 .cart-scroll {
   flex: 1;
-  overflow-y: hidden;
+  height: 0; // 配合 flex: 1 确保正确计算高度
 }
 
 // 空状态
