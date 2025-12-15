@@ -77,7 +77,6 @@
         data-id="{{item.id}}"
         data-name="{{item.name}}"
         data-image="{{item.image}}"
-        data-base-price="{{item.basePrice}}"
       >
         <image class="product-image" src="{{item.image}}" mode="aspectFill"></image>
         <view class="product-info">
@@ -92,7 +91,6 @@
           data-id="{{item.id}}"
           data-name="{{item.name}}"
           data-image="{{item.image}}"
-          data-base-price="{{item.basePrice}}"
         >+</view>
       </view>
     </view>
