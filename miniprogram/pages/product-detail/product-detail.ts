@@ -52,8 +52,9 @@ Component({
     isAddingToCart: false,
     // 是否收藏
     isFavorite: false,
-    // 微信联系信息
+    // 联系信息
     contact: {
+      phone: '13895617366',
       wechat: 'peilongchencc',
       wechatQrcode: 'https://funeral-supplies.oss-cn-beijing.aliyuncs.com/wechat/wechat-qrcode.png'
     },
@@ -382,21 +383,14 @@ Component({
 
     /**
      * 联系客服
+     * 
+     * 直接调用 wx.makePhoneCall 拨打服务热线
      */
     contactService() {
-      wx.showActionSheet({
-        itemList: ['拨打电话', '微信联系'],
-        success: (res) => {
-          if (res.tapIndex === 0) {
-            wx.makePhoneCall({
-              phoneNumber: '13895617366',
-              fail: () => {
-                wx.showToast({ title: '拨打失败', icon: 'none' })
-              }
-            })
-          } else {
-            this.setData({ showWechatModal: true })
-          }
+      wx.makePhoneCall({
+        phoneNumber: this.data.contact.phone || '13895617366',
+        fail: () => {
+          wx.showToast({ title: '拨打电话失败', icon: 'none' })
         }
       })
     },
