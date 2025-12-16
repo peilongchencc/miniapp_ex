@@ -183,18 +183,10 @@ Component({
     },
 
     /**
-     * 复制微信号
+     * 点击"微信询价"标签
      */
-    onCopyWechat() {
-      wx.setClipboardData({
-        data: this.data.contact.wechat,
-        success: () => {
-          wx.showToast({ title: '微信号已复制', icon: 'success' })
-        },
-        fail: () => {
-          wx.showToast({ title: '复制失败', icon: 'none' })
-        }
-      })
+    onInquiryTap() {
+      this.setData({ showWechatModal: true })
     },
 
     /**

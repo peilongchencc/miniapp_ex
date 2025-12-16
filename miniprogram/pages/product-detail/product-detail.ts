@@ -51,7 +51,14 @@ Component({
     // 是否正在加入购物车
     isAddingToCart: false,
     // 是否收藏
-    isFavorite: false
+    isFavorite: false,
+    // 微信联系信息
+    contact: {
+      wechat: 'peilongchencc',
+      wechatQrcode: 'https://funeral-supplies.oss-cn-beijing.aliyuncs.com/wechat/wechat-qrcode.png'
+    },
+    // 微信弹窗显示状态
+    showWechatModal: false
   },
 
   lifetimes: {
@@ -378,20 +385,34 @@ Component({
      */
     contactService() {
       wx.showActionSheet({
-        itemList: ['拨打电话', '在线客服'],
+        itemList: ['拨打电话', '微信联系'],
         success: (res) => {
           if (res.tapIndex === 0) {
             wx.makePhoneCall({
-              phoneNumber: '13900000000',
+              phoneNumber: '13895617366',
               fail: () => {
                 wx.showToast({ title: '拨打失败', icon: 'none' })
               }
             })
           } else {
-            wx.showToast({ title: '客服功能开发中', icon: 'none' })
+            this.setData({ showWechatModal: true })
           }
         }
       })
+    },
+
+    /**
+     * 点击"微信询价"标签
+     */
+    onInquiryTap() {
+      this.setData({ showWechatModal: true })
+    },
+
+    /**
+     * 关闭微信弹窗
+     */
+    onCloseWechatModal() {
+      this.setData({ showWechatModal: false })
     },
 
     /**

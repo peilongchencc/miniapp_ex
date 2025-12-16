@@ -38,7 +38,7 @@
       <!-- 价格区域：微信询价 -->
       <view class="price-row">
         <view class="price-area">
-          <text class="inquiry-price">微信询价</text>
+          <text class="inquiry-price clickable" bindtap="onInquiryTap">微信询价</text>
         </view>
         <view class="sold-info">
           <text class="sold-text">已售 {{product.soldCount}} 件</text>
@@ -125,6 +125,13 @@
     </view>
 </view>
 
+<!-- 微信联系弹窗组件 -->
+<wechat-modal 
+  visible="{{showWechatModal}}" 
+  wechat-id="{{contact.wechat}}"
+  qrcode="{{contact.wechatQrcode}}"
+  bind:close="onCloseWechatModal"
+/>
 <!-- 规格选择弹窗 -->
 <view class="spec-popup-mask {{showSpecPopup ? 'show' : ''}}" bindtap="hideSpecPopup"></view>
 <view class="spec-popup {{showSpecPopup ? 'show' : ''}}">

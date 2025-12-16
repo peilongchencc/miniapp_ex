@@ -1,5 +1,7 @@
 {
-  "usingComponents": {},
+  "usingComponents": {
+    "wechat-modal": "/components/wechat-modal/wechat-modal"
+  },
   "navigationBarTitleText": "分类",
   "navigationStyle": "custom",
   "disableScroll": true

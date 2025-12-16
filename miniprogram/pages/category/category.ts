@@ -532,21 +532,6 @@ Component({
      */
     onCloseWechatModal() {
       this.setData({ showWechatModal: false })
-    },
-
-    /**
-     * 复制微信号
-     */
-    onCopyWechat() {
-      wx.setClipboardData({
-        data: this.data.contact.wechat,
-        success: () => {
-          wx.showToast({ title: '微信号已复制', icon: 'success' })
-        },
-        fail: () => {
-          wx.showToast({ title: '复制失败', icon: 'none' })
-        }
-      })
     }
   }
 })

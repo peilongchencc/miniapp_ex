@@ -81,7 +81,7 @@
         <image class="product-image" src="{{item.image}}" mode="aspectFill"></image>
         <view class="product-info">
           <text class="product-name">{{item.name}}</text>
-          <text class="inquiry-price">微信询价</text>
+          <text class="inquiry-price clickable" catchtap="onInquiryTap">微信询价</text>
           <text class="product-sales">已售{{item.sales}}件</text>
         </view>
         <!-- 加入购物车按钮 -->
@@ -156,28 +156,10 @@
   <view class="float-pulse"></view>
 </view>
 
-<!-- 微信二维码弹窗 -->
-<view class="wechat-modal-mask" wx:if="{{showWechatModal}}" bindtap="onCloseWechatModal">
-  <view class="wechat-modal" catchtap="">
-    <view class="wechat-modal-header">
-      <text class="wechat-modal-title">微信联系</text>
-      <view class="wechat-modal-close" bindtap="onCloseWechatModal">×</view>
-    </view>
-    <view class="wechat-modal-body">
-      <image 
-        class="wechat-qrcode" 
-        src="{{contact.wechatQrcode}}" 
-        mode="aspectFit"
-        show-menu-by-longpress="{{true}}"
-      ></image>
-      <text class="wechat-tip">长按识别二维码添加好友</text>
-      <view class="wechat-id-row">
-        <text class="wechat-id-label">微信号：</text>
-        <text class="wechat-id-value">{{contact.wechat}}</text>
-      </view>
-    </view>
-    <view class="wechat-modal-footer">
-      <view class="wechat-copy-btn" bindtap="onCopyWechat">复制微信号</view>
-    </view>
-  </view>
-</view>
+<!-- 微信联系弹窗组件 -->
+<wechat-modal 
+  visible="{{showWechatModal}}" 
+  wechat-id="{{contact.wechat}}"
+  qrcode="{{contact.wechatQrcode}}"
+  bind:close="onCloseWechatModal"
+/>
