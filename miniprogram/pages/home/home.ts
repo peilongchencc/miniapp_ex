@@ -253,7 +253,7 @@ Component({
       wx.showToast({
         title: '已加入购物车',
         icon: 'success',
-        duration: 1500
+        duration: 800
       })
     }
   }
