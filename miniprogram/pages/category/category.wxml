@@ -21,7 +21,7 @@
 <!-- 内容区域 -->
 <view class="content">
   <!-- 左侧分类列表 -->
-  <scroll-view class="category-list" scroll-y>
+  <scroll-view class="category-list" scroll-y type="list" enhanced show-scrollbar="{{false}}">
     <view 
       wx:for="{{categories}}" 
       wx:key="id"
@@ -34,7 +34,7 @@
   </scroll-view>
   
   <!-- 右侧商品列表（按二级分类分组） -->
-  <scroll-view class="product-list" scroll-y>
+  <scroll-view class="product-list" scroll-y type="list" enhanced show-scrollbar="{{false}}">
     <!-- 搜索模式提示 -->
     <view wx:if="{{isSearchMode}}" class="search-result-tip">
       搜索结果: "{{searchKeyword}}"

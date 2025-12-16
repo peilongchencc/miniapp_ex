@@ -80,6 +80,14 @@ page {
   overflow-y: hidden;
 }
 
+/* 隐藏滚动条 */
+.category-list::-webkit-scrollbar,
+.product-list::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
 /* 左侧分类列表 */
 .category-list {
   width: 180rpx;
