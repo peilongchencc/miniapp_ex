@@ -42,6 +42,15 @@ Component({
     // 搜索关键词
     searchKeyword: '',
     
+    // 微信联系信息
+    contact: {
+      wechat: 'peilongchencc',
+      wechatQrcode: 'https://funeral-supplies.oss-cn-beijing.aliyuncs.com/wechat/wechat-qrcode.png'
+    },
+    
+    // 微信二维码弹窗显示状态
+    showWechatModal: false,
+    
     // 左侧一级分类列表
     categories: [
       { id: 'hot', name: '热销推荐' },
@@ -507,6 +516,36 @@ Component({
         title: '已加入购物车',
         icon: 'success',
         duration: 800
+      })
+    },
+
+    /**
+     * 点击定制寿衣提示条
+     * 显示微信二维码弹窗
+     */
+    onCustomTipTap() {
+      this.setData({ showWechatModal: true })
+    },
+
+    /**
+     * 关闭微信二维码弹窗
+     */
+    onCloseWechatModal() {
+      this.setData({ showWechatModal: false })
+    },
+
+    /**
+     * 复制微信号
+     */
+    onCopyWechat() {
+      wx.setClipboardData({
+        data: this.data.contact.wechat,
+        success: () => {
+          wx.showToast({ title: '微信号已复制', icon: 'success' })
+        },
+        fail: () => {
+          wx.showToast({ title: '复制失败', icon: 'none' })
+        }
       })
     }
   }
