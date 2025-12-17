@@ -7,7 +7,13 @@
   bindback="goBack"
 />
 
-<scroll-view class="scrollarea" scroll-y type="list" enhanced show-scrollbar="{{false}}" wx:if="{{product}}">
+<!-- 加载状态 -->
+<view wx:if="{{isLoading}}" class="loading-container">
+  <view class="loading-spinner"></view>
+  <text class="loading-text">加载中...</text>
+</view>
+
+<scroll-view class="scrollarea" scroll-y type="list" enhanced show-scrollbar="{{false}}" wx:if="{{!isLoading && product}}">
     <!-- 商品图片轮播 -->
     <view class="swiper-section">
       <swiper 
@@ -104,7 +110,7 @@
 </scroll-view>
 
 <!-- 底部操作栏 -->
-<view class="bottom-bar" wx:if="{{product}}">
+<view class="bottom-bar" wx:if="{{!isLoading && product}}">
     <view class="bar-left">
       <view class="bar-item" bindtap="contactService">
         <text class="bar-icon">📞</text>
