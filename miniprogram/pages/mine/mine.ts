@@ -116,9 +116,9 @@ Component({
       }
     },
 
-    // 手机号快速验证回调
+    // 手机号快速验证回调（新版 code 方式）
     async onGetPhoneNumber(e: WechatMiniprogram.CustomEvent) {
-      const { code, errMsg, encryptedData, iv } = e.detail
+      const { code, errMsg } = e.detail
 
       if (errMsg === 'getPhoneNumber:fail user deny' || !code) {
         wx.showToast({ title: '需要授权手机号才能登录', icon: 'none' })
@@ -132,15 +132,8 @@ Component({
         const loginData = await miniappLogin()
         
         if (loginData.need_phone && loginData.openid) {
-          // 需要手机号授权
-          if (!encryptedData || !iv) {
-            wx.hideLoading()
-            wx.showToast({ title: '获取手机号失败', icon: 'none' })
-            return
-          }
-
-          // 第二步：手机号授权
-          const authData = await phoneAuth(loginData.openid, encryptedData, iv)
+          // 第二步：使用 code 进行手机号授权
+          const authData = await phoneAuth(loginData.openid, code)
           this.handleLoginSuccess(authData.user_info)
         } else if (!loginData.need_phone && loginData.user_info) {
           // 已有用户，直接登录成功

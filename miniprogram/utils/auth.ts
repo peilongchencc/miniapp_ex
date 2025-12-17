@@ -64,21 +64,18 @@ export async function miniappLogin(): Promise<LoginData> {
 }
 
 /**
- * 手机号授权登录
+ * 手机号授权登录（新版 code 方式）
  * @param openid 用户 openid
- * @param encryptedData 加密数据
- * @param iv 初始向量
+ * @param code getPhoneNumber 返回的 code
  * @returns 授权结果
  */
 export async function phoneAuth(
   openid: string,
-  encryptedData: string,
-  iv: string
+  code: string
 ): Promise<PhoneAuthData> {
   const res = await post<PhoneAuthData>('/auth/miniapp/phone', {
     openid,
-    encrypted_data: encryptedData,
-    iv
+    code
   })
 
   // 保存 token
