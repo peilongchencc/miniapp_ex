@@ -1,4 +1,6 @@
 // mine.ts
+import { miniappLogin, phoneAuth, logout } from '../../utils/auth'
+
 const defaultAvatarUrl = '/images/default-avatar.png'
 
 // 随机昵称列表
@@ -30,6 +32,7 @@ Component({
     showLoginPopup: false,
     showPrivacyPopup: false,
     agreedPrivacy: false,
+    openid: '',  // 存储 openid 用于手机号授权
     userInfo: {
       avatarUrl: defaultAvatarUrl,
       nickName: '',
@@ -114,8 +117,8 @@ Component({
     },
 
     // 手机号快速验证回调
-    onGetPhoneNumber(e: WechatMiniprogram.CustomEvent) {
-      const { code, errMsg } = e.detail
+    async onGetPhoneNumber(e: WechatMiniprogram.CustomEvent) {
+      const { code, errMsg, encryptedData, iv } = e.detail
 
       if (errMsg === 'getPhoneNumber:fail user deny' || !code) {
         wx.showToast({ title: '需要授权手机号才能登录', icon: 'none' })
@@ -123,37 +126,68 @@ Component({
       }
 
       wx.showLoading({ title: '登录中...' })
-      this.mockGetPhoneFromServer(code)
+
+      try {
+        // 第一步：调用 wx.login 获取 openid
+        const loginData = await miniappLogin()
+        
+        if (loginData.need_phone && loginData.openid) {
+          // 需要手机号授权
+          if (!encryptedData || !iv) {
+            wx.hideLoading()
+            wx.showToast({ title: '获取手机号失败', icon: 'none' })
+            return
+          }
+
+          // 第二步：手机号授权
+          const authData = await phoneAuth(loginData.openid, encryptedData, iv)
+          this.handleLoginSuccess(authData.user_info)
+        } else if (!loginData.need_phone && loginData.user_info) {
+          // 已有用户，直接登录成功
+          this.handleLoginSuccess(loginData.user_info)
+        }
+      } catch (err) {
+        wx.hideLoading()
+        console.error('登录失败:', err)
+        wx.showToast({ 
+          title: err instanceof Error ? err.message : '登录失败', 
+          icon: 'none' 
+        })
+      }
     },
 
     /**
-     * 模拟从服务器获取手机号
+     * 处理登录成功
      */
-    mockGetPhoneFromServer(code: string) {
-      console.log('手机号验证 code:', code)
-      
-      setTimeout(() => {
-        wx.hideLoading()
-        
-        const mockPhone = '13888888888'
-        const defaultNickName = getRandomNickname()
-        
-        const userInfo = {
-          avatarUrl: defaultAvatarUrl,
-          nickName: defaultNickName,
-          phoneNumber: maskPhoneNumber(mockPhone),
-        }
+    handleLoginSuccess(serverUserInfo: { 
+      id: number
+      phone_number: string
+      user_name: string | null
+      avatar_oss: string | null 
+    }) {
+      wx.hideLoading()
 
-        this.setData({ isLoggedIn: true, showLoginPopup: false, userInfo })
-        
-        appInstance.globalData.isLoggedIn = true
-        appInstance.globalData.userInfo = userInfo
-        wx.setStorageSync('isLoggedIn', true)
-        wx.setStorageSync('userInfo', userInfo)
-        
-        wx.showToast({ title: '登录成功', icon: 'success' })
-        this.playLoginHighlightAnimation()
-      }, 800)
+      const userInfo = {
+        avatarUrl: serverUserInfo.avatar_oss || defaultAvatarUrl,
+        nickName: serverUserInfo.user_name || getRandomNickname(),
+        phoneNumber: maskPhoneNumber(serverUserInfo.phone_number),
+      }
+
+      this.setData({ isLoggedIn: true, showLoginPopup: false, userInfo })
+      
+      const globalUserInfo: IUserInfo = {
+        avatarUrl: userInfo.avatarUrl,
+        nickName: userInfo.nickName,
+        phoneNumber: userInfo.phoneNumber,
+      }
+      
+      appInstance.globalData.isLoggedIn = true
+      appInstance.globalData.userInfo = globalUserInfo
+      wx.setStorageSync('isLoggedIn', true)
+      wx.setStorageSync('userInfo', globalUserInfo)
+      
+      wx.showToast({ title: '登录成功', icon: 'success' })
+      this.playLoginHighlightAnimation()
     },
 
     // 选择头像
@@ -186,14 +220,13 @@ Component({
         content: '确定要退出登录吗？',
         success: (res) => {
           if (res.confirm) {
+            logout()
             this.setData({
               isLoggedIn: false,
               userInfo: { avatarUrl: defaultAvatarUrl, nickName: '', phoneNumber: '' }
             })
             appInstance.globalData.isLoggedIn = false
             appInstance.globalData.userInfo = null
-            wx.removeStorageSync('isLoggedIn')
-            wx.removeStorageSync('userInfo')
             wx.showToast({ title: '已退出登录', icon: 'success' })
           }
         }
