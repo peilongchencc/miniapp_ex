@@ -37,12 +37,6 @@ Component({
     },
     nicknameHighlight: false,
     avatarHighlight: false,
-    // 订单数量统计
-    orderCounts: {
-      pending: 0,    // 待确认
-      preparing: 0,  // 备货中
-      shipping: 0,   // 配送中
-    }
   },
 
   lifetimes: {
@@ -54,24 +48,10 @@ Component({
   pageLifetimes: {
     show() {
       this.checkLoginStatus()
-      this.loadOrderCounts()
     }
   },
 
   methods: {
-    // 加载订单数量
-    loadOrderCounts() {
-      // TODO: 从后端获取订单数量
-      // 模拟数据
-      this.setData({
-        orderCounts: {
-          pending: 2,
-          preparing: 1,
-          shipping: 0,
-        }
-      })
-    },
-
     // 显示登录弹窗
     showLoginPopup() {
       this.setData({ showLoginPopup: true })
@@ -173,7 +153,6 @@ Component({
         
         wx.showToast({ title: '登录成功', icon: 'success' })
         this.playLoginHighlightAnimation()
-        this.loadOrderCounts()
       }, 800)
     },
 
@@ -209,8 +188,7 @@ Component({
           if (res.confirm) {
             this.setData({
               isLoggedIn: false,
-              userInfo: { avatarUrl: defaultAvatarUrl, nickName: '', phoneNumber: '' },
-              orderCounts: { pending: 0, preparing: 0, shipping: 0 }
+              userInfo: { avatarUrl: defaultAvatarUrl, nickName: '', phoneNumber: '' }
             })
             appInstance.globalData.isLoggedIn = false
             appInstance.globalData.userInfo = null
@@ -222,10 +200,9 @@ Component({
       })
     },
 
-    // 按状态跳转订单
-    goToOrdersByStatus(e: WechatMiniprogram.CustomEvent) {
-      const status = e.currentTarget.dataset.status
-      wx.navigateTo({ url: `/pages/orders/orders?status=${status}` })
+    // 我的订单
+    goToOrders() {
+      wx.navigateTo({ url: '/pages/orders/orders' })
     },
 
     // 我的收藏
@@ -241,11 +218,6 @@ Component({
     // 收货地址
     goToAddress() {
       wx.navigateTo({ url: '/pages/address/address' })
-    },
-
-    // 发票管理
-    goToInvoice() {
-      wx.showToast({ title: '发票管理功能待开发', icon: 'none' })
     },
 
     // 常见问题

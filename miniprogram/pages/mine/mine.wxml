@@ -33,39 +33,6 @@
     </block>
   </view>
 
-  <!-- 订单状态快捷入口 -->
-  <view class="order-status-section">
-    <view class="order-status-grid">
-      <view class="order-status-item" bindtap="goToOrdersByStatus" data-status="pending">
-        <view class="status-icon-wrapper">
-          <text class="status-icon">📋</text>
-          <view wx:if="{{orderCounts.pending > 0}}" class="status-badge">{{orderCounts.pending}}</view>
-        </view>
-        <text class="status-text">待确认</text>
-      </view>
-      <view class="order-status-item" bindtap="goToOrdersByStatus" data-status="preparing">
-        <view class="status-icon-wrapper">
-          <text class="status-icon">📦</text>
-          <view wx:if="{{orderCounts.preparing > 0}}" class="status-badge">{{orderCounts.preparing}}</view>
-        </view>
-        <text class="status-text">备货中</text>
-      </view>
-      <view class="order-status-item" bindtap="goToOrdersByStatus" data-status="shipping">
-        <view class="status-icon-wrapper">
-          <text class="status-icon">🚚</text>
-          <view wx:if="{{orderCounts.shipping > 0}}" class="status-badge">{{orderCounts.shipping}}</view>
-        </view>
-        <text class="status-text">配送中</text>
-      </view>
-      <view class="order-status-item" bindtap="goToOrdersByStatus" data-status="all">
-        <view class="status-icon-wrapper">
-          <text class="status-icon">✅</text>
-        </view>
-        <text class="status-text">全部订单</text>
-      </view>
-    </view>
-  </view>
-
   <!-- 常用功能区域 -->
   <view class="common-functions">
     <view class="section-title">常用功能</view>
@@ -82,9 +49,9 @@
         <text class="function-icon-emoji">📍</text>
         <text class="function-text">收货地址</text>
       </view>
-      <view class="function-item" bindtap="goToInvoice">
-        <text class="function-icon-emoji">🧾</text>
-        <text class="function-text">发票管理</text>
+      <view class="function-item" bindtap="goToOrders">
+        <text class="function-icon-emoji">✅</text>
+        <text class="function-text">我的订单</text>
       </view>
     </view>
   </view>
