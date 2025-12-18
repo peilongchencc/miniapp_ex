@@ -1,6 +1,6 @@
 {
   "libVersion": "2.32.3",
-  "projectname": "minizpp_ex",
+  "projectname": "guifaxiang_miniapp",
   "setting": {
     "urlCheck": true,
     "coverView": false,
@@ -17,5 +17,6 @@
     "bigPackageSizeSupport": false,
     "checkInvalidKey": true,
     "ignoreDevUnusedFiles": true
-  }
+  },
+  "condition": {}
 }
