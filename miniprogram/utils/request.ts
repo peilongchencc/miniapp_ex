@@ -100,6 +100,24 @@ export function get<T = unknown>(url: string, needToken = false): Promise<ApiRes
 }
 
 /**
+ * 带参数的 GET 请求（自动处理 URL 编码）
+ */
+export function getWithParams<T = unknown>(
+  url: string,
+  params?: Record<string, string | number | boolean>,
+  needToken = false
+): Promise<ApiResponse<T>> {
+  let fullUrl = url
+  if (params && Object.keys(params).length > 0) {
+    const queryString = Object.entries(params)
+      .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`)
+      .join('&')
+    fullUrl = `${url}?${queryString}`
+  }
+  return request<T>({ url: fullUrl, method: 'GET', needToken })
+}
+
+/**
  * POST 请求
  */
 export function post<T = unknown>(
