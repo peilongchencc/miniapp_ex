@@ -9,6 +9,12 @@ import {
   syncCartApi 
 } from './utils/cart-api'
 import { submitOrderApi, fetchOrderList } from './utils/order-api'
+import {
+  fetchFavorites,
+  addFavoriteApi,
+  removeFavoriteApi,
+  syncFavoritesApi
+} from './utils/favorite-api'
 
 App<IAppOption>({
   globalData: {
@@ -286,6 +292,11 @@ App<IAppOption>({
       addTime: Date.now()
     })
     wx.setStorageSync('favorites', this.globalData.favorites)
+    
+    // 已登录则同步到云端
+    if (this.globalData.isLoggedIn) {
+      addFavoriteApi(item.id)
+    }
     return true
   },
 
@@ -293,10 +304,42 @@ App<IAppOption>({
   removeFavorite(id: string) {
     this.globalData.favorites = this.globalData.favorites.filter(f => f.id !== id)
     wx.setStorageSync('favorites', this.globalData.favorites)
+    
+    // 已登录则同步到云端
+    if (this.globalData.isLoggedIn) {
+      removeFavoriteApi(id)
+    }
   },
 
   // 检查是否已收藏
   isFavorite(id: string) {
     return this.globalData.favorites.some(f => f.id === id)
+  },
+
+  // 登录后同步收藏（合并本地和云端数据）
+  async syncFavoritesAfterLogin() {
+    if (!this.globalData.isLoggedIn) return
+    
+    const localItems = this.globalData.favorites
+    if (localItems.length > 0) {
+      // 有本地数据，合并到云端
+      const mergedItems = await syncFavoritesApi(localItems.map(f => ({ id: f.id })))
+      this.globalData.favorites = mergedItems
+      wx.setStorageSync('favorites', mergedItems)
+    } else {
+      // 无本地数据，从云端获取
+      const cloudItems = await fetchFavorites()
+      this.globalData.favorites = cloudItems
+      wx.setStorageSync('favorites', cloudItems)
+    }
+  },
+
+  // 从云端刷新收藏列表
+  async refreshFavoritesFromCloud() {
+    if (!this.globalData.isLoggedIn) return
+    
+    const items = await fetchFavorites()
+    this.globalData.favorites = items
+    wx.setStorageSync('favorites', items)
   },
 })

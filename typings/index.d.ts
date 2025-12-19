@@ -51,5 +51,7 @@ interface IAppOption {
   addFavorite: (item: Omit<IFavoriteItem, 'addTime'>) => boolean
   removeFavorite: (id: string) => void
   isFavorite: (id: string) => boolean
+  syncFavoritesAfterLogin: () => Promise<void>
+  refreshFavoritesFromCloud: () => Promise<void>
   updateCartBadge: () => void
 }

@@ -5,7 +5,8 @@ const favApp = getApp<IAppOption>()
 
 Component({
   data: {
-    favoriteList: [] as IFavoriteItem[]
+    favoriteList: [] as IFavoriteItem[],
+    loading: false
   },
 
   lifetimes: {
@@ -24,7 +25,14 @@ Component({
     /**
      * 加载收藏列表
      */
-    loadFavorites() {
+    async loadFavorites() {
+      // 已登录则从云端刷新
+      if (favApp.globalData.isLoggedIn) {
+        this.setData({ loading: true })
+        await favApp.refreshFavoritesFromCloud()
+        this.setData({ loading: false })
+      }
+      
       const favorites = favApp.globalData.favorites || []
       this.setData({ favoriteList: favorites })
     },
