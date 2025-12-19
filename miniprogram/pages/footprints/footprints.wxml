@@ -1,0 +1,60 @@
+<!--footprints.wxml-->
+<navigation-bar 
+  title="我的足迹" 
+  back="{{true}}" 
+  color="white"
+  background="linear-gradient(135deg, rgba(130, 180, 170, 0.85) 0%, rgba(100, 160, 150, 0.95) 100%)"
+/>
+
+<scroll-view class="scrollarea" scroll-y type="list" enhanced show-scrollbar="{{false}}">
+  <view class="footprints-container">
+    <!-- 顶部操作栏 -->
+    <view wx:if="{{footprintList.length > 0}}" class="header-bar">
+      <text class="count-text">共 {{total}} 条浏览记录</text>
+      <view class="clear-btn" bindtap="clearAll">清空足迹</view>
+    </view>
+
+    <!-- 空状态 -->
+    <view wx:if="{{footprintList.length === 0 && !loading}}" class="empty-state">
+      <text class="empty-icon">👣</text>
+      <text class="empty-text">暂无浏览记录</text>
+      <view class="go-shopping-btn" bindtap="goShopping">去逛逛</view>
+    </view>
+
+    <!-- 足迹列表 -->
+    <view wx:else class="footprints-list">
+      <view 
+        class="footprint-item" 
+        wx:for="{{footprintList}}" 
+        wx:key="id"
+        bindtap="goToDetail"
+        data-item="{{item}}"
+      >
+        <image class="product-image" src="{{item.image}}" mode="aspectFill"></image>
+        <view class="product-info">
+          <text class="product-name">{{item.name}}</text>
+          <text class="view-time">{{item.viewTimeText}}</text>
+        </view>
+        <view class="action-btns">
+          <view class="add-cart-btn" catchtap="addToCart" data-item="{{item}}">加入购物车</view>
+          <view class="remove-btn" catchtap="removeFootprint" data-id="{{item.id}}">删除</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 加载状态 -->
+    <view wx:if="{{loading}}" class="loading-state">
+      <text>加载中...</text>
+    </view>
+
+    <!-- 加载更多 -->
+    <view wx:if="{{footprintList.length > 0 && footprintList.length < total}}" class="load-more" bindtap="loadMore">
+      <text>加载更多</text>
+    </view>
+
+    <!-- 没有更多 -->
+    <view wx:if="{{footprintList.length > 0 && footprintList.length >= total}}" class="no-more">
+      <text>没有更多了</text>
+    </view>
+  </view>
+</scroll-view>

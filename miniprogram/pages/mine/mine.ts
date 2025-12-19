@@ -238,7 +238,11 @@ Component({
 
     // 我的足迹
     goToFootprints() {
-      wx.showToast({ title: '我的足迹功能待开发', icon: 'none' })
+      if (!appInstance.globalData.isLoggedIn) {
+        wx.showToast({ title: '请先登录', icon: 'none' })
+        return
+      }
+      wx.navigateTo({ url: '/pages/footprints/footprints' })
     },
 
     // 收货地址

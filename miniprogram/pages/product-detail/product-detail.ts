@@ -2,6 +2,7 @@
 // 商品详情页 - 从API获取数据
 
 import { get } from '../../utils/request'
+import { addFootprintApi } from '../../utils/footprint-api'
 
 const app = getApp<IAppOption>()
 
@@ -125,6 +126,7 @@ Component({
             isLoading: false
           })
           this.checkFavoriteStatus()
+          this.recordFootprint(product.id)
         } else {
           throw new Error(res.message || '获取商品详情失败')
         }
@@ -332,6 +334,14 @@ Component({
     /** 返回上一页 */
     goBack() {
       wx.navigateBack()
+    },
+
+    /** 记录浏览足迹 */
+    recordFootprint(productId: string) {
+      // 已登录才记录足迹
+      if (app.globalData.isLoggedIn) {
+        addFootprintApi(productId)
+      }
     }
   }
 })

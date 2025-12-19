@@ -8,6 +8,7 @@
     "pages/order-detail/order-detail",
     "pages/product-detail/product-detail",
     "pages/favorites/favorites",
+    "pages/footprints/footprints",
     "pages/address/address",
     "pages/logs/logs"
   ],
