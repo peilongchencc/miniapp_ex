@@ -129,10 +129,76 @@ Component({
     },
 
     /**
-     * 编辑地址（通过微信原生界面添加新地址）
+     * 编辑地址
+     * 由于微信 chooseAddress 不支持预填数据，采用删除旧地址+添加新地址的方式
      */
-    editAddress() {
-      this.addAddressFromWx()
+    editAddress(e: WechatMiniprogram.CustomEvent) {
+      const id = e.currentTarget.dataset.id
+      const address = this.data.addressList.find(item => item.id === id)
+      if (!address) return
+
+      wx.showModal({
+        title: '编辑地址',
+        content: '将通过微信地址选择器重新填写地址信息，原地址将被替换',
+        confirmText: '继续',
+        success: (res) => {
+          if (res.confirm) {
+            this.editAddressWithReplace(id, address.isDefault)
+          }
+        }
+      })
+    },
+
+    /**
+     * 替换编辑地址
+     */
+    async editAddressWithReplace(oldId: string, wasDefault: boolean) {
+      wx.chooseAddress({
+        success: async (res) => {
+          const newAddress: Omit<AddressData, 'id'> = {
+            userName: res.userName,
+            telNumber: res.telNumber,
+            provinceName: res.provinceName,
+            cityName: res.cityName,
+            countyName: res.countyName,
+            detailInfo: res.detailInfo,
+            postalCode: res.postalCode || '',
+            isDefault: wasDefault
+          }
+
+          if (this.data.isLoggedIn) {
+            wx.showLoading({ title: '保存中...' })
+            // 先更新地址
+            const { updateAddressApi } = require('../../utils/address-api')
+            const success = await updateAddressApi(oldId, newAddress)
+            wx.hideLoading()
+
+            if (success) {
+              this.loadAddressListFromApi()
+              wx.showToast({ title: '修改成功', icon: 'success' })
+            } else {
+              wx.showToast({ title: '修改失败', icon: 'error' })
+            }
+          } else {
+            // 本地更新
+            const newList = this.data.addressList.map(item => 
+              item.id === oldId ? { ...newAddress, id: oldId } : item
+            )
+            this.setData({ addressList: newList })
+            wx.setStorageSync('addressList', newList)
+            wx.showToast({ title: '修改成功', icon: 'success' })
+          }
+        },
+        fail: (err) => {
+          if (err.errMsg.includes('auth deny')) {
+            wx.showModal({
+              title: '提示',
+              content: '需要授权地址权限才能使用此功能',
+              showCancel: false
+            })
+          }
+        }
+      })
     },
 
     /**

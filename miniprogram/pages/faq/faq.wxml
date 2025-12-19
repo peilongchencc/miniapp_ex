@@ -1,0 +1,35 @@
+<view class="page-container">
+  <!-- 自定义导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-back" bind:tap="goBack">
+      <text class="back-icon">←</text>
+    </view>
+    <text class="nav-title">常见问题</text>
+    <view class="nav-placeholder"></view>
+  </view>
+
+  <!-- FAQ 列表 -->
+  <view class="faq-list">
+    <view 
+      class="faq-item {{item.expanded ? 'expanded' : ''}}" 
+      wx:for="{{faqList}}" 
+      wx:key="id"
+    >
+      <view class="faq-question" bind:tap="toggleFaq" data-id="{{item.id}}">
+        <text class="question-text">{{item.question}}</text>
+        <text class="arrow-icon">{{item.expanded ? '▲' : '▼'}}</text>
+      </view>
+      <view class="faq-answer" wx:if="{{item.expanded}}">
+        <text>{{item.answer}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部联系客服 -->
+  <view class="contact-section">
+    <text class="contact-tip">没有找到答案？</text>
+    <view class="contact-btn" bind:tap="contactService">
+      <text>📞 联系客服</text>
+    </view>
+  </view>
+</view>

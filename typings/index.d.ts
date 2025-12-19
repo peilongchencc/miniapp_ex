@@ -18,7 +18,7 @@ interface IOrder {
   id: string
   items: ICartItem[]
   createTime: number
-  status: 'pending' | 'confirmed' | 'shipped' | 'completed'
+  status: 'pending' | 'confirmed' | 'shipped' | 'completed' | 'cancelled'
   remark?: string
 }
 

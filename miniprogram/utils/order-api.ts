@@ -94,3 +94,38 @@ export async function fetchOrderDetail(orderId: string): Promise<OrderData | nul
     return null
   }
 }
+
+
+/**
+ * 取消订单
+ */
+export async function cancelOrderApi(orderId: string): Promise<boolean> {
+  try {
+    const res = await post<{ order_id: string; status: string }>(
+      `/api/order/cancel/${orderId}`,
+      {},
+      true
+    )
+    return res.code === 200
+  } catch (err) {
+    console.error('取消订单失败:', err)
+    return false
+  }
+}
+
+/**
+ * 确认收货
+ */
+export async function confirmReceiveApi(orderId: string): Promise<boolean> {
+  try {
+    const res = await post<{ order_id: string; status: string }>(
+      `/api/order/confirm/${orderId}`,
+      {},
+      true
+    )
+    return res.code === 200
+  } catch (err) {
+    console.error('确认收货失败:', err)
+    return false
+  }
+}

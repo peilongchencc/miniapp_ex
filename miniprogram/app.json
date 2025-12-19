@@ -10,6 +10,8 @@
     "pages/favorites/favorites",
     "pages/footprints/footprints",
     "pages/address/address",
+    "pages/faq/faq",
+    "pages/about/about",
     "pages/logs/logs"
   ],
   "window": {

@@ -181,6 +181,25 @@ Component({
       
       wx.showToast({ title: '登录成功', icon: 'success' })
       this.playLoginHighlightAnimation()
+      
+      // 登录成功后同步云端数据
+      this.syncDataAfterLogin()
+    },
+
+    /**
+     * 登录后同步云端数据（购物车、收藏）
+     */
+    async syncDataAfterLogin() {
+      try {
+        // 并行同步购物车和收藏数据
+        await Promise.all([
+          appInstance.syncCartAfterLogin(),
+          appInstance.syncFavoritesAfterLogin()
+        ])
+        console.log('数据同步完成')
+      } catch (err) {
+        console.error('数据同步失败:', err)
+      }
     },
 
     // 选择头像
@@ -252,12 +271,12 @@ Component({
 
     // 常见问题
     goToFAQ() {
-      wx.showToast({ title: '常见问题功能待开发', icon: 'none' })
+      wx.navigateTo({ url: '/pages/faq/faq' })
     },
 
     // 关于我们
     goToAbout() {
-      wx.showToast({ title: '关于我们功能待开发', icon: 'none' })
+      wx.navigateTo({ url: '/pages/about/about' })
     },
 
     /**

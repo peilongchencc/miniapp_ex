@@ -1,12 +1,13 @@
 // home.ts
 // 首页 - 包含搜索、轮播、分类、推荐商品、服务特色、联系方式
+import { get } from '../../utils/request'
 
 /** 热销商品类型 */
 interface HotProduct {
-  id: number
+  id: string
   name: string
   image: string
-  sales: number
+  sales?: number
 }
 
 Component({
@@ -91,17 +92,26 @@ Component({
 
     /**
      * 加载热销商品
-     * TODO: 替换为真实API调用
+     * 从后端获取热销/推荐商品列表
      */
-    loadHotProducts() {
-      // 模拟数据，实际开发时从后端获取
-      const mockProducts: HotProduct[] = [
-        { id: 1, name: '高档真丝寿衣七件套', image: '/images/default-product.png', sales: 328 },
-        { id: 2, name: '天然玉石骨灰盒', image: '/images/default-product.png', sales: 256 },
-        { id: 3, name: '鲜花花圈精选款', image: '/images/default-product.png', sales: 512 },
-        { id: 4, name: '祭祀用品套装', image: '/images/default-product.png', sales: 892 }
-      ]
-      this.setData({ hotProducts: mockProducts })
+    async loadHotProducts() {
+      try {
+        const res = await get<{ products: HotProduct[] }>('/api/product/hot')
+        if (res.code === 200 && res.data?.products) {
+          this.setData({ hotProducts: res.data.products })
+        }
+      } catch (err) {
+        console.error('加载热销商品失败:', err)
+        // 失败时使用默认数据
+        this.setData({
+          hotProducts: [
+            { id: '1', name: '高档真丝寿衣七件套', image: '/images/default-product.png', sales: 328 },
+            { id: '2', name: '天然玉石骨灰盒', image: '/images/default-product.png', sales: 256 },
+            { id: '3', name: '鲜花花圈精选款', image: '/images/default-product.png', sales: 512 },
+            { id: '4', name: '祭祀用品套装', image: '/images/default-product.png', sales: 892 }
+          ]
+        })
+      }
     },
 
     // 搜索输入

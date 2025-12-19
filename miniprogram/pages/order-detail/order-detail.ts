@@ -1,6 +1,6 @@
 // order-detail.ts
 import { formatTime } from '../../utils/util'
-import { fetchOrderDetail } from '../../utils/order-api'
+import { fetchOrderDetail, cancelOrderApi, confirmReceiveApi } from '../../utils/order-api'
 
 const app = getApp<IAppOption>()
 
@@ -53,14 +53,16 @@ Component({
       pending: '待确认',
       confirmed: '已确认',
       shipped: '配送中',
-      completed: '已完成'
+      completed: '已完成',
+      cancelled: '已取消'
     } as Record<string, string>,
     // 状态对应的图标
     statusIconMap: {
       pending: '⏳',
       confirmed: '✓',
       shipped: '🚚',
-      completed: '✅'
+      completed: '✅',
+      cancelled: '❌'
     } as Record<string, string>
   },
 
@@ -218,13 +220,44 @@ Component({
 
     // 取消订单
     cancelOrder() {
+      const order = this.data.order
+      if (!order) return
+
       wx.showModal({
         title: '确认取消',
         content: '确定要取消该订单吗？',
-        success: (res) => {
+        success: async (res) => {
           if (res.confirm) {
-            wx.showToast({ title: '订单已取消', icon: 'success' })
-            setTimeout(() => wx.navigateBack(), 1500)
+            wx.showLoading({ title: '处理中...' })
+            
+            // 已登录调用后端 API
+            if (app.globalData.isLoggedIn) {
+              const success = await cancelOrderApi(order.id)
+              wx.hideLoading()
+              
+              if (success) {
+                // 更新本地订单状态
+                const localOrder = app.globalData.orderHistory.find(o => o.id === order.id)
+                if (localOrder) {
+                  localOrder.status = 'cancelled'
+                  wx.setStorageSync('orderHistory', app.globalData.orderHistory)
+                }
+                wx.showToast({ title: '订单已取消', icon: 'success' })
+                setTimeout(() => wx.navigateBack(), 1500)
+              } else {
+                wx.showToast({ title: '取消失败', icon: 'error' })
+              }
+            } else {
+              // 未登录，仅更新本地
+              const localOrder = app.globalData.orderHistory.find(o => o.id === order.id)
+              if (localOrder) {
+                localOrder.status = 'cancelled'
+                wx.setStorageSync('orderHistory', app.globalData.orderHistory)
+              }
+              wx.hideLoading()
+              wx.showToast({ title: '订单已取消', icon: 'success' })
+              setTimeout(() => wx.navigateBack(), 1500)
+            }
           }
         }
       })
@@ -232,12 +265,45 @@ Component({
 
     // 确认收货
     confirmReceive() {
+      const order = this.data.order
+      if (!order) return
+
       wx.showModal({
         title: '确认收货',
         content: '请确认您已收到商品',
-        success: (res) => {
+        success: async (res) => {
           if (res.confirm) {
-            wx.showToast({ title: '已确认收货', icon: 'success' })
+            wx.showLoading({ title: '处理中...' })
+            
+            // 已登录调用后端 API
+            if (app.globalData.isLoggedIn) {
+              const success = await confirmReceiveApi(order.id)
+              wx.hideLoading()
+              
+              if (success) {
+                // 更新本地订单状态
+                const localOrder = app.globalData.orderHistory.find(o => o.id === order.id)
+                if (localOrder) {
+                  localOrder.status = 'completed'
+                  wx.setStorageSync('orderHistory', app.globalData.orderHistory)
+                }
+                // 刷新页面显示
+                this.loadOrder(order.id)
+                wx.showToast({ title: '已确认收货', icon: 'success' })
+              } else {
+                wx.showToast({ title: '确认失败', icon: 'error' })
+              }
+            } else {
+              // 未登录，仅更新本地
+              const localOrder = app.globalData.orderHistory.find(o => o.id === order.id)
+              if (localOrder) {
+                localOrder.status = 'completed'
+                wx.setStorageSync('orderHistory', app.globalData.orderHistory)
+              }
+              wx.hideLoading()
+              this.loadOrder(order.id)
+              wx.showToast({ title: '已确认收货', icon: 'success' })
+            }
           }
         }
       })
