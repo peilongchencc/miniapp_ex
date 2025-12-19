@@ -103,8 +103,18 @@ Component({
 
   pageLifetimes: {
     show() {
-      // 检查是否有目标分类需要跳转
       const app = getApp<IAppOption>()
+      
+      // 检查是否有搜索关键词（从首页传来）
+      if (app.globalData.searchKeyword) {
+        const keyword = app.globalData.searchKeyword
+        app.globalData.searchKeyword = undefined
+        this.setData({ searchKeyword: keyword })
+        this.performSearch(keyword)
+        return
+      }
+      
+      // 检查是否有目标分类需要跳转
       if (app.globalData.targetCategoryId) {
         const targetId = app.globalData.targetCategoryId
         app.globalData.targetCategoryId = undefined
@@ -164,29 +174,38 @@ Component({
       this.filterProducts(this.data.currentCategoryId)
     },
     
-    // 执行搜索
-    performSearch(keyword: string) {
+    // 执行搜索 - 调用后端API
+    async performSearch(keyword: string) {
       if (!keyword.trim()) {
         this.setData({ isSearchMode: false })
         this.filterProducts(this.data.currentCategoryId)
         return
       }
       
-      this.setData({ isSearchMode: true })
+      this.setData({ isSearchMode: true, isLoading: true })
       
-      const searchResults = this.data.allProducts.filter((product: Product) => 
-        product.name.toLowerCase().includes(keyword.toLowerCase())
-      )
-      
-      const grouped = this.groupProductsBySubCategory(searchResults)
-      this.setData({ groupedProducts: grouped })
-      
-      if (searchResults.length === 0) {
-        wx.showToast({
-          title: '未找到相关商品',
-          icon: 'none',
-          duration: 2000
-        })
+      try {
+        const res = await get<{ products: Product[] }>(
+          `/product/search?keyword=${encodeURIComponent(keyword)}`
+        )
+        
+        if (res.code === 200 && res.data) {
+          const searchResults = res.data.products
+          const grouped = this.groupProductsBySubCategory(searchResults)
+          this.setData({ groupedProducts: grouped, isLoading: false })
+          
+          if (searchResults.length === 0) {
+            wx.showToast({
+              title: '未找到相关商品',
+              icon: 'none',
+              duration: 2000
+            })
+          }
+        }
+      } catch (error) {
+        console.error('搜索失败:', error)
+        wx.showToast({ title: '搜索失败，请重试', icon: 'none' })
+        this.setData({ isLoading: false })
       }
     },
     

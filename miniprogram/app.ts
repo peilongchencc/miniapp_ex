@@ -24,6 +24,7 @@ App<IAppOption>({
     orderHistory: [] as IOrder[],
     favorites: [] as IFavoriteItem[],
     targetCategoryId: undefined,
+    searchKeyword: undefined,
   },
 
   onLaunch() {

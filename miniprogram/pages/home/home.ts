@@ -109,14 +109,17 @@ Component({
       this.setData({ searchKeyword: e.detail.value })
     },
 
-    // 执行搜索
+    // 执行搜索 - 跳转到分类页进行搜索
     onSearch() {
       const keyword = this.data.searchKeyword.trim()
       if (!keyword) {
         wx.showToast({ title: '请输入搜索内容', icon: 'none' })
         return
       }
-      wx.showToast({ title: '搜索功能待开发', icon: 'none' })
+      // 设置全局搜索关键词，跳转到分类页
+      const app = getApp<IAppOption>()
+      app.globalData.searchKeyword = keyword
+      wx.switchTab({ url: '/pages/category/category' })
     },
 
     // 轮播图切换

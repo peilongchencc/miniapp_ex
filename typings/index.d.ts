@@ -38,6 +38,8 @@ interface IAppOption {
     favorites: IFavoriteItem[]
     /** 目标分类ID，用于从首页跳转到分类页时指定分类 */
     targetCategoryId?: string
+    /** 搜索关键词，用于从首页跳转到分类页时传递搜索词 */
+    searchKeyword?: string
   }
   addToCart: (item: ICartItem) => void
   updateCartQuantity: (productId: string, quantity: number) => void
