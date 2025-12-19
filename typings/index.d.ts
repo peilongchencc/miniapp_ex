@@ -45,7 +45,8 @@ interface IAppOption {
   clearCart: () => void
   syncCartAfterLogin: () => Promise<void>
   refreshCartFromCloud: () => Promise<void>
-  submitOrder: (remark?: string) => IOrder | null
+  submitOrder: (remark?: string) => Promise<IOrder | null>
+  refreshOrdersFromCloud: () => Promise<void>
   reorder: (orderId: string) => boolean
   addFavorite: (item: Omit<IFavoriteItem, 'addTime'>) => boolean
   removeFavorite: (id: string) => void

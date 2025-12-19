@@ -11,6 +11,7 @@ interface FormattedOrder extends Omit<IOrder, 'createTime'> {
 Component({
   data: {
     orderList: [] as FormattedOrder[],
+    loading: false,
     statusMap: {
       pending: '待确认',
       confirmed: '已确认',
@@ -33,14 +34,21 @@ Component({
 
   methods: {
     // 加载订单列表
-    loadOrders() {
+    async loadOrders() {
+      this.setData({ loading: true })
+      
+      // 已登录则从云端获取
+      if (app.globalData.isLoggedIn) {
+        await app.refreshOrdersFromCloud()
+      }
+      
       const orderHistory = app.globalData.orderHistory || []
       // 格式化订单时间
       const formattedOrders: FormattedOrder[] = orderHistory.map(order => ({
         ...order,
         createTime: formatTime(new Date(order.createTime))
       }))
-      this.setData({ orderList: formattedOrders })
+      this.setData({ orderList: formattedOrders, loading: false })
     },
 
     // 快捷复购

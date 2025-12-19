@@ -1,5 +1,6 @@
 // order-detail.ts
 import { formatTime } from '../../utils/util'
+import { fetchOrderDetail } from '../../utils/order-api'
 
 const app = getApp<IAppOption>()
 
@@ -92,8 +93,24 @@ Component({
 
   methods: {
     // 加载订单详情
-    loadOrder(orderId: string) {
-      const order = app.globalData.orderHistory.find(o => o.id === orderId)
+    async loadOrder(orderId: string) {
+      // 优先从本地获取（刚提交的订单）
+      let order = app.globalData.orderHistory.find(o => o.id === orderId)
+      
+      // 本地没有且已登录，从云端获取
+      if (!order && app.globalData.isLoggedIn) {
+        const cloudOrder = await fetchOrderDetail(orderId)
+        if (cloudOrder) {
+          order = {
+            id: cloudOrder.id,
+            items: cloudOrder.items,
+            createTime: cloudOrder.createTime,
+            status: cloudOrder.status as IOrder['status'],
+            remark: cloudOrder.remark
+          }
+        }
+      }
+      
       if (!order) return
 
       // 构建状态步骤
@@ -104,29 +121,29 @@ Component({
         label: this.data.statusMap[status],
         active: index === currentIndex,
         done: index < currentIndex,
-        time: index <= currentIndex ? this.getMockStatusTime(order.createTime, index) : undefined
+        time: index <= currentIndex ? this.getMockStatusTime(order!.createTime, index) : undefined
       }))
 
-      // 模拟完整订单详情数据（后续替换为真实API数据）
+      // 构建订单详情数据
       const orderDetail: OrderDetail = {
         id: order.id,
         createTime: formatTime(new Date(order.createTime)),
         status: order.status,
         statusText: this.data.statusMap[order.status],
         remark: order.remark,
-        // 模拟收货信息
+        // 收货信息（后续从用户信息获取）
         receiver: {
-          name: '张先生',
-          phone: '138****8888',
-          address: '北京市朝阳区XX街道XX小区XX号楼XX单元XX室'
+          name: app.globalData.userInfo?.nickName || '用户',
+          phone: app.globalData.userInfo?.phoneNumber || '未设置',
+          address: '请联系商家确认配送地址'
         },
         items: order.items,
         statusSteps,
         // 配送中状态显示物流信息
         logistics: order.status === 'shipped' || order.status === 'completed' ? {
-          company: '顺丰速运',
-          trackingNo: 'SF' + order.id.replace('ORD', ''),
-          latestInfo: '快递员正在派送中，请保持电话畅通'
+          company: '商家配送',
+          trackingNo: order.id,
+          latestInfo: '商家正在配送中，请保持电话畅通'
         } : undefined
       }
 

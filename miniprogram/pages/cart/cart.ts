@@ -306,23 +306,23 @@ Component({
         title: '确认提交订单',
         content: '提交后我们会尽快联系您确认订单详情和价格',
         confirmText: '确认提交',
-        success: (res) => {
+        success: async (res) => {
           if (res.confirm) {
             // 设置提交中状态，防止显示空购物车
             this.setData({ isSubmitting: true })
             
             // 只提交选中的商品
-            const itemsToSubmit = selectedItems.map(({ selected, ...rest }) => rest)
+            const itemsToSubmit = selectedItems.map(({ selected, offsetX, swiped, ...rest }) => rest)
             
             // 临时替换全局购物车为选中商品
             cartApp.globalData.cartItems = itemsToSubmit
             
-            const order = cartApp.submitOrder(this.data.remark)
+            const order = await cartApp.submitOrder(this.data.remark)
             
             // 恢复未选中的商品到购物车
             const unselectedItems = this.data.cartItems
               .filter(item => !item.selected)
-              .map(({ selected, ...rest }) => rest)
+              .map(({ selected, offsetX, swiped, ...rest }) => rest)
             cartApp.globalData.cartItems = unselectedItems
             wx.setStorageSync('cartItems', unselectedItems)
             
@@ -337,6 +337,7 @@ Component({
               })
             } else {
               this.setData({ isSubmitting: false })
+              wx.showToast({ title: '提交失败', icon: 'error' })
             }
           }
         }

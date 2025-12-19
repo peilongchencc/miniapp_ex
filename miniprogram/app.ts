@@ -8,6 +8,7 @@ import {
   clearCartApi,
   syncCartApi 
 } from './utils/cart-api'
+import { submitOrderApi, fetchOrderList } from './utils/order-api'
 
 App<IAppOption>({
   globalData: {
@@ -209,21 +210,59 @@ App<IAppOption>({
   },
 
   // 提交订单（将购物车转为订单）
-  submitOrder(remark?: string): IOrder | null {
+  async submitOrder(remark?: string): Promise<IOrder | null> {
     if (this.globalData.cartItems.length === 0) return null
     
+    const items = [...this.globalData.cartItems]
+    
+    // 已登录则提交到云端
+    if (this.globalData.isLoggedIn) {
+      const result = await submitOrderApi(items, remark)
+      if (result.success && result.orderId) {
+        const order: IOrder = {
+          id: result.orderId,
+          items,
+          createTime: Date.now(),
+          status: 'pending',
+          remark
+        }
+        this.globalData.orderHistory.unshift(order)
+        wx.setStorageSync('orderHistory', this.globalData.orderHistory)
+        this.clearCart()
+        return order
+      }
+      return null
+    }
+    
+    // 未登录则本地存储
     const order: IOrder = {
       id: `ORD${Date.now()}`,
-      items: [...this.globalData.cartItems],
+      items,
       createTime: Date.now(),
       status: 'pending',
       remark
     }
-    
     this.globalData.orderHistory.unshift(order)
     wx.setStorageSync('orderHistory', this.globalData.orderHistory)
     this.clearCart()
     return order
+  },
+
+  // 从云端刷新订单列表
+  async refreshOrdersFromCloud() {
+    if (!this.globalData.isLoggedIn) return
+    
+    const orders = await fetchOrderList()
+    if (orders.length > 0) {
+      this.globalData.orderHistory = orders.map(o => ({
+        id: o.id,
+        items: o.items,
+        createTime: o.createTime,
+        status: o.status as IOrder['status'],
+        remark: o.remark
+      }))
+      wx.setStorageSync('orderHistory', this.globalData.orderHistory)
+    }
   },
 
   // 快捷复购 - 将历史订单商品加入购物车
