@@ -3,13 +3,14 @@
  * 处理小程序登录、手机号授权等逻辑
  */
 
-import { post, setToken, clearToken } from './request'
+import { post, setToken, setRefreshToken, clearToken } from './request'
 
 // 登录响应数据
 interface LoginData {
   need_phone: boolean
   openid?: string
   access_token?: string
+  refresh_token?: string
   token_type?: string
   expires_in?: number
   user_info?: {
@@ -23,6 +24,7 @@ interface LoginData {
 // 手机号授权响应数据
 interface PhoneAuthData {
   access_token: string
+  refresh_token: string
   token_type: string
   expires_in: number
   user_info: {
@@ -58,6 +60,9 @@ export async function miniappLogin(): Promise<LoginData> {
   // 如果不需要手机号授权，直接保存 token
   if (!res.data.need_phone && res.data.access_token) {
     setToken(res.data.access_token)
+    if (res.data.refresh_token) {
+      setRefreshToken(res.data.refresh_token)
+    }
   }
 
   return res.data
@@ -81,6 +86,9 @@ export async function phoneAuth(
   // 保存 token
   if (res.data.access_token) {
     setToken(res.data.access_token)
+  }
+  if (res.data.refresh_token) {
+    setRefreshToken(res.data.refresh_token)
   }
 
   return res.data
