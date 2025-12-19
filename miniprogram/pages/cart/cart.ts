@@ -114,10 +114,12 @@ Component({
       const item = this.data.cartItems[index]
       
       if (item.quantity > 1) {
+        const newQuantity = item.quantity - 1
         const key = `cartItems[${index}].quantity`
-        this.setData({ [key]: item.quantity - 1 })
-        this.syncToGlobal()
+        this.setData({ [key]: newQuantity })
         this.updateTotalCount()
+        // 使用全局方法同步（自动处理云端）
+        cartApp.updateCartQuantity(item.id, newQuantity)
       }
     },
 
@@ -127,10 +129,12 @@ Component({
       const item = this.data.cartItems[index]
       
       if (item.quantity < 999) {
+        const newQuantity = item.quantity + 1
         const key = `cartItems[${index}].quantity`
-        this.setData({ [key]: item.quantity + 1 })
-        this.syncToGlobal()
+        this.setData({ [key]: newQuantity })
         this.updateTotalCount()
+        // 使用全局方法同步（自动处理云端）
+        cartApp.updateCartQuantity(item.id, newQuantity)
       }
     },
 
@@ -152,13 +156,13 @@ Component({
       
       const key = `cartItems[${index}].quantity`
       this.setData({ [key]: value })
-      this.syncToGlobal()
       this.updateTotalCount()
     },
 
-    // 输入框失焦时校验最小值
+    // 输入框失焦时校验最小值并同步
     onQuantityBlur(e: WechatMiniprogram.Input) {
       const index = e.currentTarget.dataset.index as number
+      const item = this.data.cartItems[index]
       const inputValue = e.detail.value
       let value = parseInt(inputValue)
       
@@ -170,8 +174,9 @@ Component({
       
       const key = `cartItems[${index}].quantity`
       this.setData({ [key]: value })
-      this.syncToGlobal()
       this.updateTotalCount()
+      // 使用全局方法同步（自动处理云端）
+      cartApp.updateCartQuantity(item.id, value)
     },
 
     // 触摸开始
@@ -268,9 +273,10 @@ Component({
               cartItems,
               hasItems: cartItems.length > 0
             })
-            this.syncToGlobal()
             this.updateSelectAll()
             this.updateTotalCount()
+            // 使用全局方法删除（自动处理云端）
+            cartApp.removeFromCart(item.id)
           } else {
             // 用户取消删除，收起滑动按钮
             this.setData({
@@ -280,14 +286,6 @@ Component({
           }
         }
       })
-    },
-
-    // 同步到全局数据
-    syncToGlobal() {
-      const items = this.data.cartItems.map(({ selected, ...rest }) => rest)
-      cartApp.globalData.cartItems = items
-      wx.setStorageSync('cartItems', items)
-      cartApp.updateCartBadge()
     },
 
     // 输入备注

@@ -127,3 +127,21 @@ export function post<T = unknown>(
 ): Promise<ApiResponse<T>> {
   return request<T>({ url, method: 'POST', data, needToken })
 }
+
+/**
+ * PUT 请求
+ */
+export function put<T = unknown>(
+  url: string,
+  data?: Record<string, unknown>,
+  needToken = false
+): Promise<ApiResponse<T>> {
+  return request<T>({ url, method: 'PUT', data, needToken })
+}
+
+/**
+ * DELETE 请求
+ */
+export function del<T = unknown>(url: string, needToken = false): Promise<ApiResponse<T>> {
+  return request<T>({ url, method: 'DELETE', needToken })
+}

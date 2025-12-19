@@ -40,7 +40,11 @@ interface IAppOption {
     targetCategoryId?: string
   }
   addToCart: (item: ICartItem) => void
+  updateCartQuantity: (productId: string, quantity: number) => void
+  removeFromCart: (productId: string) => void
   clearCart: () => void
+  syncCartAfterLogin: () => Promise<void>
+  refreshCartFromCloud: () => Promise<void>
   submitOrder: (remark?: string) => IOrder | null
   reorder: (orderId: string) => boolean
   addFavorite: (item: Omit<IFavoriteItem, 'addTime'>) => boolean

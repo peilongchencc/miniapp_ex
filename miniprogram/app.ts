@@ -1,5 +1,13 @@
 // app.ts
 // 类型定义已移至 typings/index.d.ts
+import { 
+  fetchCart, 
+  addToCartApi, 
+  updateCartApi, 
+  removeFromCartApi, 
+  clearCartApi,
+  syncCartApi 
+} from './utils/cart-api'
 
 App<IAppOption>({
   globalData: {
@@ -112,6 +120,38 @@ App<IAppOption>({
     }
     wx.setStorageSync('cartItems', this.globalData.cartItems)
     this.updateCartBadge()
+    
+    // 已登录则同步到云端
+    if (this.globalData.isLoggedIn) {
+      addToCartApi(item.id, item.quantity, item.spec)
+    }
+  },
+
+  // 更新购物车商品数量
+  updateCartQuantity(productId: string, quantity: number) {
+    const index = this.globalData.cartItems.findIndex(i => i.id === productId)
+    if (index > -1) {
+      this.globalData.cartItems[index].quantity = quantity
+      wx.setStorageSync('cartItems', this.globalData.cartItems)
+      this.updateCartBadge()
+      
+      // 已登录则同步到云端
+      if (this.globalData.isLoggedIn) {
+        updateCartApi(productId, quantity)
+      }
+    }
+  },
+
+  // 从购物车删除商品
+  removeFromCart(productId: string) {
+    this.globalData.cartItems = this.globalData.cartItems.filter(i => i.id !== productId)
+    wx.setStorageSync('cartItems', this.globalData.cartItems)
+    this.updateCartBadge()
+    
+    // 已登录则同步到云端
+    if (this.globalData.isLoggedIn) {
+      removeFromCartApi(productId)
+    }
   },
 
   // 更新购物车角标（显示商品种类数）
@@ -131,6 +171,40 @@ App<IAppOption>({
   clearCart() {
     this.globalData.cartItems = []
     wx.setStorageSync('cartItems', [])
+    this.updateCartBadge()
+    
+    // 已登录则同步到云端
+    if (this.globalData.isLoggedIn) {
+      clearCartApi()
+    }
+  },
+
+  // 登录后同步购物车（合并本地和云端数据）
+  async syncCartAfterLogin() {
+    if (!this.globalData.isLoggedIn) return
+    
+    const localItems = this.globalData.cartItems
+    if (localItems.length > 0) {
+      // 有本地数据，合并到云端
+      const mergedItems = await syncCartApi(localItems)
+      this.globalData.cartItems = mergedItems
+      wx.setStorageSync('cartItems', mergedItems)
+    } else {
+      // 无本地数据，从云端获取
+      const cloudItems = await fetchCart()
+      this.globalData.cartItems = cloudItems
+      wx.setStorageSync('cartItems', cloudItems)
+    }
+    this.updateCartBadge()
+  },
+
+  // 从云端刷新购物车
+  async refreshCartFromCloud() {
+    if (!this.globalData.isLoggedIn) return
+    
+    const items = await fetchCart()
+    this.globalData.cartItems = items
+    wx.setStorageSync('cartItems', items)
     this.updateCartBadge()
   },
 
