@@ -38,7 +38,7 @@ interface AddressDeleteResponse {
  */
 export async function fetchAddressList(): Promise<AddressData[]> {
   try {
-    const res = await get<AddressListResponse>('/api/address', true)
+    const res = await get<AddressListResponse>('/address', true)
     return res.data.addresses || []
   } catch (err) {
     console.error('获取地址列表失败:', err)
@@ -51,7 +51,7 @@ export async function fetchAddressList(): Promise<AddressData[]> {
  */
 export async function addAddressApi(address: Omit<AddressData, 'id'>): Promise<AddressData | null> {
   try {
-    const res = await post<AddressAddResponse>('/api/address/add', address as unknown as Record<string, unknown>, true)
+    const res = await post<AddressAddResponse>('/address/add', address as unknown as Record<string, unknown>, true)
     return res.data
   } catch (err) {
     console.error('添加地址失败:', err)
@@ -64,7 +64,7 @@ export async function addAddressApi(address: Omit<AddressData, 'id'>): Promise<A
  */
 export async function updateAddressApi(id: string, address: Omit<AddressData, 'id'>): Promise<boolean> {
   try {
-    await put<AddressUpdateResponse>(`/api/address/update/${id}`, address as unknown as Record<string, unknown>, true)
+    await put<AddressUpdateResponse>(`/address/update/${id}`, address as unknown as Record<string, unknown>, true)
     return true
   } catch (err) {
     console.error('更新地址失败:', err)
@@ -77,7 +77,7 @@ export async function updateAddressApi(id: string, address: Omit<AddressData, 'i
  */
 export async function deleteAddressApi(id: string): Promise<boolean> {
   try {
-    await del<AddressDeleteResponse>(`/api/address/remove/${id}`, true)
+    await del<AddressDeleteResponse>(`/address/remove/${id}`, true)
     return true
   } catch (err) {
     console.error('删除地址失败:', err)
@@ -90,7 +90,7 @@ export async function deleteAddressApi(id: string): Promise<boolean> {
  */
 export async function setDefaultAddressApi(id: string): Promise<boolean> {
   try {
-    await put<AddressUpdateResponse>(`/api/address/default/${id}`, {}, true)
+    await put<AddressUpdateResponse>(`/address/default/${id}`, {}, true)
     return true
   } catch (err) {
     console.error('设置默认地址失败:', err)

@@ -42,7 +42,7 @@ interface CartClearResponse {
  */
 export async function fetchCart(): Promise<CartItemData[]> {
   try {
-    const res = await get<CartListResponse>('/api/cart', true)
+    const res = await get<CartListResponse>('/cart', true)
     return res.data.items || []
   } catch (err) {
     console.error('获取购物车失败:', err)
@@ -59,7 +59,7 @@ export async function addToCartApi(
   spec?: string
 ): Promise<boolean> {
   try {
-    await post<CartAddResponse>('/api/cart/add', {
+    await post<CartAddResponse>('/cart/add', {
       product_id: productId,
       quantity,
       spec
@@ -76,7 +76,7 @@ export async function addToCartApi(
  */
 export async function updateCartApi(productId: string, quantity: number): Promise<boolean> {
   try {
-    await put<CartUpdateResponse>('/api/cart/update', {
+    await put<CartUpdateResponse>('/cart/update', {
       product_id: productId,
       quantity
     }, true)
@@ -92,7 +92,7 @@ export async function updateCartApi(productId: string, quantity: number): Promis
  */
 export async function removeFromCartApi(productId: string): Promise<boolean> {
   try {
-    await del<CartRemoveResponse>(`/api/cart/remove/${productId}`, true)
+    await del<CartRemoveResponse>(`/cart/remove/${productId}`, true)
     return true
   } catch (err) {
     console.error('删除购物车商品失败:', err)
@@ -105,7 +105,7 @@ export async function removeFromCartApi(productId: string): Promise<boolean> {
  */
 export async function clearCartApi(): Promise<boolean> {
   try {
-    await del<CartClearResponse>('/api/cart/clear', true)
+    await del<CartClearResponse>('/cart/clear', true)
     return true
   } catch (err) {
     console.error('清空购物车失败:', err)
@@ -118,7 +118,7 @@ export async function clearCartApi(): Promise<boolean> {
  */
 export async function syncCartApi(items: CartItemData[]): Promise<CartItemData[]> {
   try {
-    const res = await post<CartListResponse>('/api/cart/sync', { items }, true)
+    const res = await post<CartListResponse>('/cart/sync', { items }, true)
     return res.data.items || []
   } catch (err) {
     console.error('同步购物车失败:', err)

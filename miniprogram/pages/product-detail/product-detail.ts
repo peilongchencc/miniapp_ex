@@ -3,6 +3,7 @@
 
 import { get } from '../../utils/request'
 import { addFootprintApi } from '../../utils/footprint-api'
+import { checkFavoriteApi, addFavoriteApi, removeFavoriteApi } from '../../utils/favorite-api'
 
 const app = getApp<IAppOption>()
 
@@ -220,24 +221,39 @@ Component({
     },
 
     /** 检查收藏状态 */
-    checkFavoriteStatus() {
-      const { product } = this.data
-      if (product) {
+    async checkFavoriteStatus() {
+      const { product, isLoggedIn } = this.data
+      if (!product) return
+
+      if (isLoggedIn) {
+        // 已登录，从云端获取收藏状态
+        const isFavorite = await checkFavoriteApi(product.id)
+        this.setData({ isFavorite })
+      } else {
+        // 未登录，使用本地状态
         const isFavorite = app.isFavorite(product.id)
         this.setData({ isFavorite })
       }
     },
 
     /** 切换收藏状态 */
-    toggleFavorite() {
-      const { product, isFavorite } = this.data
+    async toggleFavorite() {
+      const { product, isFavorite, isLoggedIn } = this.data
       if (!product) return
 
       if (isFavorite) {
+        // 取消收藏
+        if (isLoggedIn) {
+          await removeFavoriteApi(product.id)
+        }
         app.removeFavorite(product.id)
         this.setData({ isFavorite: false })
         wx.showToast({ title: '已取消收藏', icon: 'none' })
       } else {
+        // 添加收藏
+        if (isLoggedIn) {
+          await addFavoriteApi(product.id)
+        }
         app.addFavorite({
           id: product.id,
           name: product.name,

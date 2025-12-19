@@ -40,10 +40,10 @@ Component({
     
     // 热销/推荐商品
     hotProducts: [
-      { id: 1, name: '高档真丝寿衣七件套', image: '/images/default-product.png', sales: 328 },
-      { id: 2, name: '天然玉石骨灰盒', image: '/images/default-product.png', sales: 256 },
-      { id: 3, name: '鲜花花圈精选款', image: '/images/default-product.png', sales: 512 },
-      { id: 4, name: '祭祀用品套装', image: '/images/default-product.png', sales: 892 }
+      { id: '1', name: '高档真丝寿衣七件套', image: '/images/default-product.png', sales: 328 },
+      { id: '2', name: '天然玉石骨灰盒', image: '/images/default-product.png', sales: 256 },
+      { id: '3', name: '鲜花花圈精选款', image: '/images/default-product.png', sales: 512 },
+      { id: '4', name: '祭祀用品套装', image: '/images/default-product.png', sales: 892 }
     ] as HotProduct[],
     
     // 服务特色
@@ -96,7 +96,7 @@ Component({
      */
     async loadHotProducts() {
       try {
-        const res = await get<{ products: HotProduct[] }>('/api/product/hot')
+        const res = await get<{ products: HotProduct[] }>('/product/hot')
         if (res.code === 200 && res.data?.products) {
           this.setData({ hotProducts: res.data.products })
         }

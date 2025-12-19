@@ -104,7 +104,7 @@ Component({
             // 未登录，保存到本地
             const localAddress: AddressData = {
               ...newAddress,
-              id: Date.now().toString(36) + Math.random().toString(36).substr(2, 9)
+              id: Date.now().toString(36) + Math.random().toString(36).slice(2, 11)
             }
             const newList = [...this.data.addressList, localAddress]
             this.setData({ addressList: newList })

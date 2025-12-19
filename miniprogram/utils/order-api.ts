@@ -49,7 +49,7 @@ export async function submitOrderApi(
   address?: string
 ): Promise<{ success: boolean; orderId?: string }> {
   try {
-    const res = await post<SubmitOrderResponse>('/api/order/submit', {
+    const res = await post<SubmitOrderResponse>('/order/submit', {
       items,
       remark,
       contact_name: contactName,
@@ -72,7 +72,7 @@ export async function fetchOrderList(
 ): Promise<OrderData[]> {
   try {
     const res = await get<OrderListResponse>(
-      `/api/order/list?limit=${limit}&offset=${offset}`,
+      `/order/list?limit=${limit}&offset=${offset}`,
       true
     )
     return res.data.orders || []
@@ -87,7 +87,7 @@ export async function fetchOrderList(
  */
 export async function fetchOrderDetail(orderId: string): Promise<OrderData | null> {
   try {
-    const res = await get<OrderData>(`/api/order/detail/${orderId}`, true)
+    const res = await get<OrderData>(`/order/detail/${orderId}`, true)
     return res.data
   } catch (err) {
     console.error('获取订单详情失败:', err)
@@ -102,7 +102,7 @@ export async function fetchOrderDetail(orderId: string): Promise<OrderData | nul
 export async function cancelOrderApi(orderId: string): Promise<boolean> {
   try {
     const res = await post<{ order_id: string; status: string }>(
-      `/api/order/cancel/${orderId}`,
+      `/order/cancel/${orderId}`,
       {},
       true
     )
@@ -119,7 +119,7 @@ export async function cancelOrderApi(orderId: string): Promise<boolean> {
 export async function confirmReceiveApi(orderId: string): Promise<boolean> {
   try {
     const res = await post<{ order_id: string; status: string }>(
-      `/api/order/confirm/${orderId}`,
+      `/order/confirm/${orderId}`,
       {},
       true
     )

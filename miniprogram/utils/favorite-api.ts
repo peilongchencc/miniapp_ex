@@ -37,7 +37,7 @@ interface FavoriteCheckResponse {
  */
 export async function fetchFavorites(): Promise<FavoriteItemData[]> {
   try {
-    const res = await get<FavoriteListResponse>('/api/favorites', true)
+    const res = await get<FavoriteListResponse>('/favorites', true)
     return res.data.items || []
   } catch (err) {
     console.error('获取收藏列表失败:', err)
@@ -50,7 +50,7 @@ export async function fetchFavorites(): Promise<FavoriteItemData[]> {
  */
 export async function addFavoriteApi(productId: string): Promise<boolean> {
   try {
-    await post<FavoriteAddResponse>('/api/favorites/add', {
+    await post<FavoriteAddResponse>('/favorites/add', {
       product_id: productId
     }, true)
     return true
@@ -65,7 +65,7 @@ export async function addFavoriteApi(productId: string): Promise<boolean> {
  */
 export async function removeFavoriteApi(productId: string): Promise<boolean> {
   try {
-    await del<FavoriteRemoveResponse>(`/api/favorites/remove/${productId}`, true)
+    await del<FavoriteRemoveResponse>(`/favorites/remove/${productId}`, true)
     return true
   } catch (err) {
     console.error('取消收藏失败:', err)
@@ -78,7 +78,7 @@ export async function removeFavoriteApi(productId: string): Promise<boolean> {
  */
 export async function checkFavoriteApi(productId: string): Promise<boolean> {
   try {
-    const res = await get<FavoriteCheckResponse>(`/api/favorites/check/${productId}`, true)
+    const res = await get<FavoriteCheckResponse>(`/favorites/check/${productId}`, true)
     return res.data.is_favorite
   } catch (err) {
     console.error('检查收藏状态失败:', err)
@@ -93,7 +93,7 @@ export async function syncFavoritesApi(
   items: Array<{ id: string }>
 ): Promise<FavoriteItemData[]> {
   try {
-    const res = await post<FavoriteListResponse>('/api/favorites/sync', { items }, true)
+    const res = await post<FavoriteListResponse>('/favorites/sync', { items }, true)
     return res.data.items || []
   } catch (err) {
     console.error('同步收藏失败:', err)

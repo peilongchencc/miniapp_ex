@@ -40,7 +40,7 @@ export async function fetchFootprints(
 ): Promise<{ items: FootprintItemData[]; total: number }> {
   try {
     const res = await get<FootprintListResponse>(
-      `/api/footprints?limit=${limit}&offset=${offset}`,
+      `/footprints?limit=${limit}&offset=${offset}`,
       true
     )
     return {
@@ -58,7 +58,7 @@ export async function fetchFootprints(
  */
 export async function addFootprintApi(productId: string): Promise<boolean> {
   try {
-    await post<FootprintAddResponse>('/api/footprints/add', {
+    await post<FootprintAddResponse>('/footprints/add', {
       product_id: productId
     }, true)
     return true
@@ -73,7 +73,7 @@ export async function addFootprintApi(productId: string): Promise<boolean> {
  */
 export async function removeFootprintApi(productId: string): Promise<boolean> {
   try {
-    await del<FootprintRemoveResponse>(`/api/footprints/remove/${productId}`, true)
+    await del<FootprintRemoveResponse>(`/footprints/remove/${productId}`, true)
     return true
   } catch (err) {
     console.error('删除足迹失败:', err)
@@ -86,7 +86,7 @@ export async function removeFootprintApi(productId: string): Promise<boolean> {
  */
 export async function clearFootprintsApi(): Promise<boolean> {
   try {
-    await del<FootprintClearResponse>('/api/footprints/clear', true)
+    await del<FootprintClearResponse>('/footprints/clear', true)
     return true
   } catch (err) {
     console.error('清空足迹失败:', err)
